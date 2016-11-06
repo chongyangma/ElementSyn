@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParticleSystem", "ParticleSystem\ParticleSystem.vcxproj", "{8162E05B-8D9C-4046-B2A4-AB67F9AE2CD7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{60B1F8A5-5726-4DE2-9DBD-6C9766153C11} = {60B1F8A5-5726-4DE2-9DBD-6C9766153C11}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicElement", "DynamicElement\DynamicElement.vcxproj", "{60B1F8A5-5726-4DE2-9DBD-6C9766153C11}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TreeBranches", "TreeBranches\TreeBranches.vcxproj", "{308547F0-B128-43A6-A39C-4E8B0CBC5450}"
+	ProjectSection(ProjectDependencies) = postProject
+		{60B1F8A5-5726-4DE2-9DBD-6C9766153C11} = {60B1F8A5-5726-4DE2-9DBD-6C9766153C11}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Spaghetti", "Spaghetti\Spaghetti.vcxproj", "{7D2D8B91-3EA8-4E86-A39A-AEED77FC77D8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{60B1F8A5-5726-4DE2-9DBD-6C9766153C11} = {60B1F8A5-5726-4DE2-9DBD-6C9766153C11}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8162E05B-8D9C-4046-B2A4-AB67F9AE2CD7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8162E05B-8D9C-4046-B2A4-AB67F9AE2CD7}.Debug|Win32.Build.0 = Debug|Win32
+		{8162E05B-8D9C-4046-B2A4-AB67F9AE2CD7}.Release|Win32.ActiveCfg = Release|Win32
+		{8162E05B-8D9C-4046-B2A4-AB67F9AE2CD7}.Release|Win32.Build.0 = Release|Win32
+		{60B1F8A5-5726-4DE2-9DBD-6C9766153C11}.Debug|Win32.ActiveCfg = Debug|Win32
+		{60B1F8A5-5726-4DE2-9DBD-6C9766153C11}.Debug|Win32.Build.0 = Debug|Win32
+		{60B1F8A5-5726-4DE2-9DBD-6C9766153C11}.Release|Win32.ActiveCfg = Release|Win32
+		{60B1F8A5-5726-4DE2-9DBD-6C9766153C11}.Release|Win32.Build.0 = Release|Win32
+		{308547F0-B128-43A6-A39C-4E8B0CBC5450}.Debug|Win32.ActiveCfg = Debug|Win32
+		{308547F0-B128-43A6-A39C-4E8B0CBC5450}.Debug|Win32.Build.0 = Debug|Win32
+		{308547F0-B128-43A6-A39C-4E8B0CBC5450}.Release|Win32.ActiveCfg = Release|Win32
+		{308547F0-B128-43A6-A39C-4E8B0CBC5450}.Release|Win32.Build.0 = Release|Win32
+		{7D2D8B91-3EA8-4E86-A39A-AEED77FC77D8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7D2D8B91-3EA8-4E86-A39A-AEED77FC77D8}.Debug|Win32.Build.0 = Debug|Win32
+		{7D2D8B91-3EA8-4E86-A39A-AEED77FC77D8}.Release|Win32.ActiveCfg = Release|Win32
+		{7D2D8B91-3EA8-4E86-A39A-AEED77FC77D8}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
