@@ -16,14 +16,14 @@ modified by Chongyang Ma, 07/30/2012
 #include "MathTypes.h"
 #include <string>
 
-#pragma comment(lib, "../lib/libatlas.lib")
-#pragma comment(lib, "../lib/libcblas.lib")
-#pragma comment(lib, "../lib/libf77blas.lib")
-#pragma comment(lib, "../lib/liblapack.lib")
-#pragma comment(lib, "../lib/libmetis.lib")
-#pragma comment(lib, "../lib/libtaucs.lib")
-//#pragma comment(lib, "../lib/libtstatlas.lib")
-#pragma comment(lib, "../lib/vcf2c.lib")
+#pragma comment(lib, "libatlas.lib")
+#pragma comment(lib, "libcblas.lib")
+#pragma comment(lib, "libf77blas.lib")
+#pragma comment(lib, "liblapack.lib")
+#pragma comment(lib, "libmetis.lib")
+#pragma comment(lib, "libtaucs.lib")
+//#pragma comment(lib, "libtstatlas.lib")
+#pragma comment(lib, "vcf2c.lib")
 
 class CTAUCSsolver
 {

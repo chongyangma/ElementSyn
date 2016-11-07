@@ -1,7 +1,7 @@
 
 #include "SpaghettiSyn.h"
 #include <omp.h>
-//#define USE_TAUCS_SOLVER
+#define USE_TAUCS_SOLVER
 #ifdef USE_TAUCS_SOLVER
 #include "../DynamicElement/TAUCSsolver.h"
 #else

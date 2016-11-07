@@ -45,8 +45,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>d:\chongyang\LIB\Intel MKL 10.2\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
-    <LibraryPath>d:\chongyang\LIB\Intel MKL 10.2\ia32\lib;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
+    <IncludePath>../../freeglut/include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include</IncludePath>
+    <LibraryPath>../../lib;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -87,7 +87,6 @@
     <ClCompile Include="MassSpringData.cpp" />
     <ClCompile Include="MathFunc.cpp" />
     <ClCompile Include="MathTypes.cpp" />
-    <ClCompile Include="MKLsolver.cpp" />
     <ClCompile Include="NURBSinterpolate.cpp" />
     <ClCompile Include="SynConfigBase.cpp" />
     <ClCompile Include="taucs_addon.cpp" />
@@ -106,7 +105,6 @@
     <ClInclude Include="MassSpringData.h" />
     <ClInclude Include="MathFunc.h" />
     <ClInclude Include="MathTypes.h" />
-    <ClInclude Include="MKLsolver.h" />
     <ClInclude Include="NURBSinterpolate.h" />
     <ClInclude Include="PoissonDisk.h" />
     <ClInclude Include="SynConfigBase.h" />

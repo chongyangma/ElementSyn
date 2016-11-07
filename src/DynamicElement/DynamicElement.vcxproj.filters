@@ -42,9 +42,6 @@
     <ClCompile Include="MassSpringData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MKLsolver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NURBSinterpolate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -111,9 +108,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MassSpringData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MKLsolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NURBSinterpolate.h">

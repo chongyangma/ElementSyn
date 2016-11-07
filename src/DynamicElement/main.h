@@ -4,8 +4,9 @@
 
 #pragma comment(lib,"opengl32.lib")
 #pragma comment(lib,"glu32.lib")
-#pragma comment(lib,"glut32.lib")
+#pragma comment(lib,"freeglut.lib")
 #pragma warning( disable: 4244 )	// disable warning of data conversion.
+#pragma warning( disable: 4305 )	// disable warning of data conversion.
 #pragma warning( disable: 4996 )	// disable warning of security.
 
 #include <string>
