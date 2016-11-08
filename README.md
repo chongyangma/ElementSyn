@@ -12,4 +12,22 @@ This repository contains the source code and example data of the following publi
 > [Project page](http://chongyangma.com/publications/dt/index.html),
 > [Paper](http://chongyangma.com/publications/dt/2013_dt_paper.pdf),
 > [Slides](http://chongyangma.com/publications/dt/2013_dt_slides.pdf),
+> [Video](http://chongyangma.com/publications/dt/2013_dt_video.mp4),
+> [YouTube](https://www.youtube.com/watch?v=dSvqGcBAorI),
 > [BibTex](http://chongyangma.com/publications/dt/2013_dt_bib.txt)
+
+## Requirements
+
+The code (currently) requires Microsoft Visual Studio 2010.
+
+## Usage
+
+Launching the compiled application from command line without any argument will print the usage information:
+
+```
+ParticleSystem.exe config_file_path
+```
+
+## Contact information
+
+Questions? Bug reports? Please send email to Chongyang Ma chongyangm@gmail.com .
