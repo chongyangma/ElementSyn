@@ -87,7 +87,7 @@ void IdleFunc()
 	if ( pause == false )
 	{
 		ptrSynthesizer->UpdateOutput();
-		cout << ptrSynthesizer->GetStepCount() << endl;
+		cout << "Frame " << ptrSynthesizer->GetStepCount() << "...\n";
 	}
 	glutPostRedisplay();
 }
@@ -195,10 +195,10 @@ void Initialize(const char* config_file_path)
 	ptrCamera->RotateY(180);
 	ptrSynthesizer = new CParticleSystemSyn(config_file_path);
 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA); // set display mode
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE); // set display mode
 	glutInitWindowSize(g_width, g_height); // set window size
 	glutInitWindowPosition(0, 0); // set window position on screen
-	glutCreateWindow("Group motion of soft bodies"); // set window title
+	glutCreateWindow("Flow-Guided Synthesis of Particle System"); // set window title
 
 	glutMouseFunc(MouseFunc);
 	glutMotionFunc(MouseMoveFunc);
