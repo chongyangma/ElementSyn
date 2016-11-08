@@ -12,7 +12,7 @@
 class CParticleSystemConfig : public CSynConfigBase
 {
 public:
-	CParticleSystemConfig();
+	CParticleSystemConfig(const std::string& config_file_name);
 
 	bool ReloadConfigFromFile(string fileName);
 

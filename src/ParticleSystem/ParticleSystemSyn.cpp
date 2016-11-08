@@ -6,15 +6,15 @@
 #endif
 //#define MORPHABLE_PARTICLE_SYSTEM
 //#define CONSTRAINED_SYNTHESIS
-#define FLOW_SYNTHESIS // 01/07/2013
+//#define FLOW_SYNTHESIS // 01/07/2013
 
 GLUquadricObj* CParticleSystemSyn::m_ptrQuadricObj = gluNewQuadric();
 
-CParticleSystemSyn::CParticleSystemSyn()
+CParticleSystemSyn::CParticleSystemSyn(const std::string& config_file_name)
 {
 	m_stepCount = 0;
 	m_serialCount = 1;
-	m_ptrSynConfig = new CParticleSystemConfig;
+	m_ptrSynConfig = new CParticleSystemConfig(config_file_name);
 #ifdef FLOW_SYNTHESIS
 	LoadInputDataNew();
 #else
@@ -48,7 +48,7 @@ void CParticleSystemSyn::LoadInputData()
 {
 	m_inputSequence.clear();
 	CParticleSystem inputGroup = LoadInputExemplarFromTXT(CParticleSystemConfig::m_trajectoriesFileName);
-	//m_inputSequence.push_back(inputGroup);
+	m_inputSequence.push_back(inputGroup);
 	m_vecInputExemplar.clear();
 	for ( int i=0; i<int(CParticleSystemConfig::m_vecInputFileName.size()); i++ )
 	{
@@ -56,7 +56,7 @@ void CParticleSystemSyn::LoadInputData()
 		m_vecInputExemplar.push_back(inputExemplar);
 	}
 	SetInputNeighborhoods();
-	LoadBoundaryConstraints();
+	//LoadBoundaryConstraints();
 }
 
 void CParticleSystemSyn::LoadInputDataNew()

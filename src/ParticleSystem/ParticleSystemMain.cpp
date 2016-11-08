@@ -187,13 +187,13 @@ void MouseMoveFunc(int x, int y)
 	DisplayFunc();
 }
 
-void Initialize()
+void Initialize(const char* config_file_path)
 {
 	ptrArcBall = new CArcBall;
 	ptrArcBall->InitBall();
 	ptrCamera = new CCamera(0, 0, 4);
 	ptrCamera->RotateY(180);
-	ptrSynthesizer = new CParticleSystemSyn;
+	ptrSynthesizer = new CParticleSystemSyn(config_file_path);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA); // set display mode
 	glutInitWindowSize(g_width, g_height); // set window size
@@ -227,10 +227,20 @@ void ReleasePtr()
 	DELETE_OBJECT(ptrCamera);
 }
 
-int main(int argc,char **argv)
+void usage(char** argv)
 {
-	glutInit(&argc,argv);
-	Initialize();
+	std::cout << "Usage: " << argv[0] << " config_file_path\n";
+}
+
+int main(int argc, char **argv)
+{
+	if ( argc < 2 )
+	{
+		usage(argv);
+		return -1;
+	}
+	glutInit(&argc, argv);
+	Initialize(argv[1]);
 	glutMainLoop();
 	ReleasePtr();
 	return 0;

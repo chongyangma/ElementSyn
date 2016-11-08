@@ -37,7 +37,7 @@ public:
 class CParticleSystemSyn
 {
 public:
-	CParticleSystemSyn();
+	CParticleSystemSyn(const std::string& config_file_name);
 
 	~CParticleSystemSyn();
 

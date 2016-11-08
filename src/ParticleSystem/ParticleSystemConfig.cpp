@@ -30,9 +30,9 @@ Vec3f CParticleSystemConfig::m_particleDiffuse = Vec3f(0.5f, 0.5f, 0.5f);
 Vec3f CParticleSystemConfig::m_particleSpecular = Vec3f(0.1f, 0.1f, 0.1f);
 vector<Vec3f> CParticleSystemConfig::m_vecDiffuseColor;
 
-CParticleSystemConfig::CParticleSystemConfig()
+CParticleSystemConfig::CParticleSystemConfig(const std::string& config_file_name)
 {
-	LoadFromParticleSystemConfig();
+	LoadFromParticleSystemConfig(config_file_name);
 	ResetConfig();
 }
 
