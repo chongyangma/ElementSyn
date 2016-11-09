@@ -16,6 +16,8 @@
 #include <cmath>
 #include <cstdlib>
 
+namespace QuadProgPP {
+
 enum MType { DIAG };
 
 template <typename T>
@@ -648,6 +650,13 @@ inline T var(const Vector<T>& v, bool sample_correction = false)
   else
     return n * ((ssum / n) - (sum / n) * (sum / n)) / (n - 1);
 }
+
+#ifdef max
+#undef max
+#endif
+#ifdef min
+#undef min
+#endif
 
 template <typename T>
 inline T max(const Vector<T>& v)
@@ -2535,5 +2544,7 @@ inline Matrix<double> r_rank(const Matrix<T> m)
   
   return tmp;                  
 }
+
+} // namespace QuadProgPP
 
 #endif // define _ARRAY_HH_

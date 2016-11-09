@@ -20,6 +20,8 @@ File $Id: QuadProg++.cc 232 2007-06-21 12:29:00Z digasper $
 #include "QuadProg++.hh"
 //#define TRACE_SOLVER
 
+namespace QuadProgPP {
+
 // Utility functions for updating some data needed by the solution method 
 void compute_d(Vector<double>& d, const Matrix<double>& J, const Vector<double>& np);
 void update_z(Vector<double>& z, const Matrix<double>& J, const Vector<double>& d, int iq);
@@ -648,15 +650,15 @@ inline double distance(double a, double b)
   if (a1 > b1) 
   {
     t = (b1 / a1);
-    return a1 * sqrt(1.0 + t * t);
+    return a1 * std::sqrt(1.0 + t * t);
   }
   else
     if (b1 > a1)
     {
       t = (a1 / b1);
-      return b1 * sqrt(1.0 + t * t);
+      return b1 * std::sqrt(1.0 + t * t);
     }
-  return a1 * sqrt(2.0);
+  return a1 * std::sqrt(2.0);
 }
 
 
@@ -694,7 +696,7 @@ void cholesky_decomposition(Matrix<double>& A)
           throw std::logic_error(os.str());
           exit(-1);
         }
-	      A[i][i] = sqrt(sum);
+	      A[i][i] = std::sqrt(sum);
 	    }
       else
         A[j][i] = sum / A[i][i];
@@ -784,3 +786,5 @@ void print_vector(char* name, const Vector<T>& v, int n)
 	
   std::cout << t << std::endl;
 }
+
+} // namespace QuadProgPP
