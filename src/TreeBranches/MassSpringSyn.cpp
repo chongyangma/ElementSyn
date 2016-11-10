@@ -343,10 +343,10 @@ void CMassSpringSyn::UpdateStrandsExtended()
 	cout << "distSum = " << distSum << endl;
 	// Optimization with shape terms...
 	CollisionResponse(m_vecCx, m_vecCy, m_vecCz);
-	CTAUCSsolver taucsSolver;
-	vector<Flt> vecPxNew = taucsSolver.GetSolution(m_ptrCoeffMatrix, m_vecCx);
-	vector<Flt> vecPyNew = taucsSolver.GetSolution(m_ptrCoeffMatrix, m_vecCy);
-	vector<Flt> vecPzNew = taucsSolver.GetSolution(m_ptrCoeffMatrix, m_vecCz);
+	//CTAUCSsolver taucsSolver;
+	vector<Flt> vecPxNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCx);
+	vector<Flt> vecPyNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCy);
+	vector<Flt> vecPzNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCz);
 	for ( int n=0; n<numOfStrands; n++ )
 	{
 		CMassSpringData& outputStrand = m_vecOutputStrand[n];

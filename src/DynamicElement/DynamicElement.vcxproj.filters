@@ -51,6 +51,12 @@
     <ClCompile Include="DelaunayTri.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\quadprog\src\Array.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\quadprog\src\QuadProg++.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArcBall.h">
@@ -125,5 +131,13 @@
     <ClInclude Include="DelaunayTri.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\quadprog\src\Array.hh">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\..\quadprog\src\QuadProg++.hh">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

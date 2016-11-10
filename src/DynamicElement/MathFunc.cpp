@@ -186,4 +186,65 @@ namespace machy_math
 		Flt d2 = GetVertexTriDistNew(v21, v22, v23, v13, direc);
 		return min(min(d0, d1), d2);
 	}
-}
+
+	vector<Flt> GetSolution(CDenseMatrix* ptrMatrix, const vector<Flt>& vecB)
+	{
+		int numOfUnknowns = int(vecB.size());
+		QuadProgPP::Matrix<double> matG(numOfUnknowns, numOfUnknowns);
+		QuadProgPP::Vector<double> g0(numOfUnknowns);
+		QuadProgPP::Vector<double> x(numOfUnknowns, 0.f);
+		for ( int i=0; i<numOfUnknowns; i++ )
+		{
+			for ( int j=0; j<numOfUnknowns; j++ )
+			{
+				matG[i][j] = ptrMatrix->GetVal(i, j);
+			}
+			g0[i] = -vecB[i];
+		}
+		QuadProgPP::Matrix<double> CE;
+		QuadProgPP::Matrix<double> CI;
+		QuadProgPP::Vector<double> ce0;
+		QuadProgPP::Vector<double> ci0;
+		double cost = QuadProgPP::solve_quadprog(matG, g0, CE, ce0, CI, ci0, x);
+		vector<Flt> vecX(numOfUnknowns);
+		for ( int i=0; i<numOfUnknowns; i++ )
+		{
+			vecX[i] = x[i];
+		}
+		return vecX;
+	}
+
+	vector<Flt> GetSolution(CCrossList* ptrMatrix, const vector<Flt>& vecB)
+	{
+		int numOfUnknowns = int(vecB.size());
+		QuadProgPP::Matrix<double> matG(0.0, numOfUnknowns, numOfUnknowns);
+		QuadProgPP::Vector<double> g0(numOfUnknowns);
+		QuadProgPP::Vector<double> x(numOfUnknowns, 0.f);
+		int nCols = ptrMatrix->GetColNum();
+		int nRows = ptrMatrix->GetRowNum();
+		OLink* ptrRhead = ptrMatrix->GetPtrRhead();
+		for ( int i=1; i<=nRows; i++ )
+		{
+			for ( OLNode* q=ptrRhead[i]; q!=NULL; q=q->m_ptrR )
+			{
+				matG[q->m_x-1][q->m_y-1] = q->m_value;
+			}
+		}
+		for ( int i=0; i<numOfUnknowns; i++ )
+		{
+			g0[i] = -vecB[i];
+		}
+		QuadProgPP::Matrix<double> CE;
+		QuadProgPP::Matrix<double> CI;
+		QuadProgPP::Vector<double> ce0;
+		QuadProgPP::Vector<double> ci0;
+		double cost = QuadProgPP::solve_quadprog(matG, g0, CE, ce0, CI, ci0, x);
+		vector<Flt> vecX(numOfUnknowns);
+		for ( int i=0; i<numOfUnknowns; i++ )
+		{
+			vecX[i] = x[i];
+		}
+		return vecX;
+	}
+
+} // namespace machy_math

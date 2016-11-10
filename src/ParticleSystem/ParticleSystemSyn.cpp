@@ -788,10 +788,10 @@ void CParticleSystemSyn::UpdateOutputGroupViaOptimization(CParticleSystem& outpu
 	cout << "distSum = " << distSum << endl;
 	//cout << "distMax = " << distMax << endl;
 	// Update via least squares...
-	CTAUCSsolver taucsSolver;
-	vector<Flt> vecPxNew = taucsSolver.GetSolution(m_vecPtrCoeffMatrix[0], m_vecCx);
-	vector<Flt> vecPyNew = taucsSolver.GetSolution(m_vecPtrCoeffMatrix[1], m_vecCy);
-	vector<Flt> vecPzNew = taucsSolver.GetSolution(m_vecPtrCoeffMatrix[2], m_vecCz);
+	//CTAUCSsolver taucsSolver;
+	vector<Flt> vecPxNew = machy_math::GetSolution(m_vecPtrCoeffMatrix[0], m_vecCx);
+	vector<Flt> vecPyNew = machy_math::GetSolution(m_vecPtrCoeffMatrix[1], m_vecCy);
+	vector<Flt> vecPzNew = machy_math::GetSolution(m_vecPtrCoeffMatrix[2], m_vecCz);
 	for ( int n=0; n<numOfUnknownsTotal; n++ )
 	{
 		Vec3f pos = Vec3f(vecPxNew[n], vecPyNew[n], vecPzNew[n]);

@@ -2,7 +2,7 @@
 #ifndef MASSSPRINGSYN_H
 #define MASSSPRINGSYN_H
 
-#include "../DynamicElement/MathTypes.h"
+#include "../DynamicElement/MathFunc.h"
 #include "MassSpringSynConfig.h"
 
 class CMassSpringSyn
