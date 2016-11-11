@@ -3,11 +3,6 @@
 #define PARTICLESYSTEMCONFIG_H
 
 #include "../DynamicElement/SynConfigBase.h"
-#ifdef _DEBUG
-#pragma comment(lib, "../debug/DynamicElement.lib")
-#else
-#pragma comment(lib, "../release/DynamicElement.lib")
-#endif
 
 class CParticleSystemConfig : public CSynConfigBase
 {

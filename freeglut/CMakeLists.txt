@@ -11,9 +11,9 @@ INCLUDE(GNUInstallDirs)
 # CMAKE_ARCHIVE_OUTPUT_DIRECTORY instead.
 # Static libraries end up in CMAKE_ARCHIVE_OUTPUT_DIRECTORY on all
 # platforms.
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
-SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
-SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../bin)
+SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../lib)
+SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../lib)
 
 # setup version numbers
 # TODO: Update these for each release!
@@ -33,7 +33,7 @@ set(SO_REV 0)		# if nothing else changed increment this
 # re-declare it here so it will show up in the GUI.
 # by default, we want to build both
 OPTION(FREEGLUT_BUILD_SHARED_LIBS "Build FreeGLUT shared library." ON)
-OPTION(FREEGLUT_BUILD_STATIC_LIBS "Build FreeGLUT static library." ON)
+OPTION(FREEGLUT_BUILD_STATIC_LIBS "Build FreeGLUT static library." OFF)
 
 # option for whether warnings and errors should be printed
 OPTION(FREEGLUT_PRINT_ERRORS "Lib prints errors to stderr" ON)
@@ -439,7 +439,7 @@ INSTALL(FILES ${FREEGLUT_HEADERS} DESTINATION include/GL)
 
 
 # Optionally build demos, on by default.
-option( FREEGLUT_BUILD_DEMOS "Build FreeGLUT demos." ON )
+option( FREEGLUT_BUILD_DEMOS "Build FreeGLUT demos." OFF )
 
 SET(DEMO_LIBS ${OPENGL_glu_LIBRARY} ${LIBS})
 # lib m for math, not needed on windows
