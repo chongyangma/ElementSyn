@@ -94,7 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArcBall.h" />
-    <ClInclude Include="blaswrap.h" />
     <ClInclude Include="BoundaryConstraint.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DelaunayTri.h" />

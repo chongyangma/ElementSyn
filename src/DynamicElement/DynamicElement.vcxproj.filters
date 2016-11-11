@@ -80,9 +80,6 @@
     <ClInclude Include="vec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="blaswrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PoissonDisk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
