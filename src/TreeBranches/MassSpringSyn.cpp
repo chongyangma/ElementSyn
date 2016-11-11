@@ -3,9 +3,6 @@
 #include "../DynamicElement/HungarianAlgorithm.h"
 #include "../DynamicElement/PoissonDisk.h"
 
-#define USE_TAUCS_SOLVER
-#include "../DynamicElement/TAUCSsolver.h"
-
 #include <omp.h>
 #define NUM_THREADS 8
 
@@ -343,7 +340,6 @@ void CMassSpringSyn::UpdateStrandsExtended()
 	cout << "distSum = " << distSum << endl;
 	// Optimization with shape terms...
 	CollisionResponse(m_vecCx, m_vecCy, m_vecCz);
-	//CTAUCSsolver taucsSolver;
 	vector<Flt> vecPxNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCx);
 	vector<Flt> vecPyNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCy);
 	vector<Flt> vecPzNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCz);

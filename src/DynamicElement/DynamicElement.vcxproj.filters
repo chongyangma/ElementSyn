@@ -33,12 +33,6 @@
     <ClCompile Include="SynConfigBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="taucs_addon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TAUCSsolver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MassSpringData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -87,27 +81,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="blaswrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taucs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taucs_addon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taucs_config_build.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taucs_config_tests.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taucs_matrix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="taucs_private.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TAUCSsolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PoissonDisk.h">

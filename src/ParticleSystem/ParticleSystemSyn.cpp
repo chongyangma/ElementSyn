@@ -1,9 +1,5 @@
 
 #include "ParticleSystemSyn.h"
-#define USE_TAUCS_SOLVER
-#ifdef USE_TAUCS_SOLVER
-#include "../DynamicElement/TAUCSsolver.h"
-#endif
 //#define MORPHABLE_PARTICLE_SYSTEM
 //#define CONSTRAINED_SYNTHESIS
 //#define FLOW_SYNTHESIS // 01/07/2013
@@ -788,7 +784,6 @@ void CParticleSystemSyn::UpdateOutputGroupViaOptimization(CParticleSystem& outpu
 	cout << "distSum = " << distSum << endl;
 	//cout << "distMax = " << distMax << endl;
 	// Update via least squares...
-	//CTAUCSsolver taucsSolver;
 	vector<Flt> vecPxNew = machy_math::GetSolution(m_vecPtrCoeffMatrix[0], m_vecCx);
 	vector<Flt> vecPyNew = machy_math::GetSolution(m_vecPtrCoeffMatrix[1], m_vecCy);
 	vector<Flt> vecPzNew = machy_math::GetSolution(m_vecPtrCoeffMatrix[2], m_vecCz);

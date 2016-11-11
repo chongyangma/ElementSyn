@@ -4,7 +4,6 @@
 
 #include "ParticleSystem.h"
 #include "../DynamicElement/HungarianAlgorithm.h"
-#include "../DynamicElement/TAUCSsolver.h"
 #include "../DynamicElement/BoundaryConstraint.h"
 
 // For initialization by patch copy
