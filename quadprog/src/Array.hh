@@ -632,7 +632,7 @@ inline T median(const Vector<T>& v)
 template <typename T>
 inline T stdev(const Vector<T>& v, bool sample_correction = false)
 {
-  return sqrt(var(v, sample_correction));
+  return std::sqrt(var(v, sample_correction));
 }
 
 template <typename T>
@@ -742,7 +742,7 @@ inline Vector<T> sqrt(const Vector<T>& v)
 {
   Vector<T> tmp(v.size());
   for (unsigned int i = 0; i < v.size(); i++)
-    tmp[i] = sqrt(v[i]);
+    tmp[i] = std::sqrt(v[i]);
 	
   return tmp;
 }
@@ -2079,7 +2079,7 @@ void cholesky(const Matrix<T> A, Matrix<T>& LL)
 	    {
 	      if (sum <= 0.0)
 		throw std::logic_error("Error in Cholesky decomposition: matrix is not postive definite");
-	      LL[i][i] = sqrt(sum);
+          LL[i][i] = std::sqrt(sum);
 	    }
 	  else
 	    LL[j][i] = sum / LL[i][i];
