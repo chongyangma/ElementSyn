@@ -18,14 +18,14 @@ This repository contains the source code and example data of the following publi
 
 ## Requirements
 
-The code (currently) requires Microsoft Visual Studio 2010.
+The code has been tested under Windows (MSVC 2010/2012/2013/2015) and requires [CMake](https://cmake.org/) to generate the Visual Studio project.
 
 ## Usage
 
 Launching the compiled application from command line without any argument will print the usage information:
 
 ```
-ParticleSystem.exe config_file_path
+ParticleSystem.exe config_file.txt
 ```
 
 ## Contact information
