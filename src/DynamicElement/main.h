@@ -62,7 +62,6 @@ using std::ios;
 #include <iomanip>
 #include <cstdio>
 #include <GL/glut.h>
-#include <atlimage.h> // To use CImage class
 
 //------------------------------CONSTANTS---------------------------------------------
 // User-specified data type

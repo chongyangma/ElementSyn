@@ -1,5 +1,6 @@
 
 #include "BoundaryConstraint.h"
+#include "lodepng.h"
 
 float CBoundaryConstraint::m_colorThresh = 0.5f;
 
@@ -91,22 +92,22 @@ void CBoundaryConstraint::LoadBoundaryConstraintFromImage(string fileName)
 CGrid2D3f CBoundaryConstraint::LoadGrid2D3fFromCImage(const char* fileName)
 {
 	CGrid2D3f grid;
-	CImage img;
-	img.Load(fileName);
 
-	int wd = img.GetWidth();
-	int ht = img.GetHeight();
-	grid.Allocate(wd, ht);
+	std::vector<unsigned char> image;
+	unsigned width, height;
+	unsigned error = lodepng::decode(image, width, height, fileName);
+	if(error) std::cout << "decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
 
-	BYTE* p = (BYTE*)img.GetBits();
-	for ( int j=0; j<ht; j++, p+=img.GetPitch() )
+	grid.Allocate(width, height);
+
+	for ( unsigned j=0; j<height; j++  )
 	{
-		int jn = ht-1-j;
-		for ( int i=0; i<wd; i++ )
+		unsigned jn = height-1-j;
+		for ( unsigned i=0; i<width; i++ )
 		{
 			for ( int d=0; d<3; d++ )
 			{
-				grid(i, jn)[d] = (*(p + 3 * i + d)) / 255.0;
+				grid(i, jn)[d] = image[4 * (j * width + i) + d] / 255.0;
 			}
 		}
 	}
@@ -116,21 +117,19 @@ CGrid2D3f CBoundaryConstraint::LoadGrid2D3fFromCImage(const char* fileName)
 void CBoundaryConstraint::SaveGrid2D3fAsCImage(const CGrid2D3f& grid, const char* fileName)
 {
 	Vec2ui size = grid.GetSize();
-	CImage dstImg;
-	dstImg.Create(size[0], size[1], 24);
-
-	BYTE* p = (BYTE*)dstImg.GetBits();
-	for ( uint j=0; j<size[1]; j++, p+=dstImg.GetPitch() )
+	std::vector<unsigned char> vecByte(4 * size[0] * size[1]);
+	for ( uint j=0; j<size[1]; j++ )
 	{
 		for ( uint i=0; i<size[0]; i++ )
 		{
 			for ( int d=0; d<3; d++ )
 			{
-				*(p + 3 * i + d) = BYTE(grid(i, j)[d] * 255.0);
+				vecByte[4 * (j * size[0] + i) + d] = BYTE(grid(i, j)[d] * 255.0);
 			}
 		}
 	}
-	dstImg.Save(fileName);
+	unsigned error = lodepng::encode(fileName, vecByte, size[0], size[1]);
+	if(error) std::cout << "PNG encoder error " << error << ": "<< lodepng_error_text(error) << std::endl;
 }
 
 CGrid2D3f CBoundaryConstraint::IdentifyGridContour(const CGrid2D3f& gridInput)

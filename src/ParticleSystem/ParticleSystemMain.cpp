@@ -1,6 +1,7 @@
 
 #include "../DynamicElement/ArcBall.h"
 #include "../DynamicElement/Camera.h"
+#include "../DynamicElement/lodepng.h"
 #include "ParticleSystemSyn.h"
 
 bool pause = false; //true; //
@@ -17,26 +18,25 @@ void SaveSnapshot()
 	if ( ptrSynthesizer->GetStepCount() > CSynConfigBase::m_stepCountMax && pause == false ) return;
 	int wd_mod = g_width % 4;
 	int wd = (wd_mod == 0) ? g_width : (g_width + 4 - wd_mod);
-	GLvoid* ptrVoid = new BYTE[3 * wd * g_height];
-	glReadPixels(0, 0, g_width, g_height, GL_BGR_EXT, GL_UNSIGNED_BYTE, ptrVoid);
+	GLvoid* ptrVoid = new BYTE[4 * g_width * g_height];
+	glReadPixels(0, 0, g_width, g_height, GL_RGBA, GL_UNSIGNED_BYTE, ptrVoid);
+	std::vector<unsigned char> vecByte(4 * wd * g_height);
 	char fileName[MAX_PATH];
 	sprintf_s(fileName, "%sSnapshot\\snapshot_%04d.png", CSynConfigBase::m_outputPrefix.c_str(), ptrSynthesizer->GetStepCount());
-	CImage dstImg;
-	dstImg.Create(g_width, g_height, 24);
-	BYTE* ptrDst = (BYTE*)dstImg.GetBits();
 	BYTE* ptrSrc = (BYTE*)ptrVoid;
-	int dstPitch = dstImg.GetPitch();
 	for ( int j=0; j<g_height; j++ )
 	{
 		for ( int i=0; i<g_width; i++ )
 		{
-			*(ptrDst + dstPitch * (g_height - 1 - j) + 3 * i + 0) = *(ptrSrc + 0);
-			*(ptrDst + dstPitch * (g_height - 1 - j) + 3 * i + 1) = *(ptrSrc + 1);
-			*(ptrDst + dstPitch * (g_height - 1 - j) + 3 * i + 2) = *(ptrSrc + 2);
-			ptrSrc += 3;
+			for ( int k=0; k<4; k++ )
+			{
+				vecByte[4 * ((g_height - 1 - j) * g_width + i) + k] = *(ptrSrc + k);
+			}
+			ptrSrc += 4;
 		}
 	}
-	dstImg.Save(fileName);
+	unsigned error = lodepng::encode(fileName, vecByte, g_width, g_height);
+	if(error) std::cout << "PNG encoder error " << error << ": "<< lodepng_error_text(error) << std::endl;
 	delete [] ptrVoid;
 }
 
