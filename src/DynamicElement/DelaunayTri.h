@@ -85,4 +85,4 @@ private:
 
 };
 
-#endif DELAUNAYTRI_H
+#endif // DELAUNAYTRI_H

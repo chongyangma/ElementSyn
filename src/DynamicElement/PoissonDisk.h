@@ -62,4 +62,4 @@ vector<Vec<N, T>> CPoissonDisk<N, T>::GeneratePoints(Vec<N, T> pMin, Vec<N, T> p
 typedef CPoissonDisk<2, Flt> PoissonDisk2f;
 typedef CPoissonDisk<3, Flt> PoissonDisk3f;
 
-#endif POISSONDISK_H
+#endif // POISSONDISK_H

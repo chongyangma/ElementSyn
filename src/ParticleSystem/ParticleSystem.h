@@ -43,4 +43,4 @@ private:
 	vector<CParticleData> m_vecParticleData;
 };
 
-#endif PARTICLESYSTEM_H
+#endif // PARTICLESYSTEM_H
