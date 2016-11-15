@@ -130,4 +130,4 @@ private:
 	vector<Vec3f> m_diffuseColorSequence;
 };
 
-#endif PARTICLESYSTEMSYN_H
+#endif // PARTICLESYSTEMSYN_H

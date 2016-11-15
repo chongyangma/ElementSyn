@@ -16,13 +16,13 @@ public:
 	inline int GetSrcIdx() { return m_srcIdx; }
 	inline void SetSrcIdx(int srcIdx) { m_srcIdx = srcIdx; }
 
-	inline Vec3f GetPos() { return m_pos; }
+	inline Vec3f& GetPos() { return m_pos; }
 	inline void SetPos(Vec3f pos) { m_pos = pos; }
 
-	inline Vec3f GetVel() { return m_vel; }
+	inline Vec3f& GetVel() { return m_vel; }
 	inline void SetVel(Vec3f vel) { m_vel = vel; }
 
-	inline Vec3f GetForce() { return m_force; }
+	inline Vec3f& GetForce() { return m_force; }
 	inline void SetForce(Vec3f force) { m_force = force; }
 	inline void ResetForce() { SetZero(m_force); }
 	inline void AddForce(Vec3f dForce) { m_force += dForce; }
@@ -120,9 +120,9 @@ typedef struct MassNeighborhoodExtended
 	vector<Vec3f> m_vecNeighPr1;
 	vector<Vec3f> m_vecNeighPr2;
 	vector<Vec3f> m_vecNeighPr3;
-	vector<vector<Vec3f>> m_vecNeighPr1Prev;
-	vector<vector<Vec3f>> m_vecNeighPr2Prev;
-	vector<vector<Vec3f>> m_vecNeighPr3Prev;
+	vector<vector<Vec3f> > m_vecNeighPr1Prev;
+	vector<vector<Vec3f> > m_vecNeighPr2Prev;
+	vector<vector<Vec3f> > m_vecNeighPr3Prev;
 	vector<int> m_vecNeighIndex;
 } MassNeighborhoodExtended;
 
@@ -136,9 +136,9 @@ typedef struct SegmentPatch
 // Spatial-temporal patch...
 typedef struct SegmentPatchExtended
 {
-	vector<vector<Vec3f>> m_vecPosSequence;
-	vector<vector<Vec3f>> m_vecVelSequence;
+	vector<vector<Vec3f> > m_vecPosSequence;
+	vector<vector<Vec3f> > m_vecVelSequence;
 	bool m_flagStart;
 } SegmentPatchExtended;
 
-#endif MASSSPRINGDATA_H
+#endif // MASSSPRINGDATA_H

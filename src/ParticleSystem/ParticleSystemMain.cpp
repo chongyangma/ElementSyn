@@ -18,12 +18,12 @@ void SaveSnapshot()
 	if ( ptrSynthesizer->GetStepCount() > CSynConfigBase::m_stepCountMax && pause == false ) return;
 	int wd_mod = g_width % 4;
 	int wd = (wd_mod == 0) ? g_width : (g_width + 4 - wd_mod);
-	GLvoid* ptrVoid = new BYTE[4 * g_width * g_height];
+	GLvoid* ptrVoid = new unsigned char[4 * g_width * g_height];
 	glReadPixels(0, 0, g_width, g_height, GL_RGBA, GL_UNSIGNED_BYTE, ptrVoid);
 	std::vector<unsigned char> vecByte(4 * wd * g_height);
 	char fileName[MAX_PATH];
-	sprintf_s(fileName, "%sSnapshot\\snapshot_%04d.png", CSynConfigBase::m_outputPrefix.c_str(), ptrSynthesizer->GetStepCount());
-	BYTE* ptrSrc = (BYTE*)ptrVoid;
+	sprintf(fileName, "%sSnapshot\\snapshot_%04d.png", CSynConfigBase::m_outputPrefix.c_str(), ptrSynthesizer->GetStepCount());
+	unsigned char* ptrSrc = (unsigned char*)ptrVoid;
 	for ( int j=0; j<g_height; j++ )
 	{
 		for ( int i=0; i<g_width; i++ )
@@ -37,7 +37,7 @@ void SaveSnapshot()
 	}
 	unsigned error = lodepng::encode(fileName, vecByte, g_width, g_height);
 	if(error) std::cout << "PNG encoder error " << error << ": "<< lodepng_error_text(error) << std::endl;
-	delete [] ptrVoid;
+	delete [] (unsigned char*)ptrVoid;
 }
 
 void DumpCameraAndArcBall()

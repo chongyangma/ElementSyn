@@ -80,7 +80,7 @@ void CSparseMatrixCRS::ConvertFromDenseMatrix(CDenseMatrix* ptrMatD)
 	m_vecColumn.clear();
 	m_vecVal.clear();
 	int nonZeroCnt = 1;
-	vector<vector<Flt>>& vals = ptrMatD->GetVals();
+	vector<vector<Flt> >& vals = ptrMatD->GetVals();
 	for ( int i=0; i<m_row; i++ )
 	{
 		m_vecRowIndex[i] = nonZeroCnt;

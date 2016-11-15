@@ -73,7 +73,9 @@ typedef unsigned int uint;
 #endif
 
 const float HALF_PI = 2.0 * atan(1.0);
+#ifdef WIN32
 const float M_PI = 4.0 * atan(1.0);
+#endif
 const float TWO_PI = 8.0 * atan(1.0);
 const float INV_PI = 1.0/M_PI;
 const float INV_TWO_PI = 1.0/TWO_PI;
@@ -93,4 +95,4 @@ const float	INV_SQRT_TWO = 1. / sqrt(2.);
 inline float Radians(const float &deg) {return PI_INV180 * deg; }
 inline float Degrees(const float &rad) {return INV_PI180 * rad; }
 
-#endif MAIN_H
+#endif // MAIN_H

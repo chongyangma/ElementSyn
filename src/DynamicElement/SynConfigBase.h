@@ -2,6 +2,10 @@
 #ifndef SYNCONFIGBASE_H
 #define SYNCONFIGBASE_H
 
+#ifndef WIN32
+#include <sys/stat.h>
+#define MAX_PATH 260
+#endif
 #include "main.h"
 #include "vec.h"
 
@@ -33,4 +37,4 @@ protected:
 	void DumpStringParam(FILE* file, const char* param, const string str);
 };
 
-#endif SYNCONFIGBASE_H
+#endif // SYNCONFIGBASE_H

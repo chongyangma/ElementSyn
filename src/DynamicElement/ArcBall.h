@@ -6,7 +6,14 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include "windows.h"
+#if defined(WIN32)
+  #include <windows.h>
+#elif defined(__APPLE__)
+struct POINT {
+    int x;
+    int y;
+};
+#endif
 #include "main.h"
 
 class CArcBall  
@@ -15,7 +22,7 @@ public:
 	typedef enum AxisSet
 	{
 		NoAxes, CameraAxes, BodyAxes, OtherAxes, NSets
-	};
+	} AxisSet;
 private:
 	typedef struct Quat_t
 	{
@@ -45,7 +52,7 @@ private:
 		int		setSizes[NSets];
 		AxisSet		axisSet;
 		int		axisIndex;
-	};
+	} BallData;
 
 private: // variables
 	HMatrix mId;
@@ -109,4 +116,4 @@ public:
 	bool LoadArcBall(string fileName);
 };
 
-#endif ARCBALL_H
+#endif // ARCBALL_H

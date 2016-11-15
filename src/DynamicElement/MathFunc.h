@@ -34,4 +34,4 @@ namespace machy_math
 	vector<Flt> GetSolution(CCrossList* ptrMatrix, const vector<Flt>& vecB);
 }
 
-#endif MATHFUNC_H
+#endif // MATHFUNC_H

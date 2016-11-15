@@ -63,4 +63,4 @@ private:
 	int m_bcInputIdx;
 };
 
-#endif BOUNDARYCONSTRAINT_H
+#endif // BOUNDARYCONSTRAINT_H

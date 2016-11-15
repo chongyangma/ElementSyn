@@ -24,15 +24,15 @@ public:
 		Allocate(size);
 	}
 
-	CGrid(const std::vector<T_type>& vec)
+	CGrid(const std::vector<T_type>& v)
 	{
 		m_size=0;
 		m_allocSize=0;
 		m_data=NULL;
-		Allocate(vec.size());
-		for ( uint n=0; n<vec.size(); n++ )
+		Allocate(v.size());
+		for ( uint n=0; n<v.size(); n++ )
 		{
-			m_data[n]=vec[n];
+			m_data[n]=v[n];
 		}
 	}
 
@@ -76,7 +76,7 @@ public:
 		if (a.size() > 0)
 		{
 			allocate(a.size());
-			for ( uint n=0; n<vec.size(); n++ )
+			for ( uint n=0; n<a.size(); n++ )
 			{
 				m_data[n] = a[n];
 			}
@@ -172,4 +172,4 @@ private:
 	T_type* m_data;
 };
 
-#endif GRID_H
+#endif // GRID_H

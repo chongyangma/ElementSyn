@@ -125,4 +125,4 @@ bool contains(const std::vector<T> &a, T e)
 	return false;
 }
 
-#endif UTIL_H
+#endif // UTIL_H

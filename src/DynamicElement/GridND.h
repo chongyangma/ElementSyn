@@ -232,4 +232,4 @@ typedef CGridND<3,float> CGrid3Df;
 typedef CGridND<2,Vec3f> CGrid2D3f;
 typedef CGridND<3,Vec3f> CGrid3D3f;
 
-#endif GRIDND_H
+#endif // GRIDND_H

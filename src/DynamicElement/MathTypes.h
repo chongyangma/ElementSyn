@@ -45,14 +45,14 @@ public:
 
 	void UpdateMatVal(int i, int j, Flt dv);
 
-	inline vector<vector<Flt>>& GetVals() { return m_vals; }
+	inline vector<vector<Flt> >& GetVals() { return m_vals; }
 
 	inline Flt GetVal(int i, int j) { return m_vals[i][j]; }
 
 	inline void SetVal(int i, int j, Flt val) { m_vals[i][j] = val; }
 
 private:
-	vector<vector<Flt>> m_vals;
+	vector<vector<Flt> > m_vals;
 };
 
 // class definition for sparse matrix (compressed row storage)
@@ -112,4 +112,4 @@ private:
 	OLink *m_ptrRhead, *m_ptrChead;
 };
 
-#endif MATHTYPES_H
+#endif // MATHTYPES_H

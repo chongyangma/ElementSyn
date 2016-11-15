@@ -37,4 +37,4 @@ private:
 	vector<float> m_vecKnot;
 };
 
-#endif NURBSINTERPOLATE_H
+#endif // NURBSINTERPOLATE_H

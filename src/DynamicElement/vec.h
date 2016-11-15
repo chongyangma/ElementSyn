@@ -412,7 +412,7 @@ T productOfAll(const Vec<N,T>& a)
 }
 
 // addressing
-template<int N>
+template<unsigned int N>
 uint addressOf(const Vec<N,uint>& idx,const Vec<N,uint>& size)
 {
 	uint addr   = 0;
@@ -425,4 +425,4 @@ uint addressOf(const Vec<N,uint>& idx,const Vec<N,uint>& size)
 	return (addr);
 }
 
-#endif VEC_H
+#endif // VEC_H

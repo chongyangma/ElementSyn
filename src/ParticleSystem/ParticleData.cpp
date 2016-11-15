@@ -3,9 +3,9 @@
 
 CParticleData::CParticleData()
 {
-	SetPos(Vec3f(0.0f, 0.0f, 0.0f));
-	SetVel(Vec3f(0.0f, 0.0f, 0.0f));
-	SetQuat(Vec4f(1.0f, 0.0f, 0.0f, 0.0f));
+	m_pos = Vec3f(0.0f, 0.0f, 0.0f);
+	m_vel = Vec3f(0.0f, 0.0f, 0.0f);
+	m_quat = Vec4f(1.0f, 0.0f, 0.0f, 0.0f);
 	m_flagBoundary = false;
 	m_flagFixed = false;
 }

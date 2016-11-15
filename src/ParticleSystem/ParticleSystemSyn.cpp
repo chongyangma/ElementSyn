@@ -63,7 +63,7 @@ void CParticleSystemSyn::LoadInputDataNew()
 	for ( int n=1; n<=6; n++ )
 	{
 		char fileName[MAX_PATH];
-		sprintf_s(fileName, "test%02d.txt", n);
+		sprintf(fileName, "test%02d.txt", n);
 		ifstream fin(fileName);
 		CParticleSystem particles;
 		for ( int i=0; i<60; i++ )
@@ -125,7 +125,7 @@ void CParticleSystemSyn::UpdateOutput()
 	}
 #endif
 	char fileName[MAX_PATH];
-	sprintf_s(fileName, "%sDumped\\dumped_%04d.txt", CParticleSystemConfig::m_outputPrefix.c_str(), GetStepCount());
+	sprintf(fileName, "%sDumped\\dumped_%04d.txt", CParticleSystemConfig::m_outputPrefix.c_str(), GetStepCount());
 	m_outputGroup.DumpParticleSystemToTXT(fileName);
 	m_stepCount ++;
 }
@@ -178,7 +178,7 @@ void CParticleSystemSyn::RenderOutput()
 void CParticleSystemSyn::RestartSynthesis()
 {
 	char fileName[MAX_PATH];
-	sprintf_s(fileName, "ParticleSystemSyn_config%02d.txt", m_serialCount++);
+	sprintf(fileName, "ParticleSystemSyn_config%02d.txt", m_serialCount++);
 	ResetOutput(fileName);
 	m_stepCount = 0;
 }

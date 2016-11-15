@@ -347,7 +347,7 @@ bool CMassSpringData::DumpStrandsToOBJ(vector<CMassSpringData>& strands, string 
 	int vAccum = 0;
 	for ( int i=0; i<int(strands.size()); i++ )
 	{
-		CMassSpringData& strand = (interp == 0) ? strands[i] : strands[i].NurbsInterpolateStrand(5);
+		CMassSpringData strand = (interp == 0) ? strands[i] : strands[i].NurbsInterpolateStrand(5);
 		DumpStrandToOBJ(strand, fout, vAccum, rad, sampleNum, interval);
 	}
 
@@ -473,7 +473,7 @@ bool CMassSpringData::DumpStrandsToOBJz(vector<CMassSpringData>& strands, string
 	int vAccum = 0;
 	for ( int i=0; i<int(strands.size()); i++ )
 	{
-		CMassSpringData& strand = (interp == 0) ? strands[i] : strands[i].NurbsInterpolateStrand(5);
+		CMassSpringData strand = (interp == 0) ? strands[i] : strands[i].NurbsInterpolateStrand(5);
 		DumpStrandToOBJz(strand, fout, vAccum, rad, sampleNum, interval);
 	}
 

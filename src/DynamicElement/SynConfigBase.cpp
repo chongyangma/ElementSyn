@@ -107,28 +107,60 @@ void CSynConfigBase::DumpParameters(FILE* file)
 
 void CSynConfigBase::UpdateOutputPrefix()
 {
-	ostringstream oss;
-	BOOL flag = CreateDirectory(m_outputPrefix.c_str(), NULL);
-	const int numLength = 2;
-	while ( flag == FALSE && m_outputPrefix.size() > 0 )
-	{
-		//cout << "Failed to create the directory: " << m_outputPrefix.c_str() << endl;
-		string subStr = m_outputPrefix.substr(m_outputPrefix.length()-numLength-1, m_outputPrefix.length()-2);
-		int num = atoi(subStr.c_str()) + 1;
-		char numChar[MAX_PATH];
-		sprintf_s(numChar, "%02d", num);
-		ostringstream oss;
-		oss << m_outputPrefix.substr(0, m_outputPrefix.length()-numLength-1) << numChar << "\\";
-		m_outputPrefix = oss.str();
-		flag = CreateDirectory(m_outputPrefix.c_str(), NULL);
-	}
-	cout << "Dump results to the directory: " << m_outputPrefix.c_str() << endl;
-	ostringstream oss2;
-	oss2 << CSynConfigBase::m_outputPrefix << "Snapshot";
-	CreateDirectory(oss2.str().c_str(), NULL);
-	ostringstream oss3;
-	oss3 << CSynConfigBase::m_outputPrefix << "Dumped";
-	CreateDirectory(oss3.str().c_str(), NULL);
+  if ( m_outputPrefix[m_outputPrefix.size()-1] != '\\' )
+  {
+#ifdef WIN32
+    m_outputPrefix = m_outputPrefix + string("\\");
+#else
+    m_outputPrefix = m_outputPrefix + string("/");
+#endif
+  }
+  ostringstream oss;
+#ifdef WIN32
+  bool flag = CreateDirectoryA(m_outputPrefix.c_str(), NULL);
+  const int numLength = 2;
+  while ( flag == false && m_outputPrefix.size() >= 2 )
+  {
+    string subStr = m_outputPrefix.substr(m_outputPrefix.length()-numLength-1, 2);
+    int num = atoi(subStr.c_str()) + 1;
+    char numChar[MAX_PATH];
+    sprintf(numChar, "%02d", num);
+    ostringstream oss;
+    oss << m_outputPrefix.substr(0, m_outputPrefix.length()-numLength-1) << numChar << "\\";
+    m_outputPrefix = oss.str();
+    flag = CreateDirectoryA(m_outputPrefix.c_str(), NULL);
+  }
+  cout << "Dump results to the directory: " << m_outputPrefix.c_str() << endl;
+  ostringstream oss2;
+  oss2 << CSynConfigBase::m_outputPrefix << "Snapshot";
+  CreateDirectory(oss2.str().c_str(), NULL);
+  ostringstream oss3;
+  oss3 << CSynConfigBase::m_outputPrefix << "Dumped";
+  CreateDirectory(oss3.str().c_str(), NULL);
+#else
+  string outputFolder = m_outputPrefix.substr(0, m_outputPrefix.size()-1);
+  int flag = mkdir(outputFolder.c_str(), 0777);
+  const int numLength = 2;
+  while ( flag == -1 && m_outputPrefix.size() >= 2 )
+  {
+    string subStr = m_outputPrefix.substr(m_outputPrefix.length()-numLength-1, 2);
+    int num = atoi(subStr.c_str()) + 1;
+    char numChar[MAX_PATH];
+    sprintf(numChar, "%02d", num);
+    ostringstream oss;
+    oss << m_outputPrefix.substr(0, m_outputPrefix.length()-numLength-1) << numChar << "/";
+    m_outputPrefix = oss.str();
+    outputFolder = m_outputPrefix.substr(0, m_outputPrefix.size()-1);
+    flag = mkdir(outputFolder.c_str(), 0777);
+  }
+  cout << "Dump results to the directory: " << m_outputPrefix.c_str() << endl;
+  ostringstream oss2;
+  oss2 << CSynConfigBase::m_outputPrefix << "Snapshot";
+  mkdir(oss2.str().c_str(), 0777);
+  ostringstream oss3;
+  oss3 << CSynConfigBase::m_outputPrefix << "Dumped";
+  mkdir(oss3.str().c_str(), 0777);
+#endif
 }
 
 void CSynConfigBase::DumpStringParam(FILE* file, const char* param, const string str)

@@ -290,7 +290,7 @@ void CArcBall::Init()
 	ball_data.qDown = ball_data.qNow = qOne;
 	for (i=15; i>=0; i--)
 		((float *)ball_data.mNow)[i] = ((float *)ball_data.mDown)[i] = ((float *)ball_data.mDeltaNow)[i] = ((float *)mId)[i];
-	ball_data.showResult = ball_data.dragging = FALSE;
+	ball_data.showResult = ball_data.dragging = false;
 	ball_data.axisSet = NoAxes;
 	ball_data.sets[CameraAxes] = mId[X]; ball_data.setSizes[CameraAxes] = 3;
 	ball_data.sets[BodyAxes] = ball_data.mDown[X]; ball_data.setSizes[BodyAxes] = 3;
@@ -319,13 +319,13 @@ void CArcBall::UseSet(BallData *ball, AxisSet axisSet)
 /* Begin drawing arc for all drags combined. */
 void CArcBall::ShowResult(BallData *ball)
 {
-	ball->showResult = TRUE;
+	ball->showResult = true;
 }
 
 /* Stop drawing arc for all drags combined. */
 void CArcBall::HideResult(BallData *ball)
 {
-	ball->showResult = FALSE;
+	ball->showResult = false;
 }
 
 /* Using vDown, vNow, dragging, and axisSet, compute rotation etc. */
@@ -374,7 +374,7 @@ void CArcBall::Value()
 void CArcBall::BeginDrag()
 {
 	//ball->qDown = qOne;
-	ball_data.dragging = TRUE;
+	ball_data.dragging = true;
 	ball_data.vDown = ball_data.vNow;
 }
 
@@ -382,7 +382,7 @@ void CArcBall::BeginDrag()
 void CArcBall::EndDrag()
 {
 	int i;
-	ball_data.dragging = FALSE;
+	ball_data.dragging = false;
 	ball_data.qDown = ball_data.qNow;
 	for (i=15; i>=0; i--)
 		((float *)ball_data.mDown)[i] = ((float *)ball_data.mNow)[i];

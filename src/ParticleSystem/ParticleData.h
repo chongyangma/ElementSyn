@@ -64,4 +64,4 @@ private:
 	bool m_flagFixed;
 };
 
-#endif PARTICLEDATA_H
+#endif // PARTICLEDATA_H

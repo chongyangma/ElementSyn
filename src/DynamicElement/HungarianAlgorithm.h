@@ -19,7 +19,7 @@ private:
 	inline double haGetInf() { return 1e10; }
 	inline bool haIsFinite(double d) { return d < haGetInf(); }
 
-	void SetMatCost(vector<vector<double>>& matCost);
+	void SetMatCost(vector<vector<double> >& matCost);
 
 	void InitLabel(int n);
 
@@ -39,7 +39,7 @@ private:
 	vector<double> m_vecSlack;
 	vector<double> m_vecSlackx;
 	vector<int> m_vecPrev; // to record alternating paths
-	vector<vector<double>> m_matCost; // cost matrix
+	vector<vector<double> > m_matCost; // cost matrix
 };
 
-#endif HUNGARIANALGORITHM_H
+#endif // HUNGARIANALGORITHM_H

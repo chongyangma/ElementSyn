@@ -124,7 +124,7 @@ void CBoundaryConstraint::SaveGrid2D3fAsCImage(const CGrid2D3f& grid, const char
 		{
 			for ( int d=0; d<3; d++ )
 			{
-				vecByte[4 * (j * size[0] + i) + d] = BYTE(grid(i, j)[d] * 255.0);
+				vecByte[4 * (j * size[0] + i) + d] = (unsigned char)(grid(i, j)[d] * 255.0);
 			}
 		}
 	}

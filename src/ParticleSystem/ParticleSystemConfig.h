@@ -46,4 +46,4 @@ private:
 	void DumpParameters(FILE* file);
 };
 
-#endif PARTICLESYSTEMCONFIG_H
+#endif // PARTICLESYSTEMCONFIG_H
