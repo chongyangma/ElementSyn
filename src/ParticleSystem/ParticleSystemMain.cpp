@@ -220,8 +220,7 @@ void Initialize(const char* config_file_path)
 	glEnable(GL_POLYGON_SMOOTH);
 	glEnable(GL_POLYGON_SMOOTH_HINT);
 	glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
 	LoadCameraAndArcBall();
 }
 
