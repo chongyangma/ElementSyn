@@ -22,7 +22,11 @@ void SaveSnapshot()
 	glReadPixels(0, 0, g_width, g_height, GL_RGBA, GL_UNSIGNED_BYTE, ptrVoid);
 	std::vector<unsigned char> vecByte(4 * wd * g_height);
 	char fileName[MAX_PATH];
+#ifdef WIN32
 	sprintf(fileName, "%sSnapshot\\snapshot_%04d.png", CSynConfigBase::m_outputPrefix.c_str(), ptrSynthesizer->GetStepCount());
+#else
+	sprintf(fileName, "%sSnapshot/snapshot_%04d.png", CSynConfigBase::m_outputPrefix.c_str(), ptrSynthesizer->GetStepCount());
+#endif
 	unsigned char* ptrSrc = (unsigned char*)ptrVoid;
 	for ( int j=0; j<g_height; j++ )
 	{

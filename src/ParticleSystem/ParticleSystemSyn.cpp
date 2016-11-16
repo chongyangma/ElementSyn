@@ -125,7 +125,11 @@ void CParticleSystemSyn::UpdateOutput()
 	}
 #endif
 	char fileName[MAX_PATH];
+#ifdef WIN32
 	sprintf(fileName, "%sDumped\\dumped_%04d.txt", CParticleSystemConfig::m_outputPrefix.c_str(), GetStepCount());
+#else
+	sprintf(fileName, "%sDumped/dumped_%04d.txt", CParticleSystemConfig::m_outputPrefix.c_str(), GetStepCount());
+#endif
 	m_outputGroup.DumpParticleSystemToTXT(fileName);
 	m_stepCount ++;
 }
