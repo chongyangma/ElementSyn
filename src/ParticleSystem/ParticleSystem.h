@@ -9,9 +9,17 @@ class CParticleSystem
 public:
 	CParticleSystem();
 
-	bool LoadParticleSystemFromTXT(string fileName);
+	bool LoadParticleSystemFromTXT(const string& fileName);
 
-	bool DumpParticleSystemToTXT(string fileName);
+	bool SaveParticleSystemAsTXT(const string& fileName);
+
+	bool LoadParticleSystemFromCSV(const string& fileName);
+
+	bool SaveParticleSystemAsCSV(const string& fileName);
+
+	bool LoadParticleSystem(const string& fileName);
+
+	bool SaveParticleSystem(const string& fileName);
 
 	inline int GetNumOfSoftBodies() { return int(m_vecParticleData.size()); }
 
@@ -33,7 +41,7 @@ public:
 
 	inline void ResizeParticleSystem(int sz) { m_vecParticleData.resize(sz); }
 
-	inline void AddSoftBody(CParticleData& softBody) { m_vecParticleData.push_back(softBody); }
+	inline void AddParticle(CParticleData& particle) { m_vecParticleData.push_back(particle); }
 
 	void SetNeighboringSamples(Flt neighDist);
 

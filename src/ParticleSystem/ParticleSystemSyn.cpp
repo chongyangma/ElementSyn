@@ -43,14 +43,24 @@ void CParticleSystemSyn::SetInputNeighborhoods()
 void CParticleSystemSyn::LoadInputData()
 {
 	m_inputSequence.clear();
-	CParticleSystem inputGroup = LoadInputExemplarFromTXT(CParticleSystemConfig::m_trajectoriesFileName);
+	CParticleSystem inputGroup; // = LoadInputExemplarFromTXT(CParticleSystemConfig::m_trajectoriesFileName);
+	bool flag = inputGroup.LoadParticleSystem(CParticleSystemConfig::m_trajectoriesFileName);
+	if (flag == false)
+	{
+		exit(2);
+	}
+	char fileName[MAX_PATH];
+	sprintf(fileName, "%sinput_exemplar.csv", CSynConfigBase::m_outputPrefix.c_str());
+	inputGroup.SaveParticleSystemAsCSV(fileName);
 	m_inputSequence.push_back(inputGroup);
+
 	m_vecInputExemplar.clear();
 	for ( int i=0; i<int(CParticleSystemConfig::m_vecInputFileName.size()); i++ )
 	{
 		CParticleSystem inputExemplar = LoadInputExemplarFromTXT(CParticleSystemConfig::m_vecInputFileName[i]);
 		m_vecInputExemplar.push_back(inputExemplar);
 	}
+
 	SetInputNeighborhoods();
 	//LoadBoundaryConstraints();
 }
@@ -78,7 +88,7 @@ void CParticleSystemSyn::LoadInputDataNew()
 			CParticleData particle;
 			particle.SetPos(pi);
 			particle.SetVecSamplePos(vertices);
-			particles.AddSoftBody(particle);
+			particles.AddParticle(particle);
 		}
 		vecInputExemplar.push_back(particles);
 		//m_inputSequence.push_back(particles);
@@ -126,11 +136,11 @@ void CParticleSystemSyn::UpdateOutput()
 #endif
 	char fileName[MAX_PATH];
 #ifdef WIN32
-	sprintf(fileName, "%sDumped\\dumped_%04d.txt", CParticleSystemConfig::m_outputPrefix.c_str(), GetStepCount());
+	sprintf(fileName, "%sDumped\\dumped_%04d.csv", CParticleSystemConfig::m_outputPrefix.c_str(), GetStepCount());
 #else
-	sprintf(fileName, "%sDumped/dumped_%04d.txt", CParticleSystemConfig::m_outputPrefix.c_str(), GetStepCount());
+	sprintf(fileName, "%sDumped/dumped_%04d.csv", CParticleSystemConfig::m_outputPrefix.c_str(), GetStepCount());
 #endif
-	m_outputGroup.DumpParticleSystemToTXT(fileName);
+	m_outputGroup.SaveParticleSystem(fileName);
 	m_stepCount ++;
 }
 
@@ -337,7 +347,7 @@ void CParticleSystemSyn::InitializeOutputTrajectoriesViaPatchCopy(int numOfParti
 					{
 						continue;
 					}
-					m_outputGroup.AddSoftBody(softBodyData);
+					m_outputGroup.AddParticle(softBodyData);
 				} // End-For-n
 			} // End-For-k
 		} // End-For-j
@@ -411,7 +421,7 @@ void CParticleSystemSyn::InitializeOutputTrajectoriesViaPatchCopy2(int numOfPart
 			{
 				continue;
 			}
-			m_outputGroup.AddSoftBody(softBodyData);
+			m_outputGroup.AddParticle(softBodyData);
 		} // End-For-n
 	}
 	if ( m_outputGroup.GetNumOfSoftBodies() < numOfParticles )
@@ -481,7 +491,7 @@ void CParticleSystemSyn::InitializeOutputTrajectoriesViaPatchCopy3(int numOfPart
 			{
 				continue;
 			}
-			m_outputGroup.AddSoftBody(softBodyData);
+			m_outputGroup.AddParticle(softBodyData);
 		} // End-For-n
 	}
 	if ( m_outputGroup.GetNumOfSoftBodies() < numOfParticles )
@@ -1449,7 +1459,7 @@ CParticleSystem CParticleSystemSyn::LoadInputExemplarFromTXT(string fileName)
 		vertices[0] = pos;
 		softBodyData.SetVecSamplePos(vertices);
 		softBodyData.SetPos(pos);
-		inputGroup.AddSoftBody(softBodyData);
+		inputGroup.AddParticle(softBodyData);
 	}
 	return inputGroup;
 }

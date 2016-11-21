@@ -5,12 +5,12 @@ CParticleSystem::CParticleSystem()
 {
 }
 
-bool CParticleSystem::LoadParticleSystemFromTXT(string fileName)
+bool CParticleSystem::LoadParticleSystemFromTXT(const string& fileName)
 {
 	ifstream fin(fileName.c_str());
 	if ( fin.fail() == true )
 	{
-		cout << "Failed to load soft body group from file " << fileName << "!\n";
+		cout << "Failed to load particle system from " << fileName << "!\n";
 		return false;
 	}
 	int numOfSoftBodies;
@@ -34,12 +34,12 @@ bool CParticleSystem::LoadParticleSystemFromTXT(string fileName)
 	return true;
 }
 
-bool CParticleSystem::DumpParticleSystemToTXT(string fileName)
+bool CParticleSystem::SaveParticleSystemAsTXT(const string& fileName)
 {
 	ofstream fout(fileName.c_str());
 	if ( fout.fail() == true )
 	{
-		cout << "Failed to dump soft body group to file " << fileName << "!\n";
+		cout << "Failed to save particle system into " << fileName << "!\n";
 		return false;
 	}
 	int numOfSoftBodies = GetNumOfSoftBodies();
@@ -57,6 +57,107 @@ bool CParticleSystem::DumpParticleSystemToTXT(string fileName)
 		}
 	}
 	return true;
+}
+
+bool CParticleSystem::LoadParticleSystemFromCSV(const string& fileName)
+{
+	std::ifstream fin(fileName.c_str());
+	if (fin.fail())
+	{
+		std::cout << "Failed to load particle system from " << fileName << "!\n";
+		return false;
+	}
+	std::string line_str;
+	//std::getline(fin, line_str); // skip the first line
+	while (std::getline(fin, line_str))
+	{
+		std::stringstream line_ss(line_str);
+		std::string cell_str;
+
+		std::getline(line_ss, cell_str, ',');
+		std::stringstream ss1(cell_str);
+		int numOfVertices;
+		ss1 >> numOfVertices;
+		vector<Vec3f> vertices(numOfVertices);
+		for (int i = 0; i < numOfVertices; i++)
+		{
+			std::getline(line_ss, cell_str, ',');
+			std::stringstream ss2(cell_str);
+			float pos_x;
+			ss2 >> pos_x;
+
+			std::getline(line_ss, cell_str, ',');
+			std::stringstream ss3(cell_str);
+			float pos_y;
+			ss3 >> pos_y;
+
+			std::getline(line_ss, cell_str, ',');
+			std::stringstream ss4(cell_str);
+			float pos_z;
+			ss4 >> pos_z;
+
+			vertices[i] = Vec3f(pos_x, pos_y, pos_z);
+		}
+
+		CParticleData particle;
+		particle.SetVecSamplePos(vertices);
+		particle.SetPos(vertices[0]);
+		AddParticle(particle);
+	}
+	std::cout << "Have loaded " << GetNumOfSoftBodies() << " particles from " << fileName << "!\n";
+	return true;
+}
+
+bool CParticleSystem::SaveParticleSystemAsCSV(const string& fileName)
+{
+	ofstream fout(fileName.c_str());
+	if (fout.fail() == true)
+	{
+		cout << "Failed to save particle system into " << fileName << "!\n";
+		return false;
+	}
+	int numOfSoftBodies = GetNumOfSoftBodies();
+	//fout << numOfSoftBodies << endl;
+	for (int i = 0; i < numOfSoftBodies; i++)
+	{
+		CParticleData& softBodyData = m_vecParticleData[i];
+		vector<Vec3f>& vecSamplePos = softBodyData.GetVecSamplePos();
+		int numOfVertices = int(vecSamplePos.size());
+		fout << numOfVertices << ",";
+		for (int j = 0; j < numOfVertices; j++)
+		{
+			Vec3f& pos = vecSamplePos[j];
+			fout << pos[0] << "," << pos[1] << "," << pos[2] << ",";
+		}
+		fout << std::endl;
+	}
+	return true;
+}
+
+bool CParticleSystem::LoadParticleSystem(const string& fileName)
+{
+	string suffix = fileName.substr(fileName.rfind(".") + 1, fileName.size());
+	if (suffix == string("csv"))
+	{
+		return LoadParticleSystemFromCSV(fileName);
+	}
+	else
+	{
+		return LoadParticleSystemFromTXT(fileName);
+	}
+}
+
+bool CParticleSystem::SaveParticleSystem(const string& fileName)
+{
+	string suffix = fileName.substr(fileName.rfind(".") + 1, fileName.size());
+	if (suffix == string("csv"))
+	{
+		return SaveParticleSystemAsCSV(fileName);
+	}
+	else
+	{
+		return SaveParticleSystemAsTXT(fileName);
+	}
 }
 
 void CParticleSystem::SetNeighboringSamples(Flt neighDist)
