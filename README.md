@@ -1,6 +1,8 @@
 ElementSyn
 ==========
 
+[![Build Status](https://travis-ci.org/chongyangma/ElementSyn.svg?branch=master)](https://travis-ci.org/chongyangma/ElementSyn)
+
 This repository contains the source code and example data of the following publication:
 
 > **Dynamic Element Textures**
