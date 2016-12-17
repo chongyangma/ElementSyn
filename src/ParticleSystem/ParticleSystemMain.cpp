@@ -5,6 +5,7 @@
 #include "ParticleSystemSyn.h"
 
 bool pause = false; //true; //
+bool g_flagShowInput = true;
 int g_width = 720; //640;
 int g_height = 480;
 int g_bmpCount = 0;
@@ -80,6 +81,10 @@ void DisplayFunc()
 	glPushMatrix();
 	glMultMatrixf(ptrArcBall->GetBallMatrix());
 	ptrSynthesizer->RenderOutput();
+	if ( g_flagShowInput )
+	{
+		ptrSynthesizer->RenderInput();
+	}
 	glPopMatrix();
 	SaveSnapshot();
 	glutSwapBuffers();
@@ -111,9 +116,9 @@ void ReshapeFunc(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void KeyboardFunc(unsigned char key, int x, int y) 
+void KeyboardFunc(unsigned char key, int x, int y)
 {
-	switch(key) 
+	switch(key)
 	{
 	case 'a':
 		ptrCamera->MoveLeft(0.2f);
@@ -150,6 +155,9 @@ void KeyboardFunc(unsigned char key, int x, int y)
 		break;
 	case 'l':
 		LoadCameraAndArcBall();
+		break;
+	case 'i':
+		g_flagShowInput = !g_flagShowInput;
 		break;
 	case ' ':
 		pause = !pause;

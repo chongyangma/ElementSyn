@@ -144,6 +144,27 @@ void CParticleSystemSyn::UpdateOutput()
 	m_stepCount ++;
 }
 
+void CParticleSystemSyn::RenderInput()
+{
+	if ( m_inputSequence.empty() )
+	{
+		return;
+	}
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	CParticleSystem& inputExemplar = m_inputSequence[0];
+	int numOfParticles = inputExemplar.GetNumOfSoftBodies();
+	glPushMatrix();
+	glTranslatef(-2.25f, -1.25f, 0.0f); // Render the input at the lower left corner
+	for ( int i=0; i<numOfParticles; i++ )
+	{
+		Vec3f pi = inputExemplar.GetParticleData(i).GetPos();
+		inputExemplar.GetParticleData(i).RenderSoftBody(m_ptrQuadricObj, pi);
+	}
+	glPopMatrix();
+	glDisable(GL_LIGHTING);
+}
+
 void CParticleSystemSyn::RenderOutput()
 {
 	glEnable(GL_LIGHTING);
@@ -158,33 +179,6 @@ void CParticleSystemSyn::RenderOutput()
 		Vec3f pi = m_outputGroup.GetParticleData(i).GetVecSamplePos()[0];
 		m_outputGroup.GetParticleData(i).RenderSoftBody(m_ptrQuadricObj, pi);
 	}
-	Flt r = CParticleSystemConfig::m_repulsionDist;
-	Flt z = 0.1f;
-	Flt x1 = CParticleSystemConfig::m_cubicPosMin[0];
-	Flt x2 = CParticleSystemConfig::m_cubicPosMax[0];
-	glPopMatrix();
-	// Render input...
-	glPushMatrix();
-#if 0
-	vector<CParticleSystem>& vecInput = m_vecInputExemplar; //m_inputSequence;
-	if ( CParticleSystemConfig::m_trajectoriesFileName == "granularMaterial05.txt" ) // hack
-	{
-		glTranslatef(-1.25f, 0.0f, 0.0f);
-	}
-	else
-	{
-		glTranslatef(-1.5f, 0.0f, 0.0f);
-	}
-	glColor3f(1.0f, 1.0f, 1.0f);
-	int n0 = int(vecInput.size());
-	int nn = (m_stepCount + n0) % n0;
-	for ( int i=0; i<vecInput[0].GetNumOfSoftBodies(); i++ )
-	{
-		Vec3f pi = vecInput[nn].GetParticleData(i).GetPos();
-		pi[2] -= 0.1f;
-		vecInput[nn].GetParticleData(i).RenderSoftBody(m_ptrQuadricObj, pi);
-	}
-#endif
 	glPopMatrix();
 	glDisable(GL_LIGHTING);
 }

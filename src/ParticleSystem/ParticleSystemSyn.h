@@ -46,6 +46,8 @@ public:
 
 	void UpdateOutput();
 
+	void RenderInput();
+
 	void RenderOutput();
 
 	void RestartSynthesis();
