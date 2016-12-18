@@ -2,6 +2,7 @@ ElementSyn
 ==========
 
 [![Build Status](https://travis-ci.org/chongyangma/ElementSyn.svg?branch=master)](https://travis-ci.org/chongyangma/ElementSyn)
+[![Build status](https://ci.appveyor.com/api/projects/status/p653ml95kprnmnn1?svg=true)](https://ci.appveyor.com/project/chongyangma/elementsyn)
 
 This repository contains the source code and example data of the following publication:
 
