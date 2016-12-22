@@ -19,10 +19,6 @@ public:
 
 	bool LoadFromMassSpringSynConfig(string fileName = "MassSpringSyn_config.txt");
 
-	bool DumpToMassSpringSynConfig();
-
-	static string AddOutputPrefix(string str);
-
 	static bool m_flagTemporallyToroidal;
 	static int m_numOfInputFrames;
 	static int m_numOfMasses;
@@ -57,13 +53,7 @@ public:
 	static Vec2f m_poisson2Dmax;
 
 private:
-	void ResetConfig();
-
-	void DumpTimeAndDate(FILE* file);
-
 	void DumpParameters(FILE* file);
-
-	void UpdateOutputPrefix();
 };
 
 #endif MASSSPRINGSYNCONFIG_H

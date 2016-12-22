@@ -3,7 +3,7 @@
 #include "../DynamicElement/HungarianAlgorithm.h"
 #include "../DynamicElement/PoissonDisk.h"
 
-#include <omp.h>
+//#include <omp.h>
 #define NUM_THREADS 8
 
 CMassSpringSyn::CMassSpringSyn()
@@ -46,7 +46,7 @@ void CMassSpringSyn::LoadInputData()
 	for ( int i=start; i<=CMassSpringSynConfig::m_numOfInputFrames; i+=interval )
 	{
 		char fileName[MAX_PATH];
-		sprintf_s(fileName, "%s%04d.txt", CMassSpringSynConfig::m_inputPrefix.c_str(), i);
+		sprintf(fileName, "%s%04d.txt", CMassSpringSynConfig::m_inputPrefix.c_str(), i);
 		vector<CMassSpringData> strands = LoadStrandsFromTXT(fileName);
 		vector<CMassSpringData> strandsNew;
 #if 1 // Remove the first segment in each input branch...
@@ -226,8 +226,6 @@ void CMassSpringSyn::UpdateStrandsExtended()
 	m_vecCz.resize(numOfUnknownsTotal, 0.0f);
 	int n;
 	Flt distSum = 0.0f;
-	omp_set_num_threads(NUM_THREADS);
-#pragma omp parallel default(shared) private(n)
 	{
 #pragma omp for
 		for ( n=0; n<numOfUnknownsTotal; n++ )
@@ -478,7 +476,7 @@ void CMassSpringSyn::RenderOutput()
 void CMassSpringSyn::RestartSynthesis()
 {
 	char fileName[MAX_PATH];
-	sprintf_s(fileName, "MassSpringSyn_config%02d.txt", m_serialCount++);
+	sprintf(fileName, "MassSpringSyn_config%02d.txt", m_serialCount++);
 	ResetOutput(fileName);
 	m_stepCount = 0;
 }

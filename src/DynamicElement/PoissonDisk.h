@@ -11,7 +11,7 @@ class CPoissonDisk
 public:
 	CPoissonDisk<N, T>();
 
-	vector<Vec<N, T>> GeneratePoints(Vec<N, T> pMin, Vec<N, T> pMax, T distSqrMin);
+	vector<Vec<N, T> > GeneratePoints(Vec<N, T> pMin, Vec<N, T> pMax, T distSqrMin);
 
 private:
 };
@@ -22,9 +22,9 @@ CPoissonDisk<N, T>::CPoissonDisk()
 }
 
 template<unsigned int N, class T>
-vector<Vec<N, T>> CPoissonDisk<N, T>::GeneratePoints(Vec<N, T> pMin, Vec<N, T> pMax, T distSqrMin)
+vector<Vec<N, T> > CPoissonDisk<N, T>::GeneratePoints(Vec<N, T> pMin, Vec<N, T> pMax, T distSqrMin)
 {
-	vector<Vec<N, T>> vecPoint;
+	vector<Vec<N, T> > vecPoint;
 	int unsuccessfulTimes = 0;
 	Vec<N, T> pMean = (pMin + pMax) * 0.5;
 	Vec<N, T> pd = pMax - pMin;

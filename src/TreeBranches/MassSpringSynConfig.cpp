@@ -187,59 +187,6 @@ bool CMassSpringSynConfig::LoadFromMassSpringSynConfig(string fileName /* = */ )
 	return true;
 }
 
-bool CMassSpringSynConfig::DumpToMassSpringSynConfig()
-{
-	ostringstream oss;
-	oss << m_outputPrefix << "MassSpringSynConfig.txt";
-	string fileName = oss.str();
-	FILE* file;
-	file = fopen(fileName.c_str(), "w");
-	if ( !file )
-	{
-		cout << "Failed to dump parameters into config file " << fileName << "!\n";
-		return false;
-	}
-	DumpTimeAndDate(file);
-	DumpParameters(file);
-	fclose(file);
-
-	return true;
-}
-
-string CMassSpringSynConfig::AddOutputPrefix(string str)
-{
-	if ( m_outputPrefix.empty() == true )
-	{
-		return str;
-	}
-	ostringstream oss;
-	oss << m_outputPrefix << str;
-	string strNew = oss.str();
-	return strNew;
-}
-
-void CMassSpringSynConfig::ResetConfig()
-{
-	if ( m_flagRandomness == true )
-	{
-		srand((unsigned int)time(0));
-	}
-	else
-	{
-		srand(0); // reset rand seed!
-	}
-	UpdateOutputPrefix();
-	DumpToMassSpringSynConfig();
-}
-
-void CMassSpringSynConfig::DumpTimeAndDate(FILE* file)
-{
-	time_t myTime = time(NULL);
-	tm* ptrTime = localtime(&myTime);
-	fprintf(file, "%02d:%02d:%02d ", ptrTime->tm_hour, ptrTime->tm_min, ptrTime->tm_sec);
-	fprintf(file, "%02d/%02d/%04d\n\n", ptrTime->tm_mon+1, ptrTime->tm_mday, ptrTime->tm_year+1900);
-}
-
 void CMassSpringSynConfig::DumpParameters(FILE* file)
 {
 	CSynConfigBase::DumpParameters(file);
@@ -269,29 +216,4 @@ void CMassSpringSynConfig::DumpParameters(FILE* file)
 	fprintf(file, "%s\t%f\n", "TEMPORAL_SIGMA", m_temporalSigma);
 	fprintf(file, "%s\t%f %f\n", "POISSON_2D_MIN", m_poisson2Dmin[0], m_poisson2Dmin[1]);
 	fprintf(file, "%s\t%f %f\n", "POISSON_2D_MAX", m_poisson2Dmax[0], m_poisson2Dmax[1]);
-}
-
-void CMassSpringSynConfig::UpdateOutputPrefix()
-{
-	ostringstream oss;
-	BOOL flag = CreateDirectory(m_outputPrefix.c_str(), NULL);
-	const int numLength = 2;
-	while ( flag == FALSE && m_outputPrefix.size() > 0 )
-	{
-		cout << "Failed to create the directory: " << m_outputPrefix.c_str() << endl;
-		string subStr = m_outputPrefix.substr(m_outputPrefix.length()-numLength-1, m_outputPrefix.length()-2);
-		int num = atoi(subStr.c_str()) + 1;
-		char numChar[MAX_PATH];
-		sprintf_s(numChar, "%02d", num);
-		ostringstream oss;
-		oss << m_outputPrefix.substr(0, m_outputPrefix.length()-numLength-1) << numChar << "\\";
-		m_outputPrefix = oss.str();
-		flag = CreateDirectory(m_outputPrefix.c_str(), NULL);
-	}
-	ostringstream oss2;
-	oss2 << CMassSpringSynConfig::m_outputPrefix << "Snapshot";
-	CreateDirectory(oss2.str().c_str(), NULL);
-	ostringstream oss3;
-	oss3 << CMassSpringSynConfig::m_outputPrefix << "Dumped";
-	CreateDirectory(oss3.str().c_str(), NULL);
 }
