@@ -31,6 +31,8 @@ Launching the compiled application from command line without any argument will p
 
 ```
 ParticleSystem.exe config_file.txt
+
+TreeBranches.exe config_file.txt
 ```
 
 ## Contact information
