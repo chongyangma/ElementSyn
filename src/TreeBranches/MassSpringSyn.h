@@ -8,7 +8,7 @@
 class CMassSpringSyn
 {
 public:
-	CMassSpringSyn();
+	CMassSpringSyn(const std::string& config_file_name);
 
 	~CMassSpringSyn();
 
@@ -27,6 +27,8 @@ public:
 	void UpdateStrandsExtended();
 
 	void CollisionResponse(vector<Flt>& vecCx, vector<Flt>& vecCy, vector<Flt>& vecCz);
+
+	void RenderInput();
 
 	void RenderOutput();
 
@@ -103,4 +105,4 @@ private:
 	vector<MassSpringSequence> m_vecOutputSequence;
 };
 
-#endif MASSSPRINGSYN_H
+#endif // MASSSPRINGSYN_H

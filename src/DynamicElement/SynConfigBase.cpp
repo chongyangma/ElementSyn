@@ -167,7 +167,7 @@ void CSynConfigBase::DumpStringParam(FILE* file, const char* param, const string
 {
 	if (str.empty() == true)
 	{
-		fprintf(file, "%s\t%s\n", param, "NULL");
+		//fprintf(file, "%s\t%s\n", param, "NULL");
 	}
 	else
 	{

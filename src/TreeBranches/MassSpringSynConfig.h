@@ -13,11 +13,11 @@
 class CMassSpringSynConfig : public CSynConfigBase
 {
 public:
-	CMassSpringSynConfig();
+	CMassSpringSynConfig(const std::string& config_file_name);
 
-	bool ReloadConfigFromFile(string fileName);
+	bool ReloadConfigFromFile(const std::string& config_file_name);
 
-	bool LoadFromMassSpringSynConfig(string fileName = "MassSpringSyn_config.txt");
+	bool LoadFromMassSpringSynConfig(const std::string& config_file_name);
 
 	static bool m_flagTemporallyToroidal;
 	static int m_numOfInputFrames;
@@ -30,8 +30,6 @@ public:
 	static int m_inputLoadStart;
 	static int m_stepCountMax;
 	static int m_synthesisWindowSize;
-	static string m_inputPrefix;
-	static string m_outputPrefix;
 	static string m_exemplarName;
 	static vector<string> m_vecInputPrefix;
 	static vector<Flt> m_vecInputWt;
@@ -56,4 +54,4 @@ private:
 	void DumpParameters(FILE* file);
 };
 
-#endif MASSSPRINGSYNCONFIG_H
+#endif // MASSSPRINGSYNCONFIG_H

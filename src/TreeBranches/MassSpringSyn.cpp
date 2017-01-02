@@ -6,11 +6,11 @@
 //#include <omp.h>
 #define NUM_THREADS 8
 
-CMassSpringSyn::CMassSpringSyn()
+CMassSpringSyn::CMassSpringSyn(const std::string& config_file_name)
 {
 	m_stepCount = 0;
 	m_serialCount = 1;
-	m_ptrSynConfig = new CMassSpringSynConfig;
+	m_ptrSynConfig = new CMassSpringSynConfig(config_file_name);
 	m_ptrCoeffMatrix = NULL;
 	LoadInputData();
 	InitializeOutput();
@@ -43,6 +43,7 @@ void CMassSpringSyn::LoadInputData()
 	m_vecInputSegmentPatch.clear();
 	int start = CMassSpringSynConfig::m_inputLoadStart;
 	int interval = CMassSpringSynConfig::m_inputLoadInterval;
+	std::cout << "input prefix: " << CMassSpringSynConfig::m_inputPrefix << std::endl;
 	for ( int i=start; i<=CMassSpringSynConfig::m_numOfInputFrames; i+=interval )
 	{
 		char fileName[MAX_PATH];
@@ -130,7 +131,7 @@ void CMassSpringSyn::InitializeOutput()
 			mi.SetPos(m_vecOutputStrand[n].GetMass(0).GetPos() + vecPr[i-1]);
 		}
 	}
-	for ( int i=0; i<10; i++ )
+	for ( int i=0; i<20; i++ )
 	{
 		UpdateStrandsExtended();
 	}
@@ -439,7 +440,6 @@ void CMassSpringSyn::CollisionResponse(vector<Flt>& vecCx, vector<Flt>& vecCy, v
 
 void CMassSpringSyn::RenderOutput()
 {
-	// Render output...
 	glPushMatrix();
 	glTranslatef(0.4f, -2.5f, 0.f);
 	for ( int i=0; i<int(m_vecOutputStrand.size()); i++ )
@@ -449,7 +449,10 @@ void CMassSpringSyn::RenderOutput()
 	glEnable(GL_LIGHTING);
 	glDisable(GL_LIGHTING);
 	glPopMatrix();
-	// Render input exemplar...
+}
+
+void CMassSpringSyn::RenderInput()
+{
 	int winWd = glutGet(GLUT_WINDOW_WIDTH);
 	int winHt = glutGet(GLUT_WINDOW_HEIGHT);
 	glMatrixMode(GL_PROJECTION);

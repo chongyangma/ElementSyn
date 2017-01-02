@@ -5,6 +5,7 @@
 #include "MassSpringSyn.h"
 
 bool pause = false; //true; //
+bool g_flagShowInput = true;
 int g_width = 720;
 int g_height = 480;
 int g_bmpCount = 0;
@@ -17,7 +18,7 @@ CMassSpringSyn* ptrSynthesizer = NULL;
 void SaveSnapshot(bool flag = true)
 {
 	if ( ptrSynthesizer->GetStepCount() < 1 && pause == true && flag == true ) return;
-	if ( ptrSynthesizer->GetStepCount() > 10000 && pause == false && flag == true  ) return;
+	if ( ptrSynthesizer->GetStepCount() > CSynConfigBase::m_stepCountMax && pause == false && flag == true  ) return;
 	int wd_mod = g_width % 4;
 	int wd = (wd_mod == 0) ? g_width : (g_width + 4 - wd_mod);
 	GLvoid* ptrVoid = new unsigned char[4 * g_width * g_height];
@@ -65,9 +66,12 @@ void DumpCameraAndArcBall()
 void LoadCameraAndArcBall()
 {
 	string fileName = "CameraAndArcBall.txt";
-	ptrCamera->LoadCamera(fileName);
-	ptrArcBall->LoadArcBall(fileName);
-	cout << "Have loaded camera and arc-ball from config file " << fileName << "!\n";
+	bool flag1 = ptrCamera->LoadCamera(fileName);
+	bool flag2 = ptrArcBall->LoadArcBall(fileName);
+	if ( flag1 && flag2 )
+	{
+		cout << "Have loaded camera and arc-ball from config file " << fileName << "!\n";
+	}
 }
 
 void DisplayFunc()
@@ -88,6 +92,10 @@ void DisplayFunc()
 	glColor3f(1.f, 1.f, 1.f);
 	//glutWireCube(2.0);
 	ptrSynthesizer->RenderOutput();
+	if ( g_flagShowInput )
+	{
+		ptrSynthesizer->RenderInput();
+	}
 	glPopMatrix();
 	SaveSnapshot();
 	glutSwapBuffers();
@@ -99,7 +107,7 @@ void IdleFunc()
 	if ( pause == false )
 	{
 		ptrSynthesizer->UpdateOutput();
-		cout << "Step: " << ptrSynthesizer->GetStepCount() << endl;
+		cout << "Frame " << ptrSynthesizer->GetStepCount() << "...\n";
 	}
 	glutPostRedisplay();
 }
@@ -160,6 +168,9 @@ void KeyboardFunc(unsigned char key, int x, int y)
 	case 'l':
 		LoadCameraAndArcBall();
 		break;
+	case 'i':
+		g_flagShowInput = !g_flagShowInput;
+		break;
 	case 'p':
 		SaveSnapshot(false);
 		break;
@@ -207,7 +218,7 @@ void MouseMoveFunc(int x, int y)
 	DisplayFunc();
 }
 
-void Initialize()
+void Initialize(const char* config_file_path)
 {
 	ptrArcBall = new CArcBall;
 	ptrArcBall->InitBall();
@@ -215,12 +226,12 @@ void Initialize()
 	ptrCamera->RotateY(180);
 	ptrCamera->MoveForward(4.2f);
 	ptrCamera->MoveDown(0.6f);
-	ptrSynthesizer = new CMassSpringSyn;
+	ptrSynthesizer = new CMassSpringSyn(config_file_path);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA); // set display mode
 	glutInitWindowSize(g_width, g_height); // set window size
 	glutInitWindowPosition(0, 0); // set window position on screen
-	glutCreateWindow("Mass spring system"); // set window title
+	glutCreateWindow("Synthesis of Tree Branches"); // set window title
 
 	glutMouseFunc(MouseFunc);
 	glutMotionFunc(MouseMoveFunc);
@@ -239,8 +250,9 @@ void Initialize()
 	glLineWidth(1.f);
 	glEnable(GL_POINT_SMOOTH);
 	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_POLYGON_SMOOTH);
+	glEnable(GL_POLYGON_SMOOTH_HINT);
 	glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	LoadCameraAndArcBall();
 }
@@ -252,10 +264,20 @@ void ReleasePtr()
 	DELETE_OBJECT(ptrSynthesizer);
 }
 
-int main(int argc,char **argv)
+void usage(char** argv)
 {
-	glutInit(&argc,argv);
-	Initialize();
+	std::cout << "Usage: " << argv[0] << " config_file_path\n";
+}
+
+int main(int argc, char **argv)
+{
+	if ( argc < 2 )
+	{
+		usage(argv);
+		return -1;
+	}
+	glutInit(&argc, argv);
+	Initialize(argv[1]);
 	glutMainLoop();
 	ReleasePtr();
 	return 0;

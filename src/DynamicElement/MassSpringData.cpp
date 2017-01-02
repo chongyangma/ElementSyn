@@ -79,8 +79,8 @@ void CMassSpringData::RenderMassSpringData(Vec3f trans)
 	const Flt sphereRad = 0.01f;
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-	GLfloat objAmbient[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
-	GLfloat objDiffuse[]  = { 0.5f, 0.5f, 0.5f, 1.0f };
+	GLfloat objAmbient[]  = { 0.1f, 0.1f, 0.1f, 1.0f };
+	GLfloat objDiffuse[]  = { 0.3f, 0.3f, 0.3f, 1.0f };
 	GLfloat objSpecular[] = { 0.1f, 0.1f, 0.1f, 1.0f };
 	GLfloat objHLAmbient[]  = { 1.0f, 0.0f, 0.0f, 1.0f };
 	GLfloat objHLDiffuse[]  = { 0.5f, 0.0f, 0.0f, 1.0f };

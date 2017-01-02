@@ -12,8 +12,6 @@ int CMassSpringSynConfig::m_inputLoadInterval = 1;
 int CMassSpringSynConfig::m_inputLoadStart = 1;
 int CMassSpringSynConfig::m_stepCountMax = 2000;
 int CMassSpringSynConfig::m_synthesisWindowSize = 0;
-string CMassSpringSynConfig::m_inputPrefix;
-string CMassSpringSynConfig::m_outputPrefix;
 string CMassSpringSynConfig::m_exemplarName;
 vector<string> CMassSpringSynConfig::m_vecInputPrefix;
 vector<Flt> CMassSpringSynConfig::m_vecInputWt;
@@ -34,27 +32,27 @@ Flt CMassSpringSynConfig::m_temporalSigma = 0.0f;
 Vec2f CMassSpringSynConfig::m_poisson2Dmin = Vec2f(-0.1f,-0.1f);
 Vec2f CMassSpringSynConfig::m_poisson2Dmax = Vec2f( 0.1f, 0.1f);
 
-CMassSpringSynConfig::CMassSpringSynConfig()
+CMassSpringSynConfig::CMassSpringSynConfig(const std::string& config_file_name)
 {
-	LoadFromMassSpringSynConfig();
+	LoadFromMassSpringSynConfig(config_file_name);
 	ResetConfig();
 }
 
-bool CMassSpringSynConfig::ReloadConfigFromFile(string fileName)
+bool CMassSpringSynConfig::ReloadConfigFromFile(const std::string& config_file_name)
 {
-	bool flag = LoadFromMassSpringSynConfig(fileName);
+	bool flag = LoadFromMassSpringSynConfig(config_file_name);
 	if ( flag == false ) return false;
 	ResetConfig();
 	return true;
 }
 
-bool CMassSpringSynConfig::LoadFromMassSpringSynConfig(string fileName /* = */ )
+bool CMassSpringSynConfig::LoadFromMassSpringSynConfig(const std::string& config_file_name)
 {
-	CSynConfigBase::LoadFromSynConfig(fileName);
-	ifstream fin(fileName.c_str());
+	CSynConfigBase::LoadFromSynConfig(config_file_name.c_str());
+	ifstream fin(config_file_name.c_str());
 	if ( fin.fail() == true )
 	{
-		cout << "Failed to load parameters from config file " << fileName << "!\n";
+		cout << "Failed to load parameters from config file " << config_file_name << "!\n";
 		return false;
 	}
 	string param;
@@ -91,10 +89,6 @@ bool CMassSpringSynConfig::LoadFromMassSpringSynConfig(string fileName /* = */ )
 		else if ( param == string("NUMBER_OF_INPUT_STRANDS") )
 		{
 			fin >> m_numOfInputStrands;
-		}
-		else if ( param == string("STEP_COUNT_MAX") )
-		{
-			fin >> m_stepCountMax;
 		}
 		else if ( param == string("SYNTHESIS_WINDOW_SIZE") )
 		{
@@ -198,7 +192,6 @@ void CMassSpringSynConfig::DumpParameters(FILE* file)
 	fprintf(file, "%s\t%d\n", "NEIGHBOR_SIZE", m_neighSize);
 	fprintf(file, "%s\t%d\n", "INPUT_LOAD_INTERVAL", m_inputLoadInterval);
 	fprintf(file, "%s\t%d\n", "INPUT_LOAD_START", m_inputLoadStart);
-	fprintf(file, "%s\t%d\n", "STEP_COUNT_MAX", m_stepCountMax);
 	fprintf(file, "%s\t%d\n", "SYNTHESIS_WINDOW_SIZE", m_synthesisWindowSize);
 	DumpStringParam(file, "EXEMPLAR_NAME", m_exemplarName);
 	fprintf(file, "%s\t%f\n", "SPRING_LENGTH", m_springLength);

@@ -64,9 +64,12 @@ void DumpCameraAndArcBall()
 void LoadCameraAndArcBall()
 {
 	string fileName = "CameraAndArcBall.txt";
-	ptrCamera->LoadCamera(fileName);
-	ptrArcBall->LoadArcBall(fileName);
-	cout << "Have loaded camera and arc-ball from config file " << fileName << "!\n";
+	bool flag1 = ptrCamera->LoadCamera(fileName);
+	bool flag2 = ptrArcBall->LoadArcBall(fileName);
+	if ( flag1 && flag2 )
+	{
+		cout << "Have loaded camera and arc-ball from config file " << fileName << "!\n";
+	}
 }
 
 void DisplayFunc()
@@ -240,6 +243,7 @@ void ReleasePtr()
 {
 	DELETE_OBJECT(ptrArcBall);
 	DELETE_OBJECT(ptrCamera);
+	DELETE_OBJECT(ptrSynthesizer);
 }
 
 void usage(char** argv)
