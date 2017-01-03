@@ -10,11 +10,11 @@ Flt CSynConfigBase::m_timeStep = 0.0025f;
 
 CSynConfigBase::CSynConfigBase()
 {
-	LoadFromSynConfig();
-	ResetConfig();
+	//LoadFromSynConfig();
+	//ResetConfig();
 }
 
-bool CSynConfigBase::LoadFromSynConfig(string fileName /* = */)
+bool CSynConfigBase::LoadFromSynConfig(const string& fileName)
 {
 	ifstream fin(fileName.c_str());
 	if (fin.fail() == true)

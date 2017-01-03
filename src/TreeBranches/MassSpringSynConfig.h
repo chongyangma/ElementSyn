@@ -4,11 +4,6 @@
 
 #include "../DynamicElement/SynConfigBase.h"
 #include "../DynamicElement/MassSpringData.h"
-#ifdef _DEBUG
-#pragma comment(lib, "../debug/DynamicElement.lib")
-#else
-#pragma comment(lib, "../release/DynamicElement.lib")
-#endif
 
 class CMassSpringSynConfig : public CSynConfigBase
 {

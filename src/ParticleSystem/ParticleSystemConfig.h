@@ -7,11 +7,11 @@
 class CParticleSystemConfig : public CSynConfigBase
 {
 public:
-	CParticleSystemConfig(const std::string& config_file_name);
+	CParticleSystemConfig(const std::string& fileName);
 
-	bool ReloadConfigFromFile(string fileName);
+	bool ReloadConfigFromFile(const string& fileName);
 
-	bool LoadFromParticleSystemConfig(string fileName = "ParticleSystemSyn_config.txt");
+	bool LoadFromParticleSystemConfig(const string& fileName);
 
 	static bool m_flagHybridSolver;
 	static bool m_flagSmoothSynthesis;

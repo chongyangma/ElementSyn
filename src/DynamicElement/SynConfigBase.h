@@ -14,7 +14,7 @@ class CSynConfigBase
 public:
 	CSynConfigBase();
 
-	bool LoadFromSynConfig(string fileName = "Syn_config.txt");
+	bool LoadFromSynConfig(const string& fileName);
 
 	bool DumpToSynConfig();
 

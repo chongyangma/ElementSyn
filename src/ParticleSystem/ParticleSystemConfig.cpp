@@ -30,13 +30,13 @@ Vec3f CParticleSystemConfig::m_particleDiffuse = Vec3f(0.5f, 0.5f, 0.5f);
 Vec3f CParticleSystemConfig::m_particleSpecular = Vec3f(0.1f, 0.1f, 0.1f);
 vector<Vec3f> CParticleSystemConfig::m_vecDiffuseColor;
 
-CParticleSystemConfig::CParticleSystemConfig(const std::string& config_file_name)
+CParticleSystemConfig::CParticleSystemConfig(const std::string& fileName)
 {
-	LoadFromParticleSystemConfig(config_file_name);
+	LoadFromParticleSystemConfig(fileName);
 	ResetConfig();
 }
 
-bool CParticleSystemConfig::ReloadConfigFromFile(string fileName)
+bool CParticleSystemConfig::ReloadConfigFromFile(const string& fileName)
 {
 	bool flag = LoadFromParticleSystemConfig(fileName);
 	if ( flag == false ) return false;
@@ -44,7 +44,7 @@ bool CParticleSystemConfig::ReloadConfigFromFile(string fileName)
 	return true;
 }
 
-bool CParticleSystemConfig::LoadFromParticleSystemConfig(string fileName /* = */ )
+bool CParticleSystemConfig::LoadFromParticleSystemConfig(const string& fileName)
 {
 	CSynConfigBase::LoadFromSynConfig(fileName);
 	ifstream fin(fileName.c_str());

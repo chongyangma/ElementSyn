@@ -191,10 +191,10 @@ void CParticleSystemSyn::RestartSynthesis()
 	m_stepCount = 0;
 }
 
-void CParticleSystemSyn::ResetOutput(string configFileName)
+void CParticleSystemSyn::ResetOutput(const std::string& config_file_name)
 {
 	m_stepCount = 0;
-	bool flag = m_ptrSynConfig->ReloadConfigFromFile(configFileName);
+	bool flag = m_ptrSynConfig->ReloadConfigFromFile(config_file_name);
 	if ( flag == false )
 	{
 		cout << "Have used all the configuration files!\n";

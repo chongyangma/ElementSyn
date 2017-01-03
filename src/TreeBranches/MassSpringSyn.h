@@ -12,7 +12,7 @@ public:
 
 	~CMassSpringSyn();
 
-	void ResetOutput(string configFileName);
+	void ResetOutput(const std::string& config_file_name);
 
 	void LoadInputData();
 
