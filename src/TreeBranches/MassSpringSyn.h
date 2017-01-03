@@ -4,6 +4,7 @@
 
 #include "../DynamicElement/MathFunc.h"
 #include "MassSpringSynConfig.h"
+#include "MassSpringData.h"
 
 class CMassSpringSyn
 {

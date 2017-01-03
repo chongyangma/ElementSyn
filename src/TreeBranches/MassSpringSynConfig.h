@@ -3,7 +3,7 @@
 #define MASSSPRINGSYNCONFIG_H
 
 #include "../DynamicElement/SynConfigBase.h"
-#include "../DynamicElement/MassSpringData.h"
+#include "MassSpringData.h"
 
 class CMassSpringSynConfig : public CSynConfigBase
 {

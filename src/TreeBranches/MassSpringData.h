@@ -4,9 +4,8 @@
 //#define HACK_WITH_RELATIVE_POSITION
 #define HACK_WITH_NEIGHBOR_USER_COUNT
 
-#include "main.h"
-#include "vec.h"
-#include "NURBSinterpolate.h"
+#include "MassSpringSynConfig.h"
+#include "../DynamicElement/NURBSinterpolate.h"
 
 class CMass
 {
