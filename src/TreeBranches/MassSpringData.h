@@ -6,6 +6,7 @@
 
 #include "MassSpringSynConfig.h"
 #include "../DynamicElement/NURBSinterpolate.h"
+#include "../DynamicElement/RenderFunc.h"
 
 class CMass
 {

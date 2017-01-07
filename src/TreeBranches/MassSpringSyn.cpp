@@ -446,8 +446,6 @@ void CMassSpringSyn::RenderOutput()
 	{
 		m_vecOutputStrand[i].RenderMassSpringData();
 	}
-	glEnable(GL_LIGHTING);
-	glDisable(GL_LIGHTING);
 	glPopMatrix();
 }
 

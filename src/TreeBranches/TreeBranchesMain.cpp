@@ -243,17 +243,18 @@ void Initialize(const char* config_file_path)
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);
-	glPointSize(5.f);
-	glLineWidth(1.f);
 	glEnable(GL_POINT_SMOOTH);
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_POLYGON_SMOOTH);
 	glEnable(GL_POLYGON_SMOOTH_HINT);
 	glEnable(GL_BLEND);
+#ifdef WIN32
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#else
+	glBlendFunc(GL_ONE_MINUS_DST_ALPHA, GL_DST_ALPHA);
+#endif
 	LoadCameraAndArcBall();
 }
 
