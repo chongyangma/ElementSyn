@@ -17,6 +17,7 @@ public:
 	inline void SetSrcIdx(int srcIdx) { m_srcIdx = srcIdx; }
 
 	inline Vec3f& GetPos() { return m_pos; }
+	inline Vec3f GetPos() const { return m_pos; }
 	inline void SetPos(Vec3f pos) { m_pos = pos; }
 
 	inline Vec3f& GetVel() { return m_vel; }
@@ -57,9 +58,10 @@ public:
 
 	inline void ResizeMassSpringData(int sz) { m_vecMass.resize(sz); }
 
-	inline int GetNumOfMasses() { return int(m_vecMass.size()); }
+	inline int GetNumOfMasses() const { return int(m_vecMass.size()); }
 
 	inline CMass& GetMass(int idx) { return m_vecMass[idx]; }
+	inline const CMass& GetMass(int idx) const { return m_vecMass[idx]; }
 	inline void AddMass(CMass& mass) { m_vecMass.push_back(mass); }
 
 	inline int GetSrcIdx() { return m_srcIdx; }

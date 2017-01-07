@@ -35,6 +35,10 @@ public:
 
 	void RestartSynthesis();
 
+	bool LoadMassSequenceFromCSV(vector<MassSpringSequence>& vecSequence, const std::string& fileName);
+
+	bool SaveMassSequenceAsCSV(const vector<MassSpringSequence>& vecSequence, const std::string& fileName);
+
 	inline int GetStepCount() { return m_stepCount; }
 
 private:

@@ -41,41 +41,55 @@ void CMassSpringSyn::LoadInputData()
 	m_vecInputSequence.clear();
 	m_vecInputNeighExtended.clear();
 	m_vecInputSegmentPatch.clear();
-	int start = CMassSpringSynConfig::m_inputLoadStart;
-	int interval = CMassSpringSynConfig::m_inputLoadInterval;
-	std::cout << "input prefix: " << CMassSpringSynConfig::m_inputPrefix << std::endl;
-	for ( int i=start; i<=CMassSpringSynConfig::m_numOfInputFrames; i+=interval )
+	bool loadFlag = false;
+	if ( CMassSpringSynConfig::m_exemplarName.empty() == false )
 	{
-		char fileName[MAX_PATH];
-		sprintf(fileName, "%s%04d.txt", CMassSpringSynConfig::m_inputPrefix.c_str(), i);
-		vector<CMassSpringData> strands = LoadStrandsFromTXT(fileName);
-		vector<CMassSpringData> strandsNew;
-#if 1 // Remove the first segment in each input branch...
-		for ( int j=0; j<int(strands.size()); j++ )
+		loadFlag = LoadMassSequenceFromCSV(m_vecInputSequence, CMassSpringSynConfig::m_exemplarName);
+	}
+	if ( loadFlag == false )
+	{
+		int start = CMassSpringSynConfig::m_inputLoadStart;
+		int interval = CMassSpringSynConfig::m_inputLoadInterval;
+		std::cout << "input prefix: " << CMassSpringSynConfig::m_inputPrefix << std::endl;
+		for ( int i=start; i<=CMassSpringSynConfig::m_numOfInputFrames; i+=interval )
 		{
-			CMassSpringData& strand = strands[j];
+			char fileName[MAX_PATH];
+			sprintf(fileName, "%s%04d.txt", CMassSpringSynConfig::m_inputPrefix.c_str(), i);
+			vector<CMassSpringData> strands = LoadStrandsFromTXT(fileName);
+			if ( strands.empty() == true )
+			{
+				break;
+			}
+			m_vecInputSequence.push_back(strands);
+		}
+	}
+
+	char fileName[MAX_PATH];
+	sprintf(fileName, "%sinput_exemplar.csv", CSynConfigBase::m_outputPrefix.c_str());
+	SaveMassSequenceAsCSV(m_vecInputSequence, fileName);
+
+#if 1 // Remove the first segment in each input branch...
+	for ( int n=0; n<int(m_vecInputSequence.size()); n++ )
+	{
+		MassSpringSequence strands = m_vecInputSequence[n];
+		MassSpringSequence strandsNew(strands.size());
+		for ( int i=0; i<int(strands.size()); i++ )
+		{
+			CMassSpringData& strand = strands[i];
 			int numOfMasses = strand.GetNumOfMasses();
 			Vec3f pr = strand.GetMass(1).GetPos() - strand.GetMass(0).GetPos();
 			CMassSpringData strandNew;
 			strandNew.ResizeMassSpringData(numOfMasses-1);
-			for ( int n=0; n<numOfMasses-1; n++ )
+			for ( int j=0; j<numOfMasses-1; j++ )
 			{
-				CMass& mass = strandNew.GetMass(n);
-				mass.SetPos(strand.GetMass(n+1).GetPos()-pr);
+				CMass& mass = strandNew.GetMass(j);
+				mass.SetPos(strand.GetMass(j+1).GetPos()-pr);
 			}
-			strandsNew.push_back(strandNew);
+			strandsNew[i] = strandNew;
 		}
-#endif
-		if ( strands.empty() == true )
-		{
-			break;
-		}
-		else
-		{
-			//m_vecInputSequence.push_back(strands);
-			m_vecInputSequence.push_back(strandsNew);
-		}
+		m_vecInputSequence[n] = strandsNew;
 	}
+#endif
 	// Set sequence velocity for detail exemplar...
 	SetSequencesVelocity(m_vecInputSequence, CMassSpringSynConfig::m_flagTemporallyToroidal);
 	// Get input segments...
@@ -475,6 +489,111 @@ void CMassSpringSyn::RestartSynthesis()
 	sprintf(fileName, "MassSpringSyn_config%02d.txt", m_serialCount++);
 	ResetOutput(fileName);
 	m_stepCount = 0;
+}
+
+bool CMassSpringSyn::LoadMassSequenceFromCSV(vector<MassSpringSequence>& vecSequence, const std::string& fileName)
+{
+	std::ifstream fin(fileName.c_str());
+	if (fin.fail() == true)
+	{
+		cout << "Failed to load mass sequence from " << fileName << "!\n";
+		return false;
+	}
+
+	vecSequence.clear();
+	int numOfFrames;
+	fin >> numOfFrames;
+	if ( numOfFrames == 0 )
+	{
+		return true;
+	}
+	vecSequence.resize(numOfFrames);
+
+	int numOfMassSprings;
+	fin >> numOfMassSprings;
+	std::vector<int> vecNumOfMasses(numOfMassSprings);
+	std::string line_str;
+	fin >> line_str;
+	std::stringstream line_ss(line_str);
+	for ( int i=0; i<numOfMassSprings; i++ )
+	{
+		std::string cell_str;
+		std::getline(line_ss, cell_str, ',');
+		std::stringstream cell_ss(cell_str);
+		cell_ss >> vecNumOfMasses[i];
+	}
+
+	for ( int n=0; n<numOfFrames; n++ )
+	{
+		MassSpringSequence& massSequence = vecSequence[n];
+		massSequence.resize(numOfMassSprings);
+		for ( int i=0; i<numOfMassSprings; i++ )
+		{
+			massSequence[i].ResizeMassSpringData(vecNumOfMasses[i]);
+			fin >> line_str;
+			std::stringstream line_ss(line_str);
+			for ( int j=0; j<vecNumOfMasses[i]; j++ )
+			{
+				std::string px_str;
+				std::string py_str;
+				std::string pz_str;
+				std::getline(line_ss, px_str, ',');
+				std::getline(line_ss, py_str, ',');
+				std::getline(line_ss, pz_str, ',');
+				std::stringstream px_ss(px_str);
+				std::stringstream py_ss(py_str);
+				std::stringstream pz_ss(pz_str);
+				Vec3f pj;
+				px_ss >> pj[0];
+				py_ss >> pj[1];
+				pz_ss >> pj[2];
+				massSequence[i].GetMass(j).SetPos(pj);
+			}
+		}
+	}
+	return true;
+}
+
+bool CMassSpringSyn::SaveMassSequenceAsCSV(const vector<MassSpringSequence>& vecSequence, const std::string& fileName)
+{
+	std::ofstream fout(fileName.c_str());
+	if (fout.fail() == true)
+	{
+		cout << "Failed to save mass sequence into " << fileName << "!\n";
+		return false;
+	}
+	int numOfFrames = int(vecSequence.size());
+	fout << numOfFrames << std::endl;
+	if ( numOfFrames == 0 )
+	{
+		return true;
+	}
+	const MassSpringSequence& massSequence0 = vecSequence[0];
+	int numOfMassSprings = int(massSequence0.size());
+	fout << numOfMassSprings << std::endl;
+	std::vector<int> vecNumOfMasses(numOfMassSprings);
+	for ( int i=0; i<numOfMassSprings; i++ )
+	{
+		vecNumOfMasses[i] = massSequence0[i].GetNumOfMasses();
+		fout << vecNumOfMasses[i] << ",";
+	}
+	fout << std::endl;
+	for ( int n=0; n<numOfFrames; n++ )
+	{
+		const MassSpringSequence& massSequence = vecSequence[n];
+		for ( int i=0; i<numOfMassSprings; i++ )
+		{
+			for ( int j=0; j<vecNumOfMasses[i]; j++ )
+			{
+				Vec3f pj = massSequence[i].GetMass(j).GetPos();
+				fout << pj[0] << "," << pj[1] << "," << pj[2] << ",";
+			}
+			fout << std::endl;
+		}
+		fout << std::endl;
+	}
+	fout << std::endl;
+	return true;
 }
 
 MassNeighborhoodExtended CMassSpringSyn::GetMassNeighborhoodExtended(vector<CMassSpringData>& strands, int strandIdx, int massIdx, Flt neighDist)
