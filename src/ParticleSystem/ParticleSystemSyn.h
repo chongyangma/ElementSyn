@@ -54,8 +54,6 @@ public:
 
 	inline int GetStepCount() { return m_stepCount; }
 
-	static GLUquadricObj* m_ptrQuadricObj;
-
 private:
 	void SetInputNeighborhoods();
 

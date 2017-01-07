@@ -10,7 +10,7 @@ CParticleData::CParticleData()
 	m_flagFixed = false;
 }
 
-void CParticleData::RenderSoftBody(GLUquadricObj* ptrQuadricObj, Vec3f trans /* = Vec3f */)
+void CParticleData::RenderSoftBody(Vec3f trans /* = Vec3f */)
 {
 	Vec3f ambient = CParticleSystemConfig::m_particleAmbient;
 	Vec3f diffuse = CParticleSystemConfig::m_particleDiffuse;
@@ -27,7 +27,8 @@ void CParticleData::RenderSoftBody(GLUquadricObj* ptrQuadricObj, Vec3f trans /* 
 	glMaterialfv(GL_FRONT, GL_SPECULAR, objSpecular);
 	glPushMatrix();
 	glTranslatef(trans[0], trans[1], trans[2]);
-	gluSphere(ptrQuadricObj, CParticleSystemConfig::m_repulsionDist, 20, 20);
+	//gluSphere(ptrQuadricObj, CParticleSystemConfig::m_repulsionDist, 20, 20);
+	glutSolidSphere(CParticleSystemConfig::m_repulsionDist, 20, 20);
 	glPopMatrix();
 }
 

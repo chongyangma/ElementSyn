@@ -44,7 +44,7 @@ public:
 
 	inline int GetNumOfSamples() { return int(m_vecSamplePos.size()); }
 
-	void RenderSoftBody(GLUquadricObj* ptrQuadricObj, Vec3f trans = Vec3f(0.0f, 0.0f, 0.0f));
+	void RenderSoftBody(Vec3f trans = Vec3f(0.0f, 0.0f, 0.0f));
 
 	void TranslateSoftBody(Vec3f trans);
 

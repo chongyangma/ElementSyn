@@ -20,7 +20,7 @@ void CMass::TimeIntegrationMass(const Flt dt)
 	m_pos += m_vel * dt;
 }
 
-GLUquadric* CMassSpringData::m_ptrQuadric = NULL;
+//GLUquadric* CMassSpringData::m_ptrQuadric = NULL;
 
 CMassSpringData::CMassSpringData()
 {
@@ -74,7 +74,7 @@ void CMassSpringData::TimeIntegrationMassSpring(const Flt dt)
 void CMassSpringData::RenderMassSpringData(Vec3f trans)
 {
 	int numOfMasses = int(m_vecMass.size());
-	if ( m_ptrQuadric == NULL ) m_ptrQuadric = gluNewQuadric();
+	//if ( m_ptrQuadric == NULL ) m_ptrQuadric = gluNewQuadric();
 	const Flt cylinderWd = 0.004f;
 	const Flt sphereRad = 0.01f;
 	glEnable(GL_LIGHTING);

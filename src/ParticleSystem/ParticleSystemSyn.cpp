@@ -4,7 +4,7 @@
 //#define CONSTRAINED_SYNTHESIS
 //#define FLOW_SYNTHESIS // 01/07/2013
 
-GLUquadricObj* CParticleSystemSyn::m_ptrQuadricObj = gluNewQuadric();
+//GLUquadricObj* CParticleSystemSyn::m_ptrQuadricObj = gluNewQuadric();
 
 CParticleSystemSyn::CParticleSystemSyn(const std::string& config_file_name)
 {
@@ -159,7 +159,7 @@ void CParticleSystemSyn::RenderInput()
 	for ( int i=0; i<numOfParticles; i++ )
 	{
 		Vec3f pi = inputExemplar.GetParticleData(i).GetPos();
-		inputExemplar.GetParticleData(i).RenderSoftBody(m_ptrQuadricObj, pi);
+		inputExemplar.GetParticleData(i).RenderSoftBody(pi);
 	}
 	glPopMatrix();
 	glDisable(GL_LIGHTING);
@@ -177,7 +177,7 @@ void CParticleSystemSyn::RenderOutput()
 	for ( int i=0; i<numOfSoftBodies; i++ )
 	{
 		Vec3f pi = m_outputGroup.GetParticleData(i).GetVecSamplePos()[0];
-		m_outputGroup.GetParticleData(i).RenderSoftBody(m_ptrQuadricObj, pi);
+		m_outputGroup.GetParticleData(i).RenderSoftBody(pi);
 	}
 	glPopMatrix();
 	glDisable(GL_LIGHTING);
