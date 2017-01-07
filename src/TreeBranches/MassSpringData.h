@@ -96,8 +96,6 @@ public:
 
 	static void DumpStrandToOBJz(CMassSpringData& strand, ofstream& fout, int& vAccum, Flt rad, int sampleNum, int interval);
 
-	//static GLUquadric* m_ptrQuadric;
-
 private:
 	int m_srcIdx;
 	int m_startIdx;

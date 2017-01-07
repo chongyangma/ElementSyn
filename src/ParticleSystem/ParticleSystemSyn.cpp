@@ -4,8 +4,6 @@
 //#define CONSTRAINED_SYNTHESIS
 //#define FLOW_SYNTHESIS // 01/07/2013
 
-//GLUquadricObj* CParticleSystemSyn::m_ptrQuadricObj = gluNewQuadric();
-
 CParticleSystemSyn::CParticleSystemSyn(const std::string& config_file_name)
 {
 	m_stepCount = 0;

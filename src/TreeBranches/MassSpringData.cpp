@@ -20,8 +20,6 @@ void CMass::TimeIntegrationMass(const Flt dt)
 	m_pos += m_vel * dt;
 }
 
-//GLUquadric* CMassSpringData::m_ptrQuadric = NULL;
-
 CMassSpringData::CMassSpringData()
 {
 	m_srcIdx = -1;
@@ -74,7 +72,6 @@ void CMassSpringData::TimeIntegrationMassSpring(const Flt dt)
 void CMassSpringData::RenderMassSpringData(Vec3f trans)
 {
 	int numOfMasses = int(m_vecMass.size());
-	//if ( m_ptrQuadric == NULL ) m_ptrQuadric = gluNewQuadric();
 	const Flt cylinderWd = 0.004f;
 	const Flt sphereRad = 0.01f;
 	glEnable(GL_LIGHTING);
@@ -88,7 +85,6 @@ void CMassSpringData::RenderMassSpringData(Vec3f trans)
 	glMaterialfv(GL_FRONT, GL_AMBIENT,  objAmbient);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE,  objDiffuse);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, objSpecular);
-	//glMateriali(GL_FRONT, GL_SHININESS, 0.5f);
 	glPushMatrix();
 	glTranslatef(trans[0], trans[1], trans[2]);
 	for ( int i=0; i<numOfMasses-1; i++ )
@@ -111,20 +107,17 @@ void CMassSpringData::RenderMassSpringData(Vec3f trans)
 		glPushMatrix();
 		glTranslatef(p1[0], p1[1], p1[2]);
 		glMultMatrixf(mat);
-		//gluCylinder(m_ptrQuadric, cylinderWd, cylinderWd, dist(p1, p2), 16, 8);
 		det::RenderCylinder(cylinderWd, cylinderWd, dist(p1, p2), 16);
 		glPopMatrix();
 	}
 	glMaterialfv(GL_FRONT, GL_AMBIENT,  objHLAmbient);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE,  objHLDiffuse);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, objHLSpecular);
-	//glMateriali(GL_FRONT, GL_SHININESS, 0.5f);
 	for ( int i=0; i<numOfMasses; i++ )
 	{
 		Vec3f& pi = m_vecMass[i].GetPos();
 		glPushMatrix();
 		glTranslatef(pi[0], pi[1], pi[2]);
-		//gluSphere(m_ptrQuadric, sphereRad, 10, 10);
 		glPopMatrix();
 	}
 	glPopMatrix();

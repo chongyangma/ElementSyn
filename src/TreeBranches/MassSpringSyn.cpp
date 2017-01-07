@@ -451,11 +451,6 @@ void CMassSpringSyn::RenderOutput()
 
 void CMassSpringSyn::RenderInput()
 {
-	int winWd = glutGet(GLUT_WINDOW_WIDTH);
-	int winHt = glutGet(GLUT_WINDOW_HEIGHT);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45, float(winWd)/float(winHt), 0.01, 1000);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	Vec3f posFrom = Vec3f(0.0f, 0.0f, 3.5f);
