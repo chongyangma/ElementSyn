@@ -24,7 +24,7 @@ ADD_EXECUTABLE( ParticleSystem ${PARTICLE_SYSTEM_SOURCES} ${PARTICLE_SYSTEM_HEAD
 
 TARGET_LINK_LIBRARIES( ParticleSystem freeglut quadprog DynamicElement )
 
-IF(APPLE)
+IF(NOT WIN32)
   FIND_LIBRARY(OPENGL_glu_LIBRARY GLU PATHS /opt/X11/lib /usr/X11/lib /usr/X11R6/lib)
   TARGET_LINK_LIBRARIES( ParticleSystem ${OPENGL_glu_LIBRARY} )
 ENDIF()

@@ -8,7 +8,7 @@
 #include <string.h>
 #if defined(WIN32)
   #include <windows.h>
-#elif defined(__APPLE__)
+#else // defined(__APPLE__)
 struct POINT {
     int x;
     int y;

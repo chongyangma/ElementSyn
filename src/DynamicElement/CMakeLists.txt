@@ -5,10 +5,14 @@ file(GLOB DET_SOURCES "*.cpp")
 
 file(GLOB DET_HEADERS "*.h")
 
+LINK_DIRECTORIES( ${PROJECT_BINARY_DIR}/../../lib )
+
 INCLUDE_DIRECTORIES ( ../../freeglut/include )
 INCLUDE_DIRECTORIES ( ../../quadprog/src )
 
 ADD_LIBRARY(DynamicElement STATIC ${DET_SOURCES} ${DET_HEADERS})
+
+TARGET_LINK_LIBRARIES(DynamicElement quadprog)
 
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../../lib)
 
