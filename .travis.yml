@@ -4,15 +4,17 @@ sudo: required
 dist: trusty
 
 os:
+    - linux
     - osx
 
-compiler:  
+compiler:
     - gcc
     - clang
 
 before_script:
+    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install cmake; fi
     - mkdir build
     - cd build
     - cmake ..
 
-script: make 
+script: make
