@@ -21,8 +21,8 @@ void SaveSnapshot(bool flag = true)
 	if ( ptrSynthesizer->GetStepCount() > CSynConfigBase::m_stepCountMax && pause == false && flag == true  ) return;
 	int wd_mod = g_width % 4;
 	int wd = (wd_mod == 0) ? g_width : (g_width + 4 - wd_mod);
-	GLvoid* ptrVoid = new unsigned char[4 * g_width * g_height];
-	glReadPixels(0, 0, g_width, g_height, GL_RGBA, GL_UNSIGNED_BYTE, ptrVoid);
+	std::vector<unsigned char> ptrVoid(4 * g_width * g_height);
+	glReadPixels(0, 0, g_width, g_height, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*)&ptrVoid[0]);
 	std::vector<unsigned char> vecByte(4 * wd * g_height);
 	char fileName[MAX_PATH];
 #ifdef WIN32
@@ -30,21 +30,18 @@ void SaveSnapshot(bool flag = true)
 #else
 	sprintf(fileName, "%sSnapshot/snapshot_%04d.png", CSynConfigBase::m_outputPrefix.c_str(), ptrSynthesizer->GetStepCount());
 #endif
-	unsigned char* ptrSrc = (unsigned char*)ptrVoid;
 	for ( int j=0; j<g_height; j++ )
 	{
 		for ( int i=0; i<g_width; i++ )
 		{
 			for ( int k=0; k<4; k++ )
 			{
-				vecByte[4 * ((g_height - 1 - j) * g_width + i) + k] = *(ptrSrc + k);
+				vecByte[4 * ((g_height - 1 - j) * g_width + i) + k] = ptrVoid[4 * (j * g_width + i) + k];
 			}
-			ptrSrc += 4;
 		}
 	}
 	unsigned error = lodepng::encode(fileName, vecByte, g_width, g_height);
 	if(error) std::cout << "PNG encoder error " << error << ": "<< lodepng_error_text(error) << std::endl;
-	delete [] (unsigned char*)ptrVoid;
 }
 
 void DumpCameraAndArcBall()
