@@ -1,3 +1,3 @@
-add_subdirectory( DynamicElement )
-add_subdirectory( ParticleSystem )
-add_subdirectory( TreeBranches )
+ADD_SUBDIRECTORY(DynamicElement)
+ADD_SUBDIRECTORY(ParticleSystem)
+ADD_SUBDIRECTORY(TreeBranches)
