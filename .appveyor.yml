@@ -1,34 +1,17 @@
 version: 1.{build}
 
-environment:
-  matrix:
-    - VS_GENERATOR: "Visual Studio 11 2012"
-    - VS_GENERATOR: "Visual Studio 14 2015"
-
-platform:
-  - Win32
-  - x64
-
-configuration:
-  - Debug
-  - Release
+os:
+  - Visual Studio 2015
 
 test: off
 
 clone_folder: C:\projects\ElementSyn
 
-branches:
-  only:
-    - master
-
-before_build:
-  - cmd: cd C:\projects\ElementSyn
-  - cmd: md build
-  - cmd: cd build
-  - cmd: if "%platform%"=="Win32" set CMAKE_GENERATOR_NAME=%VS_GENERATOR%
-  - cmd: if "%platform%"=="x64"   set CMAKE_GENERATOR_NAME=%VS_GENERATOR% Win64
-  - cmd: cmake -G "%CMAKE_GENERATOR_NAME%" -DCMAKE_BUILD_TYPE=%configuration% ../
-
-build:
-  project: C:\projects\ElementSyn\build\ElementSyn.sln
-  parallel: true # enable MSBuild parallel builds
+build_script:
+- cmd: >-
+    echo Running cmake...
+    cd C:\projects\ElementSyn
+    cmake -G "Visual Studio 14 2015 Win64" .
+    set MSBuildLogger="C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+    set MSBuildOptions=/v:m /p:Configuration=Release /logger:%MSBuildLogger%
+    msbuild %MSBuildOptions% ElementSyn.sln
