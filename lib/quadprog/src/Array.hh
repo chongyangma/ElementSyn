@@ -16,7 +16,7 @@
 #include <cmath>
 #include <cstdlib>
 
-namespace QuadProgPP {
+namespace quadprogpp {
 
 enum MType { DIAG };
 
@@ -632,7 +632,7 @@ inline T median(const Vector<T>& v)
 template <typename T>
 inline T stdev(const Vector<T>& v, bool sample_correction = false)
 {
-  return std::sqrt(var(v, sample_correction));
+  return sqrt(var(v, sample_correction));
 }
 
 template <typename T>
@@ -650,13 +650,6 @@ inline T var(const Vector<T>& v, bool sample_correction = false)
   else
     return n * ((ssum / n) - (sum / n) * (sum / n)) / (n - 1);
 }
-
-#ifdef max
-#undef max
-#endif
-#ifdef min
-#undef min
-#endif
 
 template <typename T>
 inline T max(const Vector<T>& v)
@@ -738,11 +731,11 @@ inline Vector<T> log(const Vector<T>& v)
 }
 
 template <typename T>
-inline Vector<T> sqrt(const Vector<T>& v)
+inline Vector<T> vec_sqrt(const Vector<T>& v)
 {
   Vector<T> tmp(v.size());
   for (unsigned int i = 0; i < v.size(); i++)
-    tmp[i] = std::sqrt(v[i]);
+    tmp[i] = sqrt(v[i]);
 	
   return tmp;
 }
@@ -916,10 +909,9 @@ template <typename T>
 Matrix<T>::Matrix(unsigned int n, unsigned int m)
   : v(new T*[n])
 {
-  register unsigned int i;
   this->n = n; this->m = m;
   v[0] = new T[m * n];
-  for (i = 1; i < n; i++)
+  for (unsigned int i = 1; i < n; i++)
     v[i] = v[i - 1] + m;
 }
 
@@ -927,13 +919,12 @@ template <typename T>
 Matrix<T>::Matrix(const T& a, unsigned int n, unsigned int m)
   : v(new T*[n])
 {
-  register unsigned int i, j;
   this->n = n; this->m = m;
   v[0] = new T[m * n];
-  for (i = 1; i < n; i++)
+  for (unsigned int i = 1; i < n; i++)
     v[i] = v[i - 1] + m;
-  for (i = 0; i < n; i++)
-    for (j = 0; j < m; j++)
+  for (unsigned int i = 0; i < n; i++)
+    for (unsigned int j = 0; j < m; j++)
       v[i][j] = a;
 }
 
@@ -941,13 +932,12 @@ template <class T>
 Matrix<T>::Matrix(const T* a, unsigned int n, unsigned int m) 
   : v(new T*[n])
 { 
-  register unsigned int i, j;
   this->n = n; this->m = m;
   v[0] = new T[m * n]; 
-  for (i = 1; i < n; i++) 
+  for (unsigned int i = 1; i < n; i++)
     v[i] = v[i - 1] + m; 
-  for (i = 0; i < n; i++) 
-    for (j = 0; j < m; j++) 
+  for (unsigned int i = 0; i < n; i++)
+    for (unsigned int j = 0; j < m; j++)
       v[i][j] = *a++; 
 } 
 
@@ -955,16 +945,15 @@ template <class T>
 Matrix<T>::Matrix(MType t, const T& a, const T& o, unsigned int n, unsigned int m) 
   : v(new T*[n])
 { 
-  register unsigned int i, j;
   this->n = n; this->m = m;
   v[0] = new T[m * n]; 
-  for (i = 1; i < n; i++) 
+  for (unsigned int i = 1; i < n; i++)
     v[i] = v[i - 1] + m; 
   switch (t)
     {
     case DIAG:
-      for (i = 0; i < n; i++) 
-	for (j = 0; j < m; j++) 
+      for (unsigned int i = 0; i < n; i++)
+	for (unsigned int j = 0; j < m; j++)
 	  if (i != j)
 	    v[i][j] = o; 
 	  else
@@ -979,16 +968,15 @@ template <class T>
 Matrix<T>::Matrix(MType t, const Vector<T>& a, const T& o, unsigned int n, unsigned int m) 
   : v(new T*[n])
 { 
-  register unsigned int i, j;
   this->n = n; this->m = m;
   v[0] = new T[m * n]; 
-  for (i = 1; i < n; i++) 
+  for (unsigned int i = 1; i < n; i++)
     v[i] = v[i - 1] + m; 
   switch (t)
     {
     case DIAG:
-      for (i = 0; i < n; i++) 
-	for (j = 0; j < m; j++) 
+      for (unsigned int i = 0; i < n; i++)
+	for (unsigned int j = 0; j < m; j++)
 	  if (i != j)
 	    v[i][j] = o; 
 	  else
@@ -1003,13 +991,12 @@ template <typename T>
 Matrix<T>::Matrix(const Matrix<T>& rhs)
   : v(new T*[rhs.n])
 {
-  register unsigned int i, j;
   n = rhs.n; m = rhs.m;
   v[0] = new T[m * n]; 
-  for (i = 1; i < n; i++) 
+  for (unsigned int i = 1; i < n; i++)
     v[i] = v[i - 1] + m;
-  for (i = 0; i < n; i++)
-    for (j = 0; j < m; j++)
+  for (unsigned int i = 0; i < n; i++)
+    for (unsigned int j = 0; j < m; j++)
       v[i][j] = rhs[i][j];
 }
 
@@ -1028,12 +1015,11 @@ inline Matrix<T>& Matrix<T>::operator=(const Matrix<T> &rhs)
 // if matrix and rhs were different sizes, matrix 
 // has been resized to match the size of rhs 
 { 
-  register unsigned int i, j;
   if (this != &rhs) 
     {
       resize(rhs.n, rhs.m);
-      for (i = 0; i < n; i++) 
-	for (j = 0; j < m; j++) 
+      for (unsigned int i = 0; i < n; i++)
+	for (unsigned int j = 0; j < m; j++)
 	  v[i][j] = rhs[i][j]; 
     } 
   return *this; 
@@ -1042,9 +1028,8 @@ inline Matrix<T>& Matrix<T>::operator=(const Matrix<T> &rhs)
 template <typename T> 
 inline Matrix<T>& Matrix<T>::operator=(const T& a) // assign a to every element 
 { 
-  register unsigned int i, j;
-  for (i = 0; i < n; i++) 
-    for (j = 0; j < m; j++) 
+  for (unsigned int i = 0; i < n; i++)
+    for (unsigned int j = 0; j < m; j++)
       v[i][j] = a; 
   return *this; 
 } 
@@ -1053,7 +1038,6 @@ inline Matrix<T>& Matrix<T>::operator=(const T& a) // assign a to every element
 template <typename T> 
 inline void Matrix<T>::resize(const unsigned int n, const unsigned int m) 
 {
-  register unsigned int i;
   if (n == this->n && m == this->m)
     return;
   if (v != 0) 
@@ -1064,17 +1048,16 @@ inline void Matrix<T>::resize(const unsigned int n, const unsigned int m)
   this->n = n; this->m = m;
   v = new T*[n]; 
   v[0] = new T[m * n];  
-  for (i = 1; i < n; i++)
+  for (unsigned int i = 1; i < n; i++)
     v[i] = v[i - 1] + m;
 } 
 
 template <typename T> 
 inline void Matrix<T>::resize(const T& a, const unsigned int n, const unsigned int m) 
 {
-  register unsigned int i, j;
   resize(n, m);
-  for (i = 0; i < n; i++)
-    for (j = 0; j < m; j++)
+  for (unsigned int i = 0; i < n; i++)
+    for (unsigned int j = 0; j < m; j++)
       v[i][j] = a;
 } 
 
@@ -1093,12 +1076,11 @@ inline Vector<T> Matrix<T>::extractRow(const unsigned int i) const
 template <typename T> 
 inline Vector<T> Matrix<T>::extractColumn(const unsigned int j) const
 {
-  register unsigned int i;
   if (j >= m)
     throw std::logic_error("Error in extractRow: trying to extract a row out of matrix bounds");
   Vector<T> tmp(n);
 	
-  for (i = 0; i < n; i++)
+  for (unsigned int i = 0; i < n; i++)
     tmp[i] = v[i][j];
 	
   return tmp;
@@ -1107,11 +1089,11 @@ inline Vector<T> Matrix<T>::extractColumn(const unsigned int j) const
 template <typename T>
 inline Vector<T> Matrix<T>::extractDiag() const
 {
-  register unsigned int d = std::min(n, m), i;
+  unsigned int d = std::min(n, m);
   
   Vector<T> tmp(d);
 	
-  for (i = 0; i < d; i++)
+  for (unsigned int i = 0; i < d; i++)
     tmp[i] = v[i][i];
 	
   return tmp;
@@ -1122,11 +1104,11 @@ template <typename T>
 inline Matrix<T> Matrix<T>::extractRows(const std::set<unsigned int>& indexes) const
 {
   Matrix<T> tmp(indexes.size(), m);
-  register unsigned int i = 0, j;
+  unsigned int i = 0;
 	
   for (std::set<unsigned int>::const_iterator el = indexes.begin(); el != indexes.end(); el++)
     {
-      for (j = 0; j < m; j++)
+      for (unsigned int j = 0; j < m; j++)
 	{
 	  if (*el >= n)
 	    throw std::logic_error("Error extracting rows: the indexes are out of matrix bounds");
@@ -1142,11 +1124,11 @@ template <typename T>
 inline Matrix<T> Matrix<T>::extractColumns(const std::set<unsigned int>& indexes) const
 {
   Matrix<T> tmp(n, indexes.size());
-  register unsigned int i, j = 0;
+  unsigned int j = 0;
 	
   for (std::set<unsigned int>::const_iterator el = indexes.begin(); el != indexes.end(); el++)
     {
-      for (i = 0; i < n; i++)
+      for (unsigned int i = 0; i < n; i++)
 	{
 	  if (*el >= m)
 	    throw std::logic_error("Error extracting columns: the indexes are out of matrix bounds");
@@ -1162,7 +1144,7 @@ template <typename T>
 inline Matrix<T> Matrix<T>::extract(const std::set<unsigned int>& r_indexes, const std::set<unsigned int>& c_indexes) const
 {
   Matrix<T> tmp(r_indexes.size(), c_indexes.size());
-  register unsigned int i = 0, j;
+  unsigned int i = 0, j;
 	
   for (std::set<unsigned int>::const_iterator r_el = r_indexes.begin(); r_el != r_indexes.end(); r_el++)
     {
@@ -2064,27 +2046,27 @@ void cholesky(const Matrix<T> A, Matrix<T>& LL)
 {
   if (A.ncols() != A.nrows())
     throw std::logic_error("Error in Cholesky decomposition: matrix must be squared");
-  register int i, j, k, n = A.ncols();
-  register double sum;
+  int n = A.ncols();
+  double sum;
   LL = A;
 	
-  for (i = 0; i < n; i++)
+  for (unsigned int i = 0; i < n; i++)
     {
-      for (j = i; j < n; j++)
+      for (unsigned int j = i; j < n; j++)
 	{
 	  sum = LL[i][j];
-	  for (k = i - 1; k >= 0; k--)
+	  for (int k = i - 1; k >= 0; k--)
 	    sum -= LL[i][k] * LL[j][k];
 	  if (i == j) 
 	    {
 	      if (sum <= 0.0)
 		throw std::logic_error("Error in Cholesky decomposition: matrix is not postive definite");
-          LL[i][i] = std::sqrt(sum);
+	      LL[i][i] = sqrt(sum);
 	    }
 	  else
 	    LL[j][i] = sum / LL[i][i];
 	}
-      for (k = i + 1; k < n; k++)
+      for (unsigned int k = i + 1; k < n; k++)
 	LL[i][k] = LL[k][i];
     } 
 }
@@ -2129,14 +2111,14 @@ void forward_elimination(const Matrix<T>& L, Vector<T>& y, const Vector<T> b)
     throw std::logic_error("Error in Forward elimination: matrix must be squared (lower triangular)");
   if (b.size() != L.nrows())
     throw std::logic_error("Error in Forward elimination: b vector must be of the same dimensions of L matrix");
-  register int i, j, n = b.size();
+  unsigned int n = b.size();
   y.resize(n);
 	
   y[0] = b[0] / L[0][0];
-  for (i = 1; i < n; i++)
+  for (unsigned int i = 1; i < n; i++)
     {
       y[i] = b[i];
-      for (j = 0; j < i; j++)
+      for (unsigned int j = 0; j < i; j++)
 	y[i] -= L[i][j] * y[j];
       y[i] = y[i] / L[i][i];
     }
@@ -2158,14 +2140,14 @@ void backward_elimination(const Matrix<T>& U, Vector<T>& x, const Vector<T>& y)
     throw std::logic_error("Error in Backward elimination: matrix must be squared (upper triangular)");
   if (y.size() != U.nrows())
     throw std::logic_error("Error in Backward elimination: b vector must be of the same dimensions of U matrix");
-  register int i, j, n = y.size();
+  int n = y.size();
   x.resize(n);
 	
   x[n - 1] = y[n - 1] / U[n - 1][n - 1];
-  for (i = n - 2; i >= 0; i--)
+  for (int i = n - 2; i >= 0; i--)
     {
       x[i] = y[i];
-      for (j = i + 1; j < n; j++)
+      for (int j = i + 1; j < n; j++)
 	x[i] -= U[i][j] * x[j];
       x[i] = x[i] / U[i][i];
     }
@@ -2324,7 +2306,7 @@ Vector<T> var(const Matrix<T>& m, bool sample_correction = false)
 template <typename T>
 Vector<T> stdev(const Matrix<T>& m, bool sample_correction = false)
 {
-  return sqrt(var(m, sample_correction));
+  return vec_sqrt(var(m, sample_correction));
 }
 
 template <typename T>
@@ -2353,7 +2335,7 @@ Vector<T> r_var(const Matrix<T>& m, bool sample_correction = false)
 template <typename T>
 Vector<T> r_stdev(const Matrix<T>& m, bool sample_correction = false)
 {
-  return sqrt(r_var(m, sample_correction));
+  return vec_sqrt(r_var(m, sample_correction));
 }
 
 template <typename T>
@@ -2439,7 +2421,7 @@ Matrix<T> exp(const Matrix<T>&m)
 }
 
 template <typename T>
-Matrix<T> sqrt(const Matrix<T>&m)
+Matrix<T> mat_sqrt(const Matrix<T>&m)
 {
   Matrix<T> tmp(m.nrows(), m.ncols());
 	
@@ -2512,7 +2494,7 @@ Matrix<T> dot_prod(const Matrix<T>& a, const Vector<T>& b)
 template <typename T>
 Matrix<T> dot_prod(const Vector<T>& a, const Matrix<T>& b)
 {
-  if (a.size() != b.ncols())
+  if (a.size() != b.nrows())
     throw std::logic_error("Error matrix dot product: dimensions of the vector and matrix are not compatible");
   Matrix<T> tmp(1, b.ncols());
   for (unsigned int j = 0; j < tmp.ncols(); j++)
@@ -2545,6 +2527,6 @@ inline Matrix<double> r_rank(const Matrix<T> m)
   return tmp;                  
 }
 
-} // namespace QuadProgPP
+} // namespace quadprogpp
 
 #endif // define _ARRAY_HH_

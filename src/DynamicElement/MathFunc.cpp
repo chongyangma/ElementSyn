@@ -190,9 +190,9 @@ namespace machy_math
 	vector<Flt> GetSolution(CDenseMatrix* ptrMatrix, const vector<Flt>& vecB)
 	{
 		int numOfUnknowns = int(vecB.size());
-		QuadProgPP::Matrix<double> matG(numOfUnknowns, numOfUnknowns);
-		QuadProgPP::Vector<double> g0(numOfUnknowns);
-		QuadProgPP::Vector<double> x(numOfUnknowns, 0.f);
+		quadprogpp::Matrix<double> matG(numOfUnknowns, numOfUnknowns);
+		quadprogpp::Vector<double> g0(numOfUnknowns);
+		quadprogpp::Vector<double> x(numOfUnknowns, 0.f);
 		for ( int i=0; i<numOfUnknowns; i++ )
 		{
 			for ( int j=0; j<numOfUnknowns; j++ )
@@ -201,11 +201,11 @@ namespace machy_math
 			}
 			g0[i] = -vecB[i];
 		}
-		QuadProgPP::Matrix<double> CE;
-		QuadProgPP::Matrix<double> CI;
-		QuadProgPP::Vector<double> ce0;
-		QuadProgPP::Vector<double> ci0;
-		double cost = QuadProgPP::solve_quadprog(matG, g0, CE, ce0, CI, ci0, x);
+		quadprogpp::Matrix<double> CE;
+		quadprogpp::Matrix<double> CI;
+		quadprogpp::Vector<double> ce0;
+		quadprogpp::Vector<double> ci0;
+		double cost = quadprogpp::solve_quadprog(matG, g0, CE, ce0, CI, ci0, x);
 		vector<Flt> vecX(numOfUnknowns);
 		for ( int i=0; i<numOfUnknowns; i++ )
 		{
@@ -217,9 +217,9 @@ namespace machy_math
 	vector<Flt> GetSolution(CCrossList* ptrMatrix, const vector<Flt>& vecB)
 	{
 		int numOfUnknowns = int(vecB.size());
-		QuadProgPP::Matrix<double> matG(0.0, numOfUnknowns, numOfUnknowns);
-		QuadProgPP::Vector<double> g0(numOfUnknowns);
-		QuadProgPP::Vector<double> x(numOfUnknowns, 0.f);
+		quadprogpp::Matrix<double> matG(0.0, numOfUnknowns, numOfUnknowns);
+		quadprogpp::Vector<double> g0(numOfUnknowns);
+		quadprogpp::Vector<double> x(numOfUnknowns, 0.f);
 		int nCols = ptrMatrix->GetColNum();
 		int nRows = ptrMatrix->GetRowNum();
 		OLink* ptrRhead = ptrMatrix->GetPtrRhead();
@@ -234,11 +234,11 @@ namespace machy_math
 		{
 			g0[i] = -vecB[i];
 		}
-		QuadProgPP::Matrix<double> CE;
-		QuadProgPP::Matrix<double> CI;
-		QuadProgPP::Vector<double> ce0;
-		QuadProgPP::Vector<double> ci0;
-		double cost = QuadProgPP::solve_quadprog(matG, g0, CE, ce0, CI, ci0, x);
+		quadprogpp::Matrix<double> CE;
+		quadprogpp::Matrix<double> CI;
+		quadprogpp::Vector<double> ce0;
+		quadprogpp::Vector<double> ci0;
+		double cost = quadprogpp::solve_quadprog(matG, g0, CE, ce0, CI, ci0, x);
 		vector<Flt> vecX(numOfUnknowns);
 		for ( int i=0; i<numOfUnknowns; i++ )
 		{
