@@ -11,10 +11,6 @@ compiler:
     - gcc
     - clang
 
-branches:
-  only:
-    - master
-
 before_script:
     - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install cmake; fi
     - if [ "$TRAVIS_OS_NAME" == "linux" ]; then cd /usr/include/X11/extensions && sudo ln -s XI.h XInput.h && cd -; fi
