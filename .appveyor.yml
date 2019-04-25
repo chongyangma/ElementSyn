@@ -7,10 +7,12 @@ test: off
 
 clone_folder: C:\projects\ElementSyn
 
-build_script:
+before_build:
   - echo Running cmake...
   - cd C:\projects\ElementSyn
   - cmake -G "Visual Studio 14 2015 Win64" .
+
+build_script:
   - set MSBuildLogger="C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   - set MSBuildOptions=/v:m /p:Configuration=Release /logger:%MSBuildLogger%
   - msbuild %MSBuildOptions% ElementSyn.sln
