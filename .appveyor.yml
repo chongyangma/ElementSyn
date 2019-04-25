@@ -1,9 +1,8 @@
 version: 1.{build}
 
-environment:
-  matrix:
-    - VS_GENERATOR: "Visual Studio 11 2012"
-    - VS_GENERATOR: "Visual Studio 14 2015"
+os:
+  - Visual Studio 2015
+  - Visual Studio 2017
 
 platform:
   - Win32
@@ -16,10 +15,6 @@ configuration:
 test: off
 
 clone_folder: C:\projects\ElementSyn
-
-branches:
-  only:
-    - master
 
 before_build:
   - cmd: cd C:\projects\ElementSyn
