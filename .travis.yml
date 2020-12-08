@@ -5,11 +5,11 @@ dist: trusty
 
 os:
     - linux
-    - osx
+    # - osx
 
 compiler:
     - gcc
-    - clang
+    # - clang
 
 before_script:
     - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install cmake; fi

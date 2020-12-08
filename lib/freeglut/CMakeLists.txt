@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12 FATAL_ERROR)
 PROJECT(freeglut)
 
 # for multiarch LIBDIR support (requires cmake>=2.8.8)
@@ -251,7 +251,7 @@ IF(WIN32)
     IF(MSVC)
         SET( CMAKE_DEBUG_POSTFIX "d" )
     ENDIF(MSVC)
-    
+
     # enable the use of Win2000 APIs (needed for really old compilers like MSVC6)
     ADD_DEFINITIONS(-D_WIN32_WINNT=0x0500)
     ADD_DEFINITIONS(-DWINVER=0x0500)
