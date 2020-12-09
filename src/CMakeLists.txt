@@ -1,5 +1,3 @@
-INCLUDE_DIRECTORIES (../lib/quadprog/src)
-
 FIND_PACKAGE(OpenMP)
 IF(OPENMP_FOUND)
     MESSAGE("OPENMP FOUND")
@@ -10,6 +8,9 @@ ENDIF()
 
 find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
+
+INCLUDE_DIRECTORIES(${GLUT_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(../lib/quadprog/src)
 
 ADD_SUBDIRECTORY(DynamicElement)
 ADD_SUBDIRECTORY(ParticleSystem)

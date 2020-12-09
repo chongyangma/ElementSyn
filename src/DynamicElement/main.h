@@ -66,6 +66,9 @@ using std::ios;
 #else
 #include <GL/glut.h>
 #endif
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 //------------------------------CONSTANTS---------------------------------------------
 // User-specified data type

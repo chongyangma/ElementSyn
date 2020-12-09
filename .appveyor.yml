@@ -1,13 +1,19 @@
-version: {build}
+version: "{build}"
 
-os:
-  - Visual Studio 2015
+image: Visual Studio 2015
 
-platform:
-  - Win32
-  #- x64
+environment:
+  matrix:
+    - COMPILER: "Visual Studio 14 2015"
+      ARCH: "Win32"
+      GLUT_LIBRARY: "../../glut/lib/glut32.lib"
+    - COMPILER: "Visual Studio 14 2015"
+      ARCH: "x64"
+      GLUT_LIBRARY: "../../glut/lib.x64/glut32.lib"
 
-test: off
+configuration:
+  - Debug
+  - Release
 
 clone_folder: C:\projects\ElementSyn
 
@@ -20,9 +26,24 @@ install:
 
 build_script:
   - cd C:\projects\ElementSyn
-  - md build
+
+  # GLUT headers and libraries for Windows
+  - cd ..
+  - mkdir glut
+  - cd glut
+  - curl http://www.nigels.com/download/NvidiaCgGLUT_Windows.zip --output glut.zip
+  - unzip glut.zip
+
+  # Build ElementSyn
+  - cd ../ElementSyn
+  - mkdir build
   - cd build
-  - if "%platform%"=="Win32" set CMAKE_GENERATOR_NAME=Visual Studio 14 2015
-  - if "%platform%"=="x64"   set CMAKE_GENERATOR_NAME=Visual Studio 14 2015 Win64
-  - cmake -G "%CMAKE_GENERATOR_NAME%" -DCMAKE_BUILD_TYPE=%configuration% ../
+  - cmake
+      -G "%COMPILER%"
+      -A "%ARCH%"
+      -DCMAKE_BUILD_TYPE=%configuration%
+      -DGLUT_INCLUDE_DIR=../../glut/include
+      -DGLUT_glut_LIBRARY_DEBUG="%GLUT_LIBRARY%"
+      -DGLUT_glut_LIBRARY_RELEASE="%GLUT_LIBRARY%"
+      ..
   - msbuild %MSBuildOptions% ElementSyn.sln
