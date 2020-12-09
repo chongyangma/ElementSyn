@@ -12,7 +12,7 @@ environment:
       GLUT_LIBRARY: "../../glut/lib.x64/glut32.lib"
 
 configuration:
-  # - Debug
+  - Debug
   - Release
 
 test: off
@@ -43,9 +43,9 @@ build_script:
   - cmake
       -G "%COMPILER%"
       -A "%ARCH%"
+      -DCMAKE_BUILD_TYPE=%configuration%
       -DGLUT_INCLUDE_DIR=../../glut/include
       -DGLUT_glut_LIBRARY_DEBUG="%GLUT_LIBRARY%"
       -DGLUT_glut_LIBRARY_RELEASE="%GLUT_LIBRARY%"
       ..
-  - cmake --build . --config %CONFIGURATION%
   - msbuild %MSBuildOptions% ElementSyn.sln
