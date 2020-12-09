@@ -48,5 +48,4 @@ build_script:
       -DGLUT_glut_LIBRARY_RELEASE="%GLUT_LIBRARY%"
       ..
   - cmake --build . --config %CONFIGURATION%
-  - cd ..
   - msbuild %MSBuildOptions% ElementSyn.sln
