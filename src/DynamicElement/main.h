@@ -61,7 +61,11 @@ using std::ios;
 #include <sstream>
 #include <iomanip>
 #include <cstdio>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 
 //------------------------------CONSTANTS---------------------------------------------
 // User-specified data type
