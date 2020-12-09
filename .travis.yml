@@ -11,11 +11,21 @@ compiler:
     - gcc
     # - clang
 
-before_script:
-    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install cmake; fi
-    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then cd /usr/include/X11/extensions && sudo ln -s XI.h XInput.h && cd -; fi
+script:
+    # - if [ "$TRAVIS_OS_NAME" == "linux" ]; then sudo apt-get install cmake; fi
+    # - if [ "$TRAVIS_OS_NAME" == "linux" ]; then cd /usr/include/X11/extensions && sudo ln -s XI.h XInput.h && cd -; fi
+    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then CPPFLAGS=-DGLUI_FREEGLUT              make; fi
+    - if [ "$TRAVIS_OS_NAME" == "osx" ];   then CPPFLAGS=-Wno-deprecated-declarations make; fi
     - mkdir build
     - cd build
-    - cmake ..
+    - cmake .. && make
 
-script: make
+addons:
+  apt:
+    packages:
+    - git
+    - cmake
+    - libosmesa6-dev
+    - libegl1-mesa-dev
+    - libxi-dev
+    - freeglut3-dev
