@@ -21,7 +21,6 @@ This repository contains the source code and example data of the following publi
 ## Requirements
 
 The code requires [CMake](https://cmake.org/) to build and has been tested under Windows (MSVC 2010 and later), Linux and Mac OS X. Additional dependencies (already included in this repo) are:
-* [FreeGLUT](http://freeglut.sourceforge.net/) for output visualization
 * [QuadProg++](https://github.com/liuq/QuadProgpp) for quadratic programming
 
 ## Usage

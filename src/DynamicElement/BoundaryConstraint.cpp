@@ -138,9 +138,9 @@ CGrid2D3f CBoundaryConstraint::IdentifyGridContour(const CGrid2D3f& gridInput)
 	CGrid2D3f gridContour;
 	gridContour.Allocate(sizeInput);
 	vector<Vec2i> vecContourPoint;
-	for ( int i=0; i<sizeInput[0]; i++ )
+	for (unsigned int i=0; i<sizeInput[0]; i++ )
 	{
-		for ( int j=0; j<sizeInput[1]; j++ )
+		for (unsigned int j=0; j<sizeInput[1]; j++ )
 		{
 			Vec3f clContour = Vec3f(0.0f, 0.0f, 0.0f);
 			bool contourFlag = false;
