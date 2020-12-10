@@ -16,6 +16,8 @@ if(MSVC)
     # Disable annoying MSVC warnings (all targets)
     add_definitions(/D "_CRT_SECURE_NO_WARNINGS")
 
+    add_definitions(/D "_USE_MATH_DEFINES")
+
     # Parallel build on MSVC (all targets)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
 
