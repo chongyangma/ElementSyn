@@ -12,6 +12,21 @@ find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 include_directories(${GLUT_INCLUDE_DIR})
 
+if(MSVC)
+    # Disable annoying MSVC warnings (all targets)
+    add_definitions(/D "_CRT_SECURE_NO_WARNINGS")
+
+    # Parallel build on MSVC (all targets)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+
+    if (NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:SSE2")
+
+        # Disable Eigen vectorization for Windows 32 bit builds (issues with unaligned access segfaults)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DEIGEN_DONT_ALIGN")
+    endif()
+endif()
+
 include_directories(../3rdparty/eigen)
 
 add_subdirectory(DynamicElement)
