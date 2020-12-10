@@ -25,6 +25,7 @@ if(MSVC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:SSE2")
 
         # Disable Eigen vectorization for Windows 32 bit builds (issues with unaligned access segfaults)
+        message(STATUS "EIGEN_DONT_ALIGN")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DEIGEN_DONT_ALIGN")
     endif()
 endif()
