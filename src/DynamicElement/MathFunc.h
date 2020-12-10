@@ -1,11 +1,10 @@
-
 #ifndef MATHFUNC_H
 #define MATHFUNC_H
 
 #include "main.h"
 #include "vec.h"
 #include "MathTypes.h"
-#include "QuadProg++.hh"
+// #include "QuadProg++.hh"
 
 namespace machy_math
 {
