@@ -68,6 +68,7 @@ using std::ios;
 #endif
 #ifdef WIN32
 #include <windows.h>
+#define _USE_MATH_DEFINES
 #endif
 
 //------------------------------CONSTANTS---------------------------------------------
