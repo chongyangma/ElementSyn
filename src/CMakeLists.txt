@@ -1,3 +1,5 @@
+add_definitions(-DGL_SILENCE_DEPRECATION=1)
+
 find_package(OpenMP)
 if(OPENMP_FOUND)
     message("OPENMP FOUND")

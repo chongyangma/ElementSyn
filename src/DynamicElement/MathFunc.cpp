@@ -192,7 +192,7 @@ namespace machy_math
 	{
         int nCols = ptrCoeffMatrix->GetColNum();
         int nRows = ptrCoeffMatrix->GetRowNum();
-        Eigen::MatrixXf M(nCols, nRows);
+        Eigen::MatrixXf M = Eigen::MatrixXf::Zero(nCols, nRows);
         for ( int i=0; i<nRows; i++ )
         {
             for ( int j=0; j<nCols; j++ )
@@ -209,10 +209,9 @@ namespace machy_math
         {
             b[i] = vecB[i];
         }
-        Eigen::VectorXf x(nRows);
-        vector<Flt> vecX(nRows);
 
-        x = M.ldlt().solve(b);
+        vector<Flt> vecX(nRows);
+        Eigen::VectorXf x = M.ldlt().solve(b);
 
         for ( int i=0; i<nRows; i++ )
         {
