@@ -4,9 +4,9 @@ image: Visual Studio 2015
 
 environment:
   matrix:
-    # - COMPILER: "Visual Studio 14 2015"
-    #   ARCH: "Win32"
-    #   GLUT_LIBRARY: "../../glut/lib/glut32.lib"
+    - COMPILER: "Visual Studio 14 2015"
+      ARCH: "Win32"
+      GLUT_LIBRARY: "../../glut/lib/glut32.lib"
     - COMPILER: "Visual Studio 14 2015"
       ARCH: "x64"
       GLUT_LIBRARY: "../../glut/lib.x64/glut32.lib"

@@ -12,7 +12,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 include_directories(${GLUT_INCLUDE_DIR})
 
-if(MSVC)
+if(WIN32)
     # Disable annoying MSVC warnings (all targets)
     add_definitions(/D "_CRT_SECURE_NO_WARNINGS")
 
