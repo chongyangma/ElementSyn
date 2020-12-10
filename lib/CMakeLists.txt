@@ -1,2 +1,0 @@
-# ADD_SUBDIRECTORY(freeglut)
-ADD_SUBDIRECTORY(quadprog)
