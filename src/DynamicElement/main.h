@@ -80,9 +80,9 @@ typedef unsigned int uint;
 #endif
 
 const float HALF_PI = 2.0 * atan(1.0);
-#ifdef WIN32
-const float M_PI = 4.0 * atan(1.0);
-#endif
+//#ifdef WIN32
+//const float M_PI = 4.0 * atan(1.0);
+//#endif
 const float TWO_PI = 8.0 * atan(1.0);
 const float INV_PI = 1.0/M_PI;
 const float INV_TWO_PI = 1.0/TWO_PI;
