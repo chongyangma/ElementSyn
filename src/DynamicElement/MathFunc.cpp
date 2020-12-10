@@ -1,5 +1,6 @@
-
 #include "MathFunc.h"
+#include <Eigen/Sparse>
+#include <Eigen/Dense>
 
 namespace machy_math
 {
@@ -187,64 +188,77 @@ namespace machy_math
 		return min(min(d0, d1), d2);
 	}
 
-	vector<Flt> GetSolution(CDenseMatrix* ptrMatrix, const vector<Flt>& vecB)
+	vector<Flt> GetSolution(CDenseMatrix* ptrCoeffMatrix, const vector<Flt>& vecB)
 	{
-		int numOfUnknowns = int(vecB.size());
-		quadprogpp::Matrix<double> matG(numOfUnknowns, numOfUnknowns);
-		quadprogpp::Vector<double> g0(numOfUnknowns);
-		quadprogpp::Vector<double> x(numOfUnknowns, 0.f);
-		for ( int i=0; i<numOfUnknowns; i++ )
-		{
-			for ( int j=0; j<numOfUnknowns; j++ )
-			{
-				matG[i][j] = ptrMatrix->GetVal(i, j);
-			}
-			g0[i] = -vecB[i];
-		}
-		quadprogpp::Matrix<double> CE;
-		quadprogpp::Matrix<double> CI;
-		quadprogpp::Vector<double> ce0;
-		quadprogpp::Vector<double> ci0;
-		double cost = quadprogpp::solve_quadprog(matG, g0, CE, ce0, CI, ci0, x);
-		vector<Flt> vecX(numOfUnknowns);
-		for ( int i=0; i<numOfUnknowns; i++ )
-		{
-			vecX[i] = x[i];
-		}
-		return vecX;
+        int nCols = ptrCoeffMatrix->GetColNum();
+        int nRows = ptrCoeffMatrix->GetRowNum();
+        Eigen::MatrixXf M = Eigen::MatrixXf::Zero(nCols, nRows);
+        for ( int i=0; i<nRows; i++ )
+        {
+            for ( int j=0; j<nCols; j++ )
+            {
+                Flt val = ptrCoeffMatrix->GetVal(i, j);
+                if ( val != 0.0f )
+                {
+                    M(i, j) = val;
+                }
+            }
+        }
+        Eigen::VectorXf b(nRows);
+        for ( int i=0; i<nRows; i++ )
+        {
+            b[i] = vecB[i];
+        }
+
+        vector<Flt> vecX(nRows);
+        Eigen::VectorXf x = M.ldlt().solve(b);
+
+        for ( int i=0; i<nRows; i++ )
+        {
+            vecX[i] = x[i];
+        }
+        return vecX;
 	}
 
-	vector<Flt> GetSolution(CCrossList* ptrMatrix, const vector<Flt>& vecB)
+	vector<Flt> GetSolution(CCrossList* ptrCoeffMatrix, const vector<Flt>& vecB)
 	{
-		int numOfUnknowns = int(vecB.size());
-		quadprogpp::Matrix<double> matG(0.0, numOfUnknowns, numOfUnknowns);
-		quadprogpp::Vector<double> g0(numOfUnknowns);
-		quadprogpp::Vector<double> x(numOfUnknowns, 0.f);
-		int nCols = ptrMatrix->GetColNum();
-		int nRows = ptrMatrix->GetRowNum();
-		OLink* ptrRhead = ptrMatrix->GetPtrRhead();
-		for ( int i=1; i<=nRows; i++ )
-		{
-			for ( OLNode* q=ptrRhead[i]; q!=NULL; q=q->m_ptrR )
-			{
-				matG[q->m_x-1][q->m_y-1] = q->m_value;
-			}
-		}
-		for ( int i=0; i<numOfUnknowns; i++ )
-		{
-			g0[i] = -vecB[i];
-		}
-		quadprogpp::Matrix<double> CE;
-		quadprogpp::Matrix<double> CI;
-		quadprogpp::Vector<double> ce0;
-		quadprogpp::Vector<double> ci0;
-		double cost = quadprogpp::solve_quadprog(matG, g0, CE, ce0, CI, ci0, x);
-		vector<Flt> vecX(numOfUnknowns);
-		for ( int i=0; i<numOfUnknowns; i++ )
-		{
-			vecX[i] = x[i];
-		}
-		return vecX;
+        typedef Eigen::SparseMatrix<float> SparseMatrix;
+        typedef Eigen::Triplet<float> Triplet;
+
+        int nCols = ptrCoeffMatrix->GetColNum();
+        int nRows = ptrCoeffMatrix->GetRowNum();
+
+        Eigen::SparseMatrix<float> M(nRows, nCols);
+        std::vector<Triplet> pending;
+
+        OLink* ptrRhead = ptrCoeffMatrix->GetPtrRhead();
+        for ( int i=1; i<=nRows; i++ )
+        {
+            for ( OLNode* q=ptrRhead[i]; q!=NULL; q=q->m_ptrR )
+            {
+                pending.push_back(Triplet(q->m_x-1, q->m_y-1, q->m_value));
+            }
+        }
+        M.setFromTriplets(pending.begin(), pending.end());
+        M.makeCompressed();
+
+        Eigen::VectorXf b(nRows);
+        for ( int i=0; i<nRows; i++ )
+        {
+            b[i] = vecB[i];
+        }
+        Eigen::VectorXf x(nRows);
+        vector<Flt> vecX(nRows);
+
+        Eigen::ConjugateGradient<SparseMatrix> cg;
+        cg.compute(M);
+        x = cg.solve(b);
+
+        for ( int i=0; i<nRows; i++ )
+        {
+            vecX[i] = x[i];
+        }
+        return vecX;
 	}
 
 } // namespace machy_math
