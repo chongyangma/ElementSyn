@@ -81,7 +81,7 @@ bool CBoundaryConstraint::InsideBoundary(int px, int py)
     return (m_grid(px, py)[0] < m_colorThresh);
 }
 
-void CBoundaryConstraint::LoadBoundaryConstraintFromImage(string fileName)
+void CBoundaryConstraint::LoadBoundaryConstraintFromImage(const string& fileName)
 {
     m_grid = LoadGrid2D3fFromCImage(fileName.c_str());
     m_gridContour = IdentifyGridContour(m_grid);

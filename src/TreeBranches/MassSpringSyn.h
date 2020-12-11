@@ -65,9 +65,9 @@ private:
 
     void UpdateCoeffMatPairVals(int idxi, int idxj, Flt wt, Vec3f pr, bool flagUpdateMat = true);
 
-    vector<CMassSpringData> LoadStrandsFromTXT(string fileName);
+    vector<CMassSpringData> LoadStrandsFromTXT(const string& fileName);
 
-    vector<CMassSpringData> InitializeStrandsViaPoissonDisk(string fileName);
+    vector<CMassSpringData> InitializeStrandsViaPoissonDisk(const string& fileName);
 
     int GetNumOfUnknownsTotal(vector<CMassSpringData>& strands);
 

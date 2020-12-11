@@ -5,11 +5,11 @@ ElementSyn
 
 This repository contains the source code and example data of the following publication:
 
-> **Dynamic Element Textures**
+> Dynamic Element Textures
 >
 > [Chongyang Ma](http://chongyangma.com/), [Li-Yi Wei](http://www.liyiwei.org/), [Sylvain Lefebvre](http://www.antexel.com/sylefeb/research), [Xin Tong](http://research.microsoft.com/en-us/um/people/xtong/xtong.html)
 >
-> In *ACM Transactions on Graphics (Proceedings of SIGGRAPH 2013)*
+> In _ACM Transactions on Graphics (Proceedings of SIGGRAPH 2013)_
 >
 > [Project page](http://chongyangma.com/publications/dt/index.html),
 > [Paper](http://chongyangma.com/publications/dt/2013_dt_paper.pdf),
@@ -18,22 +18,25 @@ This repository contains the source code and example data of the following publi
 > [YouTube](https://www.youtube.com/watch?v=dSvqGcBAorI),
 > [BibTex](http://chongyangma.com/publications/dt/2013_dt_bib.txt)
 
-## Requirements
+Requirements
+------------
 
 The code requires [CMake](https://cmake.org/) to build and has been tested under Windows (MSVC 2010 and later), Linux and Mac OS X. Additional dependencies (included in this repo as submodules) are:
-* [eigen](https://gitlab.com/libeigen/eigen) for solving linear systems
-* [lodepng](https://github.com/lvandeve/lodepng) for saving sequences of screenshots
+*   [eigen](https://gitlab.com/libeigen/eigen) for solving linear systems
+*   [lodepng](https://github.com/lvandeve/lodepng) for saving sequences of screenshots
 
-## Usage
+Usage
+-----
 
 Launching the compiled application from command line without any argument will print the usage information:
 
-```
+```bash
 ParticleSystem.exe config_file.txt
 
 TreeBranches.exe config_file.txt
 ```
 
-## Contact information
+Contact information
+-------------------
 
 Questions? Bug reports? Please send email to Chongyang Ma chongyangm@gmail.com .

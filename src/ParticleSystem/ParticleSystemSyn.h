@@ -98,7 +98,7 @@ private:
 
     void UpdateCoeffMatPairVals(int idxi, int idxj, Flt wt, Vec3f pr);
 
-    CParticleSystem LoadInputExemplarFromTXT(string fileName);
+    CParticleSystem LoadInputExemplarFromTXT(const string& fileName);
 
     vector<CubicPatch> GetCubicPatches(vector<CParticleSystem>& groupSequence);
 

@@ -1424,7 +1424,7 @@ void CParticleSystemSyn::UpdateCoeffMatPairVals(int idxi, int idxj, Flt wt, Vec3
     m_vecCz[idxj] -= wt * pr[2];
 }
 
-CParticleSystem CParticleSystemSyn::LoadInputExemplarFromTXT(string fileName)
+CParticleSystem CParticleSystemSyn::LoadInputExemplarFromTXT(const string& fileName)
 {
     CParticleSystem inputGroup;
     ifstream fin(fileName.c_str());

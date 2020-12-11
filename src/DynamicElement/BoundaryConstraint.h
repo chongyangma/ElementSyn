@@ -27,7 +27,7 @@ public:
 
     bool InsideBoundary(int px, int py);
 
-    void LoadBoundaryConstraintFromImage(string fileName);
+    void LoadBoundaryConstraintFromImage(const string& fileName);
 
     CGrid2D3f LoadGrid2D3fFromCImage(const char* fileName);
 

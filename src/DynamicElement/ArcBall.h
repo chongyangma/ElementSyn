@@ -122,7 +122,7 @@ public:
     CArcBall();
     virtual ~CArcBall();
     void DumpArcBall(FILE* file);
-    bool LoadArcBall(string fileName);
+    bool LoadArcBall(const string& fileName);
 };
 
 #endif // ARCBALL_H

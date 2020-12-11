@@ -24,7 +24,7 @@ public:
     void Draw();
 
     void DumpCamera(FILE* file);
-    bool LoadCamera(string fileName);
+    bool LoadCamera(const string& fileName);
 
 private:
     void CalcDir();

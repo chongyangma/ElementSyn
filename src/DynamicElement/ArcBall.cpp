@@ -561,7 +561,7 @@ void CArcBall::DumpArcBall(FILE* file)
     fprintf(file, "\n%s %f %f %f %f\t", "ARCBALL_Q_DOWN", ball_data.qDown.x, ball_data.qDown.y, ball_data.qDown.z, ball_data.qDown.w);
 }
 
-bool CArcBall::LoadArcBall(string fileName)
+bool CArcBall::LoadArcBall(const string& fileName)
 {
     ifstream fin(fileName.c_str());
     if (fin.fail() == true)

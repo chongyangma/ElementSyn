@@ -362,14 +362,14 @@ inline T triple(const Vec<3, T>& a, const Vec<3, T>& b, const Vec<3, T>& c)
     return a.v[0] * (b.v[1] * c.v[2] - b.v[2] * c.v[1]) + a.v[1] * (b.v[2] * c.v[0] - b.v[0] * c.v[2]) + a.v[2] * (b.v[0] * c.v[1] - b.v[1] * c.v[0]);
 }
 
-template <unsigned int N, class T>
-inline unsigned int hash(const Vec<N, T>& a)
-{
-    unsigned int h = a.v[0];
-    for (unsigned int i = 1; i < N; ++i)
-        h = hash(h ^ a.v[i]);
-    return h;
-}
+//template <unsigned int N, class T>
+//inline unsigned int hash(const Vec<N, T>& a)
+//{
+//    unsigned int h = a.v[0];
+//    for (unsigned int i = 1; i < N; ++i)
+//        h = hash(h ^ a.v[i]);
+//    return h;
+//}
 
 template <unsigned int N, class T>
 inline void assign(const Vec<N, T>& a, T& a0, T& a1)

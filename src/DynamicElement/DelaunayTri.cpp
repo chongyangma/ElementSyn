@@ -398,10 +398,6 @@ void CDelaunayTri::InsertInTriangle(TRIANGLE_PTR pTargetTri, int ver_index)
         {
             pTri = pNewTri;
         }
-        else
-        {
-            pTri = pTri;
-        }
     }
 
     // Get the three sub-triangles
@@ -462,10 +458,6 @@ void CDelaunayTri::InsertOnEdge(TRIANGLE_PTR pTargetTri, int ver_index)
         if (pNewTri != NULL)
         {
             pTri = pNewTri;
-        }
-        else
-        {
-            pTri = pTri;
         }
     }
 

@@ -76,7 +76,7 @@ void CCamera::DumpCamera(FILE* file)
     fprintf(file, "%s\t%f %f %f\n", "CAMERA_POS", m_pos[0], m_pos[1], m_pos[2]);
 }
 
-bool CCamera::LoadCamera(string fileName)
+bool CCamera::LoadCamera(const string& fileName)
 {
     ifstream fin(fileName.c_str());
     if (fin.fail() == true)

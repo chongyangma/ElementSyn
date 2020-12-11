@@ -946,7 +946,7 @@ void CMassSpringSyn::UpdateCoeffMatPairVals(int idxi, int idxj, Flt wt, Vec3f pr
     m_vecCz[idxj] -= wt * pr[2];
 }
 
-vector<CMassSpringData> CMassSpringSyn::LoadStrandsFromTXT(string fileName)
+vector<CMassSpringData> CMassSpringSyn::LoadStrandsFromTXT(const string& fileName)
 {
     vector<CMassSpringData> strands;
     ifstream fin(fileName.c_str());
@@ -982,7 +982,7 @@ vector<CMassSpringData> CMassSpringSyn::LoadStrandsFromTXT(string fileName)
     return strands;
 }
 
-vector<CMassSpringData> CMassSpringSyn::InitializeStrandsViaPoissonDisk(string fileName)
+vector<CMassSpringData> CMassSpringSyn::InitializeStrandsViaPoissonDisk(const string& fileName)
 {
     PoissonDisk2f pd2f;
     Flt distSqrMinThresh = 0.04f;
