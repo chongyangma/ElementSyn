@@ -30,6 +30,7 @@ if(WIN32)
 endif()
 
 include_directories(../3rdparty/eigen)
+include_directories(../3rdparty/lodepng)
 
 add_subdirectory(DynamicElement)
 add_subdirectory(ParticleSystem)
