@@ -1,15 +1,19 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
-PROJECT(DynamicElement)
+cmake_minimum_required(VERSION 2.8.12)
+project(DynamicElement)
 
-FILE(GLOB DET_SOURCES "*.cpp")
-FILE(GLOB DET_HEADERS "*.h")
+file(GLOB DET_SOURCES "*.cpp")
+file(GLOB DET_HEADERS "*.h")
 
-LINK_DIRECTORIES(${PROJECT_BINARY_DIR}/../../lib)
+set(LODEPNG_DIR "../../3rdparty/lodepng")
+list(APPEND DET_SOURCES ${LODEPNG_DIR}/lodepng.cpp)
+list(APPEND DET_HEADERS ${LODEPNG_DIR}/lodepng.h)
 
-ADD_LIBRARY(DynamicElement STATIC ${DET_SOURCES} ${DET_HEADERS})
+link_directories(${PROJECT_BINARY_DIR}/../../lib)
 
-TARGET_LINK_LIBRARIES(DynamicElement ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES})
+add_library(DynamicElement STATIC ${DET_SOURCES} ${DET_HEADERS})
 
-IF(NOT WIN32)
-    INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/libdet.a" DESTINATION ${CMAKE_SOURCE_DIR}/lib)
-ENDIF(NOT WIN32)
+target_link_libraries(DynamicElement ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES})
+
+if(NOT WIN32)
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libdet.a" DESTINATION ${CMAKE_SOURCE_DIR}/lib)
+endif(NOT WIN32)

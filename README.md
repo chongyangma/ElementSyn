@@ -22,6 +22,7 @@ This repository contains the source code and example data of the following publi
 
 The code requires [CMake](https://cmake.org/) to build and has been tested under Windows (MSVC 2010 and later), Linux and Mac OS X. Additional dependencies (included in this repo as submodules) are:
 * [eigen](https://gitlab.com/libeigen/eigen) for solving linear systems
+* [lodepng](https://github.com/lvandeve/lodepng) for saving sequences of screenshots
 
 ## Usage
 

@@ -1,7 +1,7 @@
 
 #include "../DynamicElement/ArcBall.h"
 #include "../DynamicElement/Camera.h"
-#include "../DynamicElement/lodepng.h"
+#include "lodepng.h"
 #include "MassSpringSyn.h"
 
 bool pause = false; //true; //
