@@ -5,7 +5,7 @@
 
 namespace det
 {
-	void RenderCylinder(float radius_bottom, float radius_top, float height, int slices);
+void RenderCylinder(float radius_bottom, float radius_top, float height, int slices);
 
 } // namespace det
 
