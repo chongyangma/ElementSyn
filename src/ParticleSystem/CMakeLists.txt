@@ -1,18 +1,14 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
-PROJECT(ParticleSystem)
+cmake_minimum_required(VERSION 2.8.12)
+project(ParticleSystem)
 
-FILE(GLOB PARTICLE_SYSTEM_SOURCES "*.cpp")
-FILE(GLOB PARTICLE_SYSTEM_HEADERS "*.h")
+file(GLOB PARTICLE_SYSTEM_SOURCES "*.cpp")
+file(GLOB PARTICLE_SYSTEM_HEADERS "*.h")
 
-LINK_DIRECTORIES(${PROJECT_BINARY_DIR}/../../lib)
+add_executable(ParticleSystem ${PARTICLE_SYSTEM_SOURCES} ${PARTICLE_SYSTEM_HEADERS})
 
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../../bin)
+target_link_libraries(ParticleSystem ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} DynamicElement)
 
-ADD_EXECUTABLE(ParticleSystem ${PARTICLE_SYSTEM_SOURCES} ${PARTICLE_SYSTEM_HEADERS})
-
-TARGET_LINK_LIBRARIES(ParticleSystem ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} DynamicElement)
-
-IF(NOT WIN32)
-  FIND_LIBRARY(OPENGL_glu_LIBRARY GLU PATHS /opt/X11/lib /usr/X11/lib /usr/X11R6/lib)
-  TARGET_LINK_LIBRARIES(ParticleSystem ${OPENGL_glu_LIBRARY})
-ENDIF()
+if(NOT WIN32)
+    find_library(OPENGL_glu_LIBRARY GLU PATHS /opt/X11/lib /usr/X11/lib /usr/X11R6/lib)
+    target_link_libraries(ParticleSystem ${OPENGL_glu_LIBRARY})
+endif()

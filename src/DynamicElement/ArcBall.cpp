@@ -8,10 +8,7 @@ CArcBall::CArcBall()
     {
         for (j = 0; j < 4; j++)
         {
-            if (i == j)
-                mId[i][j] = 1.f;
-            else
-                mId[i][j] = 0.f;
+            mId[i][j] = (i == j) ? 1.f : 0.f;
         }
     }
 
@@ -201,13 +198,12 @@ CArcBall::HVect CArcBall::V3_Cross(HVect v1, HVect v2)
 CArcBall::HVect CArcBall::MouseOnSphere(HVect mouse, HVect ballCenter, double ballRadius)
 {
     HVect ballMouse;
-    register double mag;
     ballMouse.x = float((mouse.x - ballCenter.x) / ballRadius);
     ballMouse.y = float((mouse.y - ballCenter.y) / ballRadius);
-    mag = ballMouse.x * ballMouse.x + ballMouse.y * ballMouse.y;
+    double mag = ballMouse.x * ballMouse.x + ballMouse.y * ballMouse.y;
     if (mag > 1.0)
     {
-        register float scale = float(1.0 / sqrt(mag));
+        float scale = float(1.0 / sqrt(mag));
         ballMouse.x *= scale;
         ballMouse.y *= scale;
         ballMouse.z = 0.0f;
@@ -253,10 +249,8 @@ void CArcBall::Qt_ToBallPoints(Quat_t q, HVect* arcFrom, HVect* arcTo)
 /* Force sphere point to be perpendicular to axis. */
 CArcBall::HVect CArcBall::ConstrainToAxis(HVect loose, HVect axis)
 {
-    HVect onPlane;
-    register float norm;
-    onPlane = V3_Sub(loose, V3_Scale(axis, V3_Dot(axis, loose)));
-    norm = V3_Norm(onPlane);
+    HVect onPlane = V3_Sub(loose, V3_Scale(axis, V3_Dot(axis, loose)));
+    float norm = V3_Norm(onPlane);
     if (norm > 0.0)
     {
         if (onPlane.z < 0.0) onPlane = V3_Negate(onPlane);
@@ -277,14 +271,12 @@ CArcBall::HVect CArcBall::ConstrainToAxis(HVect loose, HVect axis)
 int CArcBall::NearestConstraintAxis(HVect loose, HVect* axes, int nAxes)
 {
     HVect onPlane;
-    register float max, dot;
-    register int i, nearest;
-    max = -1.0f;
-    nearest = 0;
-    for (i = 0; i < nAxes; i++)
+    float max = -1.0f;
+    int nearest = 0;
+    for (int i = 0; i < nAxes; i++)
     {
         onPlane = ConstrainToAxis(loose, axes[i]);
-        dot = V3_Dot(onPlane, loose);
+        float dot = V3_Dot(onPlane, loose);
         if (dot > max)
         {
             max = dot;
