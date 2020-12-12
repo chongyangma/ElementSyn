@@ -91,11 +91,10 @@ void CDelaunayTri::AddBoundingBox()
     REAL max_c = 0;
     REAL max_x = 0;
     REAL max_y = 0;
-    REAL t;
 
     for (int i = 3; i < m_pMesh->vertex_num + 3; i++)
     {
-        t = abs(m_pMesh->pVerArr[i].x);
+        REAL t = abs(m_pMesh->pVerArr[i].x);
         if (max_x < t)
         {
             max_x = t;
@@ -127,7 +126,6 @@ void CDelaunayTri::RemoveBoundingBox()
 {
     int statify[3] = { 0, 0, 0 };
     int vertex_index;
-    int* pi;
     int k = 1;
 
     // Remove the first triangle bounding-box
@@ -144,7 +142,7 @@ void CDelaunayTri::RemoveBoundingBox()
         statify[1] = 0;
         statify[2] = 0;
 
-        pi = &(pTri->i1);
+        int* pi = &(pTri->i1);
         for (int j = 0, k = 1; j < 3; j++, k *= 2)
         {
             vertex_index = *pi++;
@@ -277,7 +275,6 @@ bool CDelaunayTri::FlipTest(TRIANGLE_PTR pTestTri)
 
     int statify[3] = { 0, 0, 0 };
     int vertex_index;
-    int* pi;
     int k = 1;
 
     // find the triangle which has edge consists of start and end
@@ -290,7 +287,7 @@ bool CDelaunayTri::FlipTest(TRIANGLE_PTR pTestTri)
         statify[1] = 0;
         statify[2] = 0;
 
-        pi = &(pTri->i1);
+        int* pi = &(pTri->i1);
         for (int j = 0, k = 1; j < 3; j++, k *= 2)
         {
             vertex_index = *pi++;

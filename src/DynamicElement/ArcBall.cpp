@@ -453,7 +453,7 @@ void CArcBall::InitBall()
 float* CArcBall::GetInvertedBallMatrix()
 {
     static float inverse[16];
-    int i, j, k, swap;
+    int i, j, k;
     double t;
     float temp[4][4];
     float* src;
@@ -474,7 +474,7 @@ float* CArcBall::GetInvertedBallMatrix()
     {
         /*
 		** Look for largest element in column */
-        swap = i;
+        int swap = i;
         for (j = i + 1; j < 4; j++)
         {
             if (fabs(temp[j][i]) > fabs(temp[i][i]))

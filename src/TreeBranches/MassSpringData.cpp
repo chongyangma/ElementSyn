@@ -72,7 +72,6 @@ void CMassSpringData::RenderMassSpringData(Vec3f trans)
 {
     int numOfMasses = int(m_vecMass.size());
     const Flt cylinderWd = 0.004f;
-    const Flt sphereRad = 0.01f;
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     GLfloat objAmbient[] = { 0.3f, 0.3f, 0.3f, 1.0f };

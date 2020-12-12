@@ -270,10 +270,9 @@ void CCrossList::PrintCrossList()
     for (int i = 1; i <= m_row; i++)
     {
         int j = 1;
-        int y;
         for (OLNode* q = m_ptrRhead[i]; q != NULL; q = q->m_ptrR)
         {
-            y = q->m_y;
+            int y = q->m_y;
             for (int n = j; n < y; n++)
             {
                 printf("0 ");

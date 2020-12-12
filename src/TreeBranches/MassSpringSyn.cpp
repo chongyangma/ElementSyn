@@ -222,14 +222,11 @@ void CMassSpringSyn::UpdateStrandsExtended()
     ResetCoeffMatrix();
     const int numOfStrands = int(m_vecOutputStrand.size());
     const int numOfUnknownsTotal = GetNumOfUnknownsTotal(m_vecOutputStrand);
-    const int neighSize = CMassSpringSynConfig::m_neighSize;
     const Flt shapeWt = CMassSpringSynConfig::m_shapeWt;
     const Flt neighWt = CMassSpringSynConfig::m_wtNeighPrDiff;
-    const Flt smoothWt = CMassSpringSynConfig::m_smoothWt;
     const Flt temporalWt = CMassSpringSynConfig::m_temporalWt;
     const Flt gaussianSigma = CMassSpringSynConfig::m_gaussianSigma;
     const Flt temporalSigma = CMassSpringSynConfig::m_temporalSigma;
-    const Flt dt = CMassSpringSynConfig::m_timeStep;
     vector<Flt> vecPx(numOfUnknownsTotal, 0.0f);
     vector<Flt> vecPy(numOfUnknownsTotal, 0.0f);
     vector<Flt> vecPz(numOfUnknownsTotal, 0.0f);
@@ -713,8 +710,6 @@ Flt CMassSpringSyn::NeighborhoodMetricExtended(MassNeighborhoodExtended& neigh1,
     {
         return 1e10;
     }
-    int neighPrNum1 = size11;
-    int neighPrNum2 = size12;
     distSum += VecPrDifference(neigh1.m_vecNeighPr1, neigh2.m_vecNeighPr1) * CMassSpringSynConfig::m_wtPrDiff;
     distSum += VecPrDifference(neigh1.m_vecNeighPr2, neigh2.m_vecNeighPr2) * CMassSpringSynConfig::m_wtPrDiff;
     for (int i = 0; i < int(neigh1.m_vecNeighPr1Prev.size()); i++)

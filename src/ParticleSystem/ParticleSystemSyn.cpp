@@ -1030,8 +1030,6 @@ void CParticleSystemSyn::UpdateOutputFrameViaBlending(int frameIdx, CBoundaryCon
         }
     }
     int temporalWindowSize = CParticleSystemConfig::m_temporalWindowSize;
-    int temporalWindowSize1 = min(temporalWindowSize, frameIdx);
-    int temporalWindowSize2 = min(temporalWindowSize, int(m_outputSequence.size()) - frameIdx - 1);
     temporalWindowSize = min(temporalWindowSize, frameIdx);
     temporalWindowSize = min(temporalWindowSize, int(m_outputSequence.size()) - frameIdx - 1);
     vector<Vec3f> vecPosSum(numOfUnknownsTotal, Vec3f(0.0f, 0.0f, 0.0f));
