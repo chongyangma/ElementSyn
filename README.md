@@ -2,8 +2,7 @@ ElementSyn
 ==========
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2854180796ac447a8eeeadea963dcda4)](https://app.codacy.com/gh/chongyangma/ElementSyn?utm_source=github.com&utm_medium=referral&utm_content=chongyangma/ElementSyn&utm_campaign=Badge_Grade_Settings)
-[![Build Status](https://travis-ci.com/chongyangma/ElementSyn.svg?branch=master)](https://travis-ci.com/chongyangma/ElementSyn)
-[![Build status](https://ci.appveyor.com/api/projects/status/p653ml95kprnmnn1?svg=true)](https://ci.appveyor.com/project/chongyangma/elementsyn)
+[![Build Status](https://travis-ci.com/chongyangma/ElementSyn.svg?branch=master)](https://travis-ci.com/chongyangma/ElementSyn) [![Build status](https://ci.appveyor.com/api/projects/status/p653ml95kprnmnn1?svg=true)](https://ci.appveyor.com/project/chongyangma/elementsyn)
 
 This repository contains the source code and example data of the following publication:
 

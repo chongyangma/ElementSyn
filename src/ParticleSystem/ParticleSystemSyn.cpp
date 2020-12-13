@@ -546,140 +546,6 @@ void CParticleSystemSyn::AdvectOutputNew()
     }
 }
 
-#if 0 // Blend predicted positions, 11/23/2012
-void CParticleSystemSyn::UpdateOutputGroupViaOptimization(CParticleSystem& outputGroup, int boundaryType /* = 0 */)
-{
-	const int numOfUnknownsTotal = outputGroup.GetNumOfSamples();
-	const int numOfSoftBodies = outputGroup.GetNumOfSoftBodies();
-	const int numOfSamplesPerData = outputGroup.GetParticleData(0).GetNumOfSamples();
-	const Flt spatialWt = CParticleSystemConfig::m_spatialWt;
-	const Flt shapeWt = CParticleSystemConfig::m_shapeWt;
-	const Flt neighWt = CParticleSystemConfig::m_neighWt;
-	const Flt boundaryWt = CParticleSystemConfig::m_boundaryWt;
-	const Flt sigma = CParticleSystemConfig::m_gaussianSigma / (CParticleSystemConfig::m_neighDist * CParticleSystemConfig::m_neighDist);
-	if ( neighWt > 0.0f || spatialWt > 0.0f )
-	{
-		outputGroup.SetNeighboringSamples(CParticleSystemConfig::m_neighDist);
-	}
-	vector<Vec3f> vecPosSum(numOfUnknownsTotal, Vec3f(0.0f, 0.0f, 0.0f));
-	vector<Flt> vecWtSum(numOfUnknownsTotal, 0.0f);
-	// Set the motion term...
-	for ( int n=0; n<numOfUnknownsTotal; n++ )
-	{
-		int softBodyIdx = n / numOfSamplesPerData;
-		int sampleIdx = n % numOfSamplesPerData;
-		CParticleData& softBodyData = outputGroup.GetParticleData(softBodyIdx);
-		vector<Vec3f>& vecSamplePos = softBodyData.GetVecSamplePos();
-		Vec3f pos = vecSamplePos[sampleIdx];
-		vecPosSum[n] += pos;
-		vecWtSum[n] += 1.0f;
-	}
-	Flt distSum = 0.0f;
-	Flt distMax = -1e10;
-    #pragma omp parallel for
-	// Set the texture term...
-	for ( int i=0; i<numOfSoftBodies; i++ )
-	{
-		CParticleData& softBodyData = outputGroup.GetParticleData(i);
-		int startIdx = i * numOfSamplesPerData;
-		CSampleMatchingResult matchingRst1;
-		CSampleMatchingResult matchingRst2;
-    #ifdef MORPHABLE_PARTICLE_SYSTEM
-		vector<CSampleMatchingResult> vecMatchingRst(2);
-		Flt distMin = GetNearestInputSoftBodiesMorph(softBodyData, vecMatchingRst);
-		distSum += distMin;
-		vector<Vec3f>& vecPos = softBodyData.GetVecSamplePos();
-		Flt weight1 = (vecPos[0][0] < 0.0f) ? 1.0f : 0.0f;
-		Flt weight2 = 1.0f - weight1;
-		CParticleData& inputData1 = m_vecInputExemplar[0].GetParticleData(vecMatchingRst[0].m_sampleIdx);
-		CParticleData& inputData2 = m_vecInputExemplar[1].GetParticleData(vecMatchingRst[1].m_sampleIdx);
-		matchingRst1 = vecMatchingRst[0];
-		matchingRst2 = vecMatchingRst[1];
-    #else
-		Flt distMin = GetNearestInputSoftBodies(softBodyData, i, matchingRst1, matchingRst2);
-		distSum += distMin;
-		distMax = max(distMax, distMin);
-		Flt weight1 = matchingRst2.m_distSum;
-		Flt weight2 = matchingRst1.m_distSum;
-		if ( distMin <= 0.0f )
-		{
-			weight1 = 1.0f;
-			weight2 = 1.0f;
-		}
-		else
-		{
-			weight1 *= 1.0f / distMin;
-			weight2 *= 1.0f / distMin;
-		}
-		CParticleData& inputData1 = m_inputSequence[matchingRst1.m_frameIdx].GetParticleData(matchingRst1.m_sampleIdx);
-		CParticleData& inputData2 = m_inputSequence[matchingRst2.m_frameIdx].GetParticleData(matchingRst2.m_sampleIdx);
-    #endif
-		// sample pairs between different elements...
-		vector<CNeighboringSample>& vecNeighOutput = outputGroup.GetParticleData(i).GetNeighboringSamples();
-		vector<CNeighboringSample>& vecNeighInput1 = inputData1.GetNeighboringSamples();
-		vector<CNeighboringSample>& vecNeighInput2 = inputData2.GetNeighboringSamples();
-		Vec3f vel1 = inputData1.GetVel();
-		Vec3f vel2 = inputData2.GetVel();
-		Vec3f vel = (vel1 * weight1 + vel2 * weight2) * (1.f / (weight1 + weight2));
-		softBodyData.SetVel(vel);
-		if ( neighWt > 0.0f )
-		{
-			for ( int j=0; j<int(vecNeighOutput.size()); j++ )
-			{
-				int idxi = startIdx + vecNeighOutput[j].m_sampleIdx;
-				CNeighboringSample& neighInput1 = vecNeighInput1[matchingRst1.m_matchingIndices[j]];
-				CNeighboringSample& neighInput2 = vecNeighInput2[matchingRst2.m_matchingIndices[j]];
-				int idxj = vecNeighOutput[j].m_neighBodyIdx * numOfSamplesPerData + vecNeighOutput[j].m_neighSampleIdx;
-				Vec3f prSrc1 = neighInput1.m_neighPr;
-				Vec3f prSrc2 = neighInput2.m_neighPr;
-				Flt neighWtNew = neighWt * exp(sigma * mag2(vecNeighOutput[j].m_neighPr));
-				Flt wt1 = neighWt * exp(sigma * mag2(prSrc1));
-				Flt wt2 = neighWt * exp(sigma * mag2(prSrc2));
-				Vec3f posPredict1 = outputGroup.GetParticleData(idxj).GetVecSamplePos()[0] + prSrc1;
-				Vec3f posPredict2 = outputGroup.GetParticleData(idxi).GetVecSamplePos()[0] - prSrc1;
-				Flt w1 = (neighWtNew + wt1) * 0.5f * weight1;
-				Flt w2 = (neighWtNew + wt2) * 0.5f * weight2;
-				if ( boundaryWt > 0.0f )
-				{
-					Vec3f posPredict1new = posPredict1;
-					Vec3f posPredict2new = posPredict2;
-					if ( boundaryType == 0 )
-					{
-						w1 = ApplyBoundaryCondition(posPredict1, posPredict1new) ? (w1 * boundaryWt) : w1;
-						w2 = ApplyBoundaryCondition(posPredict2, posPredict2new) ? (w2 * boundaryWt) : w2;
-					}
-					else
-					{
-						w1 = ApplyBoundaryCondition2(posPredict1, posPredict1new) ? (w1 * boundaryWt) : w1;
-						w2 = ApplyBoundaryCondition2(posPredict2, posPredict2new) ? (w2 * boundaryWt) : w2;
-					}
-					posPredict1 = posPredict1new;
-					posPredict2 = posPredict2new;
-				}
-				vecPosSum[idxi] += posPredict1 * w1;
-				vecWtSum[idxi] += w1;
-				vecPosSum[idxj] += posPredict2 * w2;
-				vecWtSum[idxj] += w2;
-			}
-		}
-	}
-	cout << "distSum = " << distSum << endl;
-	//cout << "distMax = " << distMax << endl;
-	for ( int n=0; n<numOfUnknownsTotal; n++ )
-	{
-		Vec3f pos = vecPosSum[n] / vecWtSum[n];
-		int softBodyIdx = n / numOfSamplesPerData;
-		int sampleIdx = n % numOfSamplesPerData;
-		CParticleData& softBodyData = outputGroup.GetParticleData(softBodyIdx);
-		if ( softBodyData.GetFlagFixed() == true )
-		{
-			continue;
-		}
-		vector<Vec3f>& vecSamplePos = softBodyData.GetVecSamplePos();
-		vecSamplePos[sampleIdx] = pos;
-	}
-}
-#else
 void CParticleSystemSyn::UpdateOutputGroupViaOptimization(CParticleSystem& outputGroup, int boundaryType /* = 0 */)
 {
     ResetCoeffMatrix(outputGroup);
@@ -726,7 +592,7 @@ void CParticleSystemSyn::UpdateOutputGroupViaOptimization(CParticleSystem& outpu
     SampleRepulsion();
     Flt distSum = 0.0f;
     Flt distMax = -1e10;
-    #pragma omp parallel for
+#pragma omp parallel for
     // Set the texture term...
     for (int i = 0; i < numOfSoftBodies; i++)
     {
@@ -734,7 +600,7 @@ void CParticleSystemSyn::UpdateOutputGroupViaOptimization(CParticleSystem& outpu
         int startIdx = i * numOfSamplesPerData;
         CSampleMatchingResult matchingRst1;
         CSampleMatchingResult matchingRst2;
-    #ifdef MORPHABLE_PARTICLE_SYSTEM
+#ifdef MORPHABLE_PARTICLE_SYSTEM
         vector<CSampleMatchingResult> vecMatchingRst(2);
         Flt distMin = GetNearestInputSoftBodiesMorph(softBodyData, vecMatchingRst);
         distSum += distMin;
@@ -745,7 +611,7 @@ void CParticleSystemSyn::UpdateOutputGroupViaOptimization(CParticleSystem& outpu
         CParticleData& inputData2 = m_vecInputExemplar[1].GetParticleData(vecMatchingRst[1].m_sampleIdx);
         matchingRst1 = vecMatchingRst[0];
         matchingRst2 = vecMatchingRst[1];
-    #else
+#else
         Flt distMin = GetNearestInputSoftBodies(softBodyData, i, matchingRst1, matchingRst2);
         distSum += distMin;
         distMax = max(distMax, distMin);
@@ -763,7 +629,7 @@ void CParticleSystemSyn::UpdateOutputGroupViaOptimization(CParticleSystem& outpu
         }
         CParticleData& inputData1 = m_inputSequence[matchingRst1.m_frameIdx].GetParticleData(matchingRst1.m_sampleIdx);
         CParticleData& inputData2 = m_inputSequence[matchingRst2.m_frameIdx].GetParticleData(matchingRst2.m_sampleIdx);
-    #endif
+#endif
         // sample pairs between different elements...
         vector<CNeighboringSample>& vecNeighOutput = outputGroup.GetParticleData(i).GetNeighboringSamples();
         vector<CNeighboringSample>& vecNeighInput1 = inputData1.GetNeighboringSamples();
@@ -806,7 +672,6 @@ void CParticleSystemSyn::UpdateOutputGroupViaOptimization(CParticleSystem& outpu
         vecSamplePos[sampleIdx] = pos;
     }
 }
-#endif
 
 void CParticleSystemSyn::UpdateOutputGroupViaOptimization3(CParticleSystem& outputGroup, CBoundaryConstraint* ptrBoundaryConstraint)
 {
