@@ -29,8 +29,6 @@ Flt GetTriPairDist(const Vec3f& v11, const Vec3f& v12, const Vec3f& v13, const V
 
 Flt GetTriPairDistNew(const Vec3f& v11, const Vec3f& v12, const Vec3f& v13, const Vec3f& v21, const Vec3f& v22, const Vec3f& v23, const Vec3f& direc);
 
-vector<Flt> GetSolution(CDenseMatrix* ptrMatrix, const vector<Flt>& vecB);
-
 vector<Flt> GetSolution(const Eigen::MatrixXf& coeffMatrix, const vector<Flt>& vecB);
 
 vector<Flt> GetSolution(CCrossList* ptrMatrix, const vector<Flt>& vecB);

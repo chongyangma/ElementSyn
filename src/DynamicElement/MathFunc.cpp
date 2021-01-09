@@ -186,38 +186,6 @@ Flt GetTriPairDistNew(const Vec3f& v11, const Vec3f& v12, const Vec3f& v13, cons
     return min(min(d0, d1), d2);
 }
 
-vector<Flt> GetSolution(CDenseMatrix* ptrCoeffMatrix, const vector<Flt>& vecB)
-{
-    int nCols = ptrCoeffMatrix->GetColNum();
-    int nRows = ptrCoeffMatrix->GetRowNum();
-    Eigen::MatrixXf M = Eigen::MatrixXf::Zero(nCols, nRows);
-    for (int i = 0; i < nRows; i++)
-    {
-        for (int j = 0; j < nCols; j++)
-        {
-            Flt val = ptrCoeffMatrix->GetVal(i, j);
-            if (val != 0.0f)
-            {
-                M(i, j) = val;
-            }
-        }
-    }
-    Eigen::VectorXf b(nRows);
-    for (int i = 0; i < nRows; i++)
-    {
-        b[i] = vecB[i];
-    }
-
-    vector<Flt> vecX(nRows);
-    Eigen::VectorXf x = M.ldlt().solve(b);
-
-    for (int i = 0; i < nRows; i++)
-    {
-        vecX[i] = x[i];
-    }
-    return vecX;
-}
-
 vector<Flt> GetSolution(const Eigen::MatrixXf& coeffMatrix, const vector<Flt>& vecB)
 {
     int nRows = coeffMatrix.rows();
