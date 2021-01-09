@@ -19,10 +19,6 @@ CParticleSystemSyn::CParticleSystemSyn(const std::string& config_file_name)
 CParticleSystemSyn::~CParticleSystemSyn()
 {
     DELETE_OBJECT(m_ptrSynConfig);
-    for (int i = 0; i < int(m_vecPtrCoeffMatrix.size()); i++)
-    {
-        DELETE_OBJECT(m_vecPtrCoeffMatrix[i]);
-    }
 }
 
 void CParticleSystemSyn::SetInputNeighborhoods()
@@ -801,12 +797,7 @@ void CParticleSystemSyn::ResetCoeffMatrix(CParticleSystem& outputGroup)
     }
     for (int n = 0; n < 3; n++)
     {
-        DELETE_OBJECT(m_vecPtrCoeffMatrix[n]);
-        m_vecPtrCoeffMatrix[n] = new CDenseMatrix(numOfUnknownsTotal, numOfUnknownsTotal);
-        for (int i = 0; i < numOfUnknownsTotal; i++)
-        {
-            m_vecPtrCoeffMatrix[n]->UpdateDiagonalVal(i, 1.0f);
-        }
+        m_vecPtrCoeffMatrix[n] = Eigen::MatrixXf::Identity(numOfUnknownsTotal, numOfUnknownsTotal);
     }
 }
 
@@ -1247,7 +1238,7 @@ void CParticleSystemSyn::UpdateCoeffMatDiagonalVal(int idx, Flt wt, Vec3f pos)
 {
     for (int n = 0; n < 3; n++)
     {
-        m_vecPtrCoeffMatrix[n]->UpdateDiagonalVal(idx, wt);
+        m_vecPtrCoeffMatrix[n](idx, idx) += wt;
     }
     m_vecCx[idx] += wt * pos[0];
     m_vecCy[idx] += wt * pos[1];
@@ -1256,7 +1247,7 @@ void CParticleSystemSyn::UpdateCoeffMatDiagonalVal(int idx, Flt wt, Vec3f pos)
 
 void CParticleSystemSyn::UpdateCoeffMatDiagonalVal(int idx, Flt wt, Vec3f pos, int dim)
 {
-    m_vecPtrCoeffMatrix[dim]->UpdateDiagonalVal(idx, wt);
+    m_vecPtrCoeffMatrix[dim](idx, idx) += wt;
     switch (dim)
     {
     case 0:
@@ -1277,7 +1268,10 @@ void CParticleSystemSyn::UpdateCoeffMatPairVals(int idxi, int idxj, Flt wt, Vec3
 {
     for (int n = 0; n < 3; n++)
     {
-        m_vecPtrCoeffMatrix[n]->UpdatePairVals(idxi, idxj, wt);
+        m_vecPtrCoeffMatrix[n](idxi, idxi) += wt;
+        m_vecPtrCoeffMatrix[n](idxj, idxj) += wt;
+        m_vecPtrCoeffMatrix[n](idxi, idxj) -= wt;
+        m_vecPtrCoeffMatrix[n](idxj, idxi) -= wt;
     }
     m_vecCx[idxi] += wt * pr[0];
     m_vecCy[idxi] += wt * pr[1];

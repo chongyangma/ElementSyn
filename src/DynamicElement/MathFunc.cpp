@@ -1,8 +1,5 @@
 #include "MathFunc.h"
 
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
-
 namespace machy_math
 {
 Vec4f QuatConjugate(const Vec4f& q0)
@@ -213,6 +210,25 @@ vector<Flt> GetSolution(CDenseMatrix* ptrCoeffMatrix, const vector<Flt>& vecB)
 
     vector<Flt> vecX(nRows);
     Eigen::VectorXf x = M.ldlt().solve(b);
+
+    for (int i = 0; i < nRows; i++)
+    {
+        vecX[i] = x[i];
+    }
+    return vecX;
+}
+
+vector<Flt> GetSolution(const Eigen::MatrixXf& coeffMatrix, const vector<Flt>& vecB)
+{
+    int nRows = coeffMatrix.rows();
+    Eigen::VectorXf b(nRows);
+    for (int i = 0; i < nRows; i++)
+    {
+        b[i] = vecB[i];
+    }
+
+    vector<Flt> vecX(nRows);
+    Eigen::VectorXf x = coeffMatrix.ldlt().solve(b);
 
     for (int i = 0; i < nRows; i++)
     {

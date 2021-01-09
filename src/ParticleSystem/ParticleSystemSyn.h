@@ -117,7 +117,7 @@ private:
     int m_stepCount;
     int m_serialCount;
     CParticleSystemConfig* m_ptrSynConfig;
-    vector<CDenseMatrix*> m_vecPtrCoeffMatrix;
+    vector<Eigen::MatrixXf> m_vecPtrCoeffMatrix;
     vector<Flt> m_vecCx, m_vecCy, m_vecCz;
     vector<CParticleSystem> m_inputSequence;
     vector<CParticleSystem> m_vecInputExemplar;
