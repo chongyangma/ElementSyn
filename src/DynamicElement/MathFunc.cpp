@@ -186,25 +186,6 @@ Flt GetTriPairDistNew(const Vec3f& v11, const Vec3f& v12, const Vec3f& v13, cons
     return min(min(d0, d1), d2);
 }
 
-vector<Flt> GetSolution(const Eigen::MatrixXf& coeffMatrix, const vector<Flt>& vecB)
-{
-    int nRows = coeffMatrix.rows();
-    Eigen::VectorXf b(nRows);
-    for (int i = 0; i < nRows; i++)
-    {
-        b[i] = vecB[i];
-    }
-
-    vector<Flt> vecX(nRows);
-    Eigen::VectorXf x = coeffMatrix.ldlt().solve(b);
-
-    for (int i = 0; i < nRows; i++)
-    {
-        vecX[i] = x[i];
-    }
-    return vecX;
-}
-
 vector<Flt> GetSolution(CCrossList* ptrCoeffMatrix, const vector<Flt>& vecB)
 {
     typedef Eigen::SparseMatrix<float> SparseMatrix;

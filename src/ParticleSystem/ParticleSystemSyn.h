@@ -118,7 +118,9 @@ private:
     int m_serialCount;
     CParticleSystemConfig* m_ptrSynConfig;
     vector<Eigen::MatrixXf> m_vecPtrCoeffMatrix;
-    vector<Flt> m_vecCx, m_vecCy, m_vecCz;
+    Eigen::VectorXf m_vecCx;
+    Eigen::VectorXf m_vecCy;
+    Eigen::VectorXf m_vecCz;
     vector<CParticleSystem> m_inputSequence;
     vector<CParticleSystem> m_vecInputExemplar;
     CParticleSystem m_outputGroup;
