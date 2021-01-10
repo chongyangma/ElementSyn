@@ -1,9 +1,9 @@
 #ifndef MASSSPRINGSYN_H
 #define MASSSPRINGSYN_H
 
-#include "../DynamicElement/MathFunc.h"
 #include "MassSpringData.h"
 #include "MassSpringSynConfig.h"
+#include <Eigen/Sparse>
 
 class CMassSpringSyn
 {

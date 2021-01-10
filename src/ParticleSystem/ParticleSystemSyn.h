@@ -4,6 +4,7 @@
 #include "../DynamicElement/BoundaryConstraint.h"
 #include "../DynamicElement/HungarianAlgorithm.h"
 #include "ParticleSystem.h"
+#include <Eigen/Dense>
 
 // For initialization by patch copy
 typedef struct CubicPatch
