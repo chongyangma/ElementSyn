@@ -73,6 +73,10 @@ private:
 
     void SetSequencesVelocity(vector<MassSpringSequence>& vecSequence, bool flagTemporallyToroidal = false);
 
+    void UpdateDiagonalVal(int idx, float dv);
+
+    void UpdatePairedVals(int idx1, int idx2, float dv);
+
     inline Flt VecPrDifference(vector<Vec3f>& vecPr1, vector<Vec3f>& vecPr2)
     {
         Flt diff = 0.0f;
@@ -100,7 +104,7 @@ private:
     int m_stepCount;
     int m_serialCount;
     CMassSpringSynConfig* m_ptrSynConfig;
-    CCrossList* m_ptrCoeffMatrix;
+    Eigen::SparseMatrix<float> m_coeffMatrix;
     Eigen::VectorXf m_vecCx;
     Eigen::VectorXf m_vecCy;
     Eigen::VectorXf m_vecCz;
