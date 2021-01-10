@@ -117,7 +117,7 @@ private:
     int m_stepCount;
     int m_serialCount;
     CParticleSystemConfig* m_ptrSynConfig;
-    vector<Eigen::MatrixXf> m_vecPtrCoeffMatrix;
+    vector<Eigen::MatrixXf> m_vecCoeffMatrix;
     Eigen::VectorXf m_vecCx;
     Eigen::VectorXf m_vecCy;
     Eigen::VectorXf m_vecCz;

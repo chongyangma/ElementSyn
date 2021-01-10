@@ -648,9 +648,9 @@ void CParticleSystemSyn::UpdateOutputGroupViaOptimization(CParticleSystem& outpu
     cout << "distSum = " << distSum << endl;
     //cout << "distMax = " << distMax << endl;
     // Update via least squares...
-    Eigen::VectorXf vecPxNew = m_vecPtrCoeffMatrix[0].ldlt().solve(m_vecCx);
-    Eigen::VectorXf vecPyNew = m_vecPtrCoeffMatrix[1].ldlt().solve(m_vecCy);
-    Eigen::VectorXf vecPzNew = m_vecPtrCoeffMatrix[2].ldlt().solve(m_vecCz);
+    Eigen::VectorXf vecPxNew = m_vecCoeffMatrix[0].ldlt().solve(m_vecCx);
+    Eigen::VectorXf vecPyNew = m_vecCoeffMatrix[1].ldlt().solve(m_vecCy);
+    Eigen::VectorXf vecPzNew = m_vecCoeffMatrix[2].ldlt().solve(m_vecCz);
     for (int n = 0; n < numOfUnknownsTotal; n++)
     {
         Vec3f pos = Vec3f(vecPxNew[n], vecPyNew[n], vecPzNew[n]);
@@ -788,13 +788,13 @@ void CParticleSystemSyn::ResetCoeffMatrix(CParticleSystem& outputGroup)
 {
     const int numOfUnknownsTotal = outputGroup.GetNumOfSamples();
     const int numOfSamplesPerData = outputGroup.GetParticleData(0).GetNumOfSamples();
-    if (m_vecPtrCoeffMatrix.empty() == true)
+    if (m_vecCoeffMatrix.empty() == true)
     {
-        m_vecPtrCoeffMatrix.resize(3);
+        m_vecCoeffMatrix.resize(3);
     }
     for (int n = 0; n < 3; n++)
     {
-        m_vecPtrCoeffMatrix[n] = Eigen::MatrixXf::Identity(numOfUnknownsTotal, numOfUnknownsTotal);
+        m_vecCoeffMatrix[n] = Eigen::MatrixXf::Identity(numOfUnknownsTotal, numOfUnknownsTotal);
     }
 }
 
@@ -1235,7 +1235,7 @@ void CParticleSystemSyn::UpdateCoeffMatDiagonalVal(int idx, Flt wt, Vec3f pos)
 {
     for (int n = 0; n < 3; n++)
     {
-        m_vecPtrCoeffMatrix[n](idx, idx) += wt;
+        m_vecCoeffMatrix[n](idx, idx) += wt;
     }
     m_vecCx[idx] += wt * pos[0];
     m_vecCy[idx] += wt * pos[1];
@@ -1244,7 +1244,7 @@ void CParticleSystemSyn::UpdateCoeffMatDiagonalVal(int idx, Flt wt, Vec3f pos)
 
 void CParticleSystemSyn::UpdateCoeffMatDiagonalVal(int idx, Flt wt, Vec3f pos, int dim)
 {
-    m_vecPtrCoeffMatrix[dim](idx, idx) += wt;
+    m_vecCoeffMatrix[dim](idx, idx) += wt;
     switch (dim)
     {
     case 0:
@@ -1265,10 +1265,10 @@ void CParticleSystemSyn::UpdateCoeffMatPairVals(int idxi, int idxj, Flt wt, Vec3
 {
     for (int n = 0; n < 3; n++)
     {
-        m_vecPtrCoeffMatrix[n](idxi, idxi) += wt;
-        m_vecPtrCoeffMatrix[n](idxj, idxj) += wt;
-        m_vecPtrCoeffMatrix[n](idxi, idxj) -= wt;
-        m_vecPtrCoeffMatrix[n](idxj, idxi) -= wt;
+        m_vecCoeffMatrix[n](idxi, idxi) += wt;
+        m_vecCoeffMatrix[n](idxj, idxj) += wt;
+        m_vecCoeffMatrix[n](idxi, idxj) -= wt;
+        m_vecCoeffMatrix[n](idxj, idxi) -= wt;
     }
     m_vecCx[idxi] += wt * pr[0];
     m_vecCy[idxi] += wt * pr[1];
