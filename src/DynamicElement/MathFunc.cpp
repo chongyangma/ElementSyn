@@ -186,7 +186,7 @@ Flt GetTriPairDistNew(const Vec3f& v11, const Vec3f& v12, const Vec3f& v13, cons
     return min(min(d0, d1), d2);
 }
 
-vector<Flt> GetSolution(CCrossList* ptrCoeffMatrix, const vector<Flt>& vecB)
+Eigen::VectorXf GetSolution(CCrossList* ptrCoeffMatrix, const Eigen::VectorXf& vecB)
 {
     typedef Eigen::SparseMatrix<float> SparseMatrix;
     typedef Eigen::Triplet<float> Triplet;
@@ -194,7 +194,7 @@ vector<Flt> GetSolution(CCrossList* ptrCoeffMatrix, const vector<Flt>& vecB)
     int nCols = ptrCoeffMatrix->GetColNum();
     int nRows = ptrCoeffMatrix->GetRowNum();
 
-    Eigen::SparseMatrix<float> M(nRows, nCols);
+    SparseMatrix M(nRows, nCols);
     std::vector<Triplet> pending;
 
     OLink* ptrRhead = ptrCoeffMatrix->GetPtrRhead();
@@ -208,22 +208,10 @@ vector<Flt> GetSolution(CCrossList* ptrCoeffMatrix, const vector<Flt>& vecB)
     M.setFromTriplets(pending.begin(), pending.end());
     M.makeCompressed();
 
-    Eigen::VectorXf b(nRows);
-    for (int i = 0; i < nRows; i++)
-    {
-        b[i] = vecB[i];
-    }
-    Eigen::VectorXf x(nRows);
-    vector<Flt> vecX(nRows);
-
     Eigen::ConjugateGradient<SparseMatrix> cg;
     cg.compute(M);
-    x = cg.solve(b);
+    Eigen::VectorXf vecX = cg.solve(vecB);
 
-    for (int i = 0; i < nRows; i++)
-    {
-        vecX[i] = x[i];
-    }
     return vecX;
 }
 

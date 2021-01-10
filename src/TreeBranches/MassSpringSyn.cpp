@@ -230,12 +230,9 @@ void CMassSpringSyn::UpdateStrandsExtended()
     vector<Flt> vecPx(numOfUnknownsTotal, 0.0f);
     vector<Flt> vecPy(numOfUnknownsTotal, 0.0f);
     vector<Flt> vecPz(numOfUnknownsTotal, 0.0f);
-    m_vecCx.clear();
-    m_vecCy.clear();
-    m_vecCz.clear();
-    m_vecCx.resize(numOfUnknownsTotal, 0.0f);
-    m_vecCy.resize(numOfUnknownsTotal, 0.0f);
-    m_vecCz.resize(numOfUnknownsTotal, 0.0f);
+    m_vecCx = Eigen::VectorXf::Zero(numOfUnknownsTotal);
+    m_vecCy = Eigen::VectorXf::Zero(numOfUnknownsTotal);
+    m_vecCz = Eigen::VectorXf::Zero(numOfUnknownsTotal);
     int n;
     Flt distSum = 0.0f;
     {
@@ -350,9 +347,9 @@ void CMassSpringSyn::UpdateStrandsExtended()
     cout << "distSum = " << distSum << endl;
     // Optimization with shape terms...
     CollisionResponse(m_vecCx, m_vecCy, m_vecCz);
-    vector<Flt> vecPxNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCx);
-    vector<Flt> vecPyNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCy);
-    vector<Flt> vecPzNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCz);
+    Eigen::VectorXf vecPxNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCx);
+    Eigen::VectorXf vecPyNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCy);
+    Eigen::VectorXf vecPzNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCz);
     for (int n = 0; n < numOfStrands; n++)
     {
         CMassSpringData& outputStrand = m_vecOutputStrand[n];
@@ -371,10 +368,13 @@ void CMassSpringSyn::UpdateStrandsExtended()
     }
 }
 
-void CMassSpringSyn::CollisionResponse(vector<Flt>& vecCx, vector<Flt>& vecCy, vector<Flt>& vecCz)
+void CMassSpringSyn::CollisionResponse(Eigen::VectorXf& vecCx, Eigen::VectorXf& vecCy, Eigen::VectorXf& vecCz)
 {
     const Flt repulsionConstant = CMassSpringSynConfig::m_strandRepulsionConstant;
-    if (repulsionConstant <= 0.0f) return;
+    if (repulsionConstant <= 0.0f)
+    {
+        return;
+    }
     const Flt r = CMassSpringSynConfig::m_strandRadius;
     const Flt r2 = r * r;
     const int numOfUnknownsPerStrand = CMassSpringSynConfig::m_numOfMasses - 1;
@@ -446,7 +446,8 @@ void CMassSpringSyn::CollisionResponse(vector<Flt>& vecCx, vector<Flt>& vecCy, v
             }     // End-For-i2
         }         // End-For-j1
     }             // End-For-i1
-                  //cout << "Have detected " << repulsionCount << " pairs of collision.\n";
+
+    std::cout << "Have detected " << repulsionCount << " pairs of collision.\n";
 }
 
 void CMassSpringSyn::RenderOutput()

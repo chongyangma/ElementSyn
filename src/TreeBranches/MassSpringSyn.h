@@ -26,7 +26,7 @@ public:
 
     void UpdateStrandsExtended();
 
-    void CollisionResponse(vector<Flt>& vecCx, vector<Flt>& vecCy, vector<Flt>& vecCz);
+    void CollisionResponse(Eigen::VectorXf& vecCx, Eigen::VectorXf& vecCy, Eigen::VectorXf& vecCz);
 
     void RenderInput();
 
@@ -101,7 +101,9 @@ private:
     int m_serialCount;
     CMassSpringSynConfig* m_ptrSynConfig;
     CCrossList* m_ptrCoeffMatrix;
-    vector<Flt> m_vecCx, m_vecCy, m_vecCz;
+    Eigen::VectorXf m_vecCx;
+    Eigen::VectorXf m_vecCy;
+    Eigen::VectorXf m_vecCz;
     vector<MassNeighborhoodExtended> m_vecInputNeighExtended;
     vector<SegmentPatch> m_vecInputSegmentPatch;
     vector<MassSpringSequence> m_vecInputSequence;

@@ -29,7 +29,7 @@ Flt GetTriPairDist(const Vec3f& v11, const Vec3f& v12, const Vec3f& v13, const V
 
 Flt GetTriPairDistNew(const Vec3f& v11, const Vec3f& v12, const Vec3f& v13, const Vec3f& v21, const Vec3f& v22, const Vec3f& v23, const Vec3f& direc);
 
-vector<Flt> GetSolution(CCrossList* ptrMatrix, const vector<Flt>& vecB);
+Eigen::VectorXf GetSolution(CCrossList* ptrMatrix, const Eigen::VectorXf& vecB);
 
 } // namespace machy_math
 
