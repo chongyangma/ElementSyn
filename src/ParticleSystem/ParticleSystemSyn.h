@@ -4,6 +4,7 @@
 #include "../DynamicElement/BoundaryConstraint.h"
 #include "../DynamicElement/HungarianAlgorithm.h"
 #include "ParticleSystem.h"
+#include <Eigen/Dense>
 
 // For initialization by patch copy
 typedef struct CubicPatch
@@ -117,8 +118,10 @@ private:
     int m_stepCount;
     int m_serialCount;
     CParticleSystemConfig* m_ptrSynConfig;
-    vector<CDenseMatrix*> m_vecPtrCoeffMatrix;
-    vector<Flt> m_vecCx, m_vecCy, m_vecCz;
+    vector<Eigen::MatrixXf> m_vecCoeffMatrix;
+    Eigen::VectorXf m_vecCx;
+    Eigen::VectorXf m_vecCy;
+    Eigen::VectorXf m_vecCz;
     vector<CParticleSystem> m_inputSequence;
     vector<CParticleSystem> m_vecInputExemplar;
     CParticleSystem m_outputGroup;

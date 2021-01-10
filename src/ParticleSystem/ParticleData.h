@@ -1,9 +1,7 @@
 #ifndef PARTICLEDATA_H
 #define PARTICLEDATA_H
 
-#include "../DynamicElement/MathFunc.h"
 #include "ParticleSystemConfig.h"
-using namespace machy_math;
 
 class CNeighboringSample
 {

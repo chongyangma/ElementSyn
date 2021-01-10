@@ -1,18 +1,14 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
-PROJECT(TreeBranches)
+cmake_minimum_required(VERSION 2.8.12)
+project(TreeBranches)
 
-FILE(GLOB TREE_BRANCHES_SOURCES "*.cpp")
-FILE(GLOB TREE_BRANCHES_HEADERS "*.h")
+file(GLOB TREE_BRANCHES_SOURCES "*.cpp")
+file(GLOB TREE_BRANCHES_HEADERS "*.h")
 
-LINK_DIRECTORIES(${PROJECT_BINARY_DIR}/../../lib)
+add_executable(TreeBranches ${TREE_BRANCHES_SOURCES} ${TREE_BRANCHES_HEADERS})
 
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../../bin)
+target_link_libraries(TreeBranches ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} DynamicElement)
 
-ADD_EXECUTABLE(TreeBranches ${TREE_BRANCHES_SOURCES} ${TREE_BRANCHES_HEADERS})
-
-TARGET_LINK_LIBRARIES(TreeBranches ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} DynamicElement)
-
-IF(NOT WIN32)
-    FIND_LIBRARY(OPENGL_glu_LIBRARY GLU PATHS /opt/X11/lib /usr/X11/lib /usr/X11R6/lib)
-    TARGET_LINK_LIBRARIES(TreeBranches ${OPENGL_glu_LIBRARY})
-ENDIF()
+if(NOT WIN32)
+    find_library(OPENGL_glu_LIBRARY GLU PATHS /opt/X11/lib /usr/X11/lib /usr/X11R6/lib)
+    target_link_libraries(TreeBranches ${OPENGL_glu_LIBRARY})
+endif()

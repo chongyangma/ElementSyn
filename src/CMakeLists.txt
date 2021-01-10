@@ -32,6 +32,8 @@ endif()
 include_directories(../3rdparty/eigen)
 include_directories(../3rdparty/lodepng)
 
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
+
 add_subdirectory(DynamicElement)
 add_subdirectory(ParticleSystem)
 add_subdirectory(TreeBranches)

@@ -1,9 +1,9 @@
 #ifndef MASSSPRINGSYN_H
 #define MASSSPRINGSYN_H
 
-#include "../DynamicElement/MathFunc.h"
 #include "MassSpringData.h"
 #include "MassSpringSynConfig.h"
+#include <Eigen/Sparse>
 
 class CMassSpringSyn
 {
@@ -26,7 +26,7 @@ public:
 
     void UpdateStrandsExtended();
 
-    void CollisionResponse(vector<Flt>& vecCx, vector<Flt>& vecCy, vector<Flt>& vecCz);
+    void CollisionResponse(Eigen::VectorXf& vecCx, Eigen::VectorXf& vecCy, Eigen::VectorXf& vecCz);
 
     void RenderInput();
 
@@ -73,6 +73,10 @@ private:
 
     void SetSequencesVelocity(vector<MassSpringSequence>& vecSequence, bool flagTemporallyToroidal = false);
 
+    void UpdateDiagonalVal(int idx, float dv);
+
+    void UpdatePairedVals(int idx1, int idx2, float dv);
+
     inline Flt VecPrDifference(vector<Vec3f>& vecPr1, vector<Vec3f>& vecPr2)
     {
         Flt diff = 0.0f;
@@ -100,8 +104,10 @@ private:
     int m_stepCount;
     int m_serialCount;
     CMassSpringSynConfig* m_ptrSynConfig;
-    CCrossList* m_ptrCoeffMatrix;
-    vector<Flt> m_vecCx, m_vecCy, m_vecCz;
+    Eigen::SparseMatrix<float> m_coeffMatrix;
+    Eigen::VectorXf m_vecCx;
+    Eigen::VectorXf m_vecCy;
+    Eigen::VectorXf m_vecCz;
     vector<MassNeighborhoodExtended> m_vecInputNeighExtended;
     vector<SegmentPatch> m_vecInputSegmentPatch;
     vector<MassSpringSequence> m_vecInputSequence;

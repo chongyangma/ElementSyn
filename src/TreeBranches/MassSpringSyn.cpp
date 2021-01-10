@@ -11,7 +11,6 @@ CMassSpringSyn::CMassSpringSyn(const std::string& config_file_name)
     m_stepCount = 0;
     m_serialCount = 1;
     m_ptrSynConfig = new CMassSpringSynConfig(config_file_name);
-    m_ptrCoeffMatrix = NULL;
     LoadInputData();
     InitializeOutput();
 }
@@ -19,13 +18,11 @@ CMassSpringSyn::CMassSpringSyn(const std::string& config_file_name)
 CMassSpringSyn::~CMassSpringSyn()
 {
     DELETE_OBJECT(m_ptrSynConfig);
-    DELETE_OBJECT(m_ptrCoeffMatrix);
 }
 
 void CMassSpringSyn::ResetOutput(const std::string& config_file_name)
 {
     m_stepCount = 0;
-    DELETE_OBJECT(m_ptrCoeffMatrix);
     bool flag = m_ptrSynConfig->ReloadConfigFromFile(config_file_name);
     if (flag == false)
     {
@@ -153,14 +150,18 @@ void CMassSpringSyn::InitializeOutput()
 
 void CMassSpringSyn::ResetCoeffMatrix()
 {
-    if (CMassSpringSynConfig::m_neighDist <= 0.0f && CMassSpringSynConfig::m_strandRepulsionConstant <= 0.0f && m_ptrCoeffMatrix != NULL) return;
-    const int numOfStrands = int(m_vecOutputStrand.size());
     const int numOfUnknownsTotal = GetNumOfUnknownsTotal(m_vecOutputStrand);
+    if (CMassSpringSynConfig::m_neighDist <= 0.0f && CMassSpringSynConfig::m_strandRepulsionConstant <= 0.0f &&
+        m_coeffMatrix.cols() == numOfUnknownsTotal && m_coeffMatrix.rows() == numOfUnknownsTotal)
+    {
+        return;
+    }
+    const int numOfStrands = int(m_vecOutputStrand.size());
     const int neighSize = CMassSpringSynConfig::m_neighSize;
     const Flt shapeWt = CMassSpringSynConfig::m_shapeWt;
     const Flt gaussianSigma = CMassSpringSynConfig::m_gaussianSigma;
-    DELETE_OBJECT(m_ptrCoeffMatrix);
-    m_ptrCoeffMatrix = new CCrossList(numOfUnknownsTotal, numOfUnknownsTotal);
+    m_coeffMatrix = Eigen::SparseMatrix<float>(numOfUnknownsTotal, numOfUnknownsTotal);
+    m_coeffMatrix.setZero();
     Flt temporalWtSum = 0.0f;
     for (int i = 1; i <= CMassSpringSynConfig::m_synthesisWindowSize; i++)
     {
@@ -176,17 +177,17 @@ void CMassSpringSyn::ResetCoeffMatrix()
             int numOfUnknownsPerStrand = m_vecOutputStrand[n].GetNumOfMasses() - 1;
             for (int i = 1; i <= numOfUnknownsPerStrand; i++)
             {
-                m_ptrCoeffMatrix->UpdateDiagonalVal(startIdx + i - 1, 1.0f);
+                UpdateDiagonalVal(startIdx + i - 1, 1.f);
                 for (int j = 1; j <= neighSize; j++)
                 {
                     Flt wt = shapeWt * exp(gaussianSigma * (j - 1) * (j - 1));
                     if (i - j > 0)
                     {
-                        m_ptrCoeffMatrix->UpdatePairVals(startIdx + i - 1, startIdx + i - 1 - j, wt);
+                        UpdatePairedVals(startIdx + i - 1, startIdx + i - 1 - j, wt);
                     }
                     else if (i - j == 0)
                     {
-                        m_ptrCoeffMatrix->UpdateDiagonalVal(startIdx + i - 1, wt);
+                        UpdateDiagonalVal(startIdx + i - 1, wt);
                     }
                     else
                     {
@@ -198,7 +199,7 @@ void CMassSpringSyn::ResetCoeffMatrix()
                     if (i + j <= numOfUnknownsPerStrand)
                     {
                         Flt wt = shapeWt * exp(gaussianSigma * (j - 1) * (j - 1));
-                        m_ptrCoeffMatrix->UpdatePairVals(startIdx + i - 1, startIdx + i - 1 + j, wt);
+                        UpdatePairedVals(startIdx + i - 1, startIdx + i - 1 + j, wt);
                     }
                     else
                     {
@@ -222,23 +223,17 @@ void CMassSpringSyn::UpdateStrandsExtended()
     ResetCoeffMatrix();
     const int numOfStrands = int(m_vecOutputStrand.size());
     const int numOfUnknownsTotal = GetNumOfUnknownsTotal(m_vecOutputStrand);
-    const int neighSize = CMassSpringSynConfig::m_neighSize;
     const Flt shapeWt = CMassSpringSynConfig::m_shapeWt;
     const Flt neighWt = CMassSpringSynConfig::m_wtNeighPrDiff;
-    const Flt smoothWt = CMassSpringSynConfig::m_smoothWt;
     const Flt temporalWt = CMassSpringSynConfig::m_temporalWt;
     const Flt gaussianSigma = CMassSpringSynConfig::m_gaussianSigma;
     const Flt temporalSigma = CMassSpringSynConfig::m_temporalSigma;
-    const Flt dt = CMassSpringSynConfig::m_timeStep;
     vector<Flt> vecPx(numOfUnknownsTotal, 0.0f);
     vector<Flt> vecPy(numOfUnknownsTotal, 0.0f);
     vector<Flt> vecPz(numOfUnknownsTotal, 0.0f);
-    m_vecCx.clear();
-    m_vecCy.clear();
-    m_vecCz.clear();
-    m_vecCx.resize(numOfUnknownsTotal, 0.0f);
-    m_vecCy.resize(numOfUnknownsTotal, 0.0f);
-    m_vecCz.resize(numOfUnknownsTotal, 0.0f);
+    m_vecCx = Eigen::VectorXf::Zero(numOfUnknownsTotal);
+    m_vecCy = Eigen::VectorXf::Zero(numOfUnknownsTotal);
+    m_vecCz = Eigen::VectorXf::Zero(numOfUnknownsTotal);
     int n;
     Flt distSum = 0.0f;
     {
@@ -353,9 +348,13 @@ void CMassSpringSyn::UpdateStrandsExtended()
     cout << "distSum = " << distSum << endl;
     // Optimization with shape terms...
     CollisionResponse(m_vecCx, m_vecCy, m_vecCz);
-    vector<Flt> vecPxNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCx);
-    vector<Flt> vecPyNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCy);
-    vector<Flt> vecPzNew = machy_math::GetSolution(m_ptrCoeffMatrix, m_vecCz);
+
+    // m_coeffMatrix.makeCompressed();
+    Eigen::ConjugateGradient<Eigen::SparseMatrix<float>> cg;
+    cg.compute(m_coeffMatrix);
+    Eigen::VectorXf vecPxNew = cg.solve(m_vecCx);
+    Eigen::VectorXf vecPyNew = cg.solve(m_vecCy);
+    Eigen::VectorXf vecPzNew = cg.solve(m_vecCz);
     for (int n = 0; n < numOfStrands; n++)
     {
         CMassSpringData& outputStrand = m_vecOutputStrand[n];
@@ -374,10 +373,13 @@ void CMassSpringSyn::UpdateStrandsExtended()
     }
 }
 
-void CMassSpringSyn::CollisionResponse(vector<Flt>& vecCx, vector<Flt>& vecCy, vector<Flt>& vecCz)
+void CMassSpringSyn::CollisionResponse(Eigen::VectorXf& vecCx, Eigen::VectorXf& vecCy, Eigen::VectorXf& vecCz)
 {
     const Flt repulsionConstant = CMassSpringSynConfig::m_strandRepulsionConstant;
-    if (repulsionConstant <= 0.0f) return;
+    if (repulsionConstant <= 0.0f)
+    {
+        return;
+    }
     const Flt r = CMassSpringSynConfig::m_strandRadius;
     const Flt r2 = r * r;
     const int numOfUnknownsPerStrand = CMassSpringSynConfig::m_numOfMasses - 1;
@@ -420,7 +422,7 @@ void CMassSpringSyn::CollisionResponse(vector<Flt>& vecCx, vector<Flt>& vecCy, v
                         int idx2 = startIdx2 + j2 - 1;
                         if (j1 == 0)
                         {
-                            m_ptrCoeffMatrix->UpdateDiagonalVal(idx2, repulsionConstant);
+                            UpdateDiagonalVal(idx2, repulsionConstant);
                             Vec3f prNew = p01 - repulsionPr;
                             vecCx[idx2] += repulsionConstant * prNew[0];
                             vecCy[idx2] += repulsionConstant * prNew[1];
@@ -428,7 +430,7 @@ void CMassSpringSyn::CollisionResponse(vector<Flt>& vecCx, vector<Flt>& vecCy, v
                         }
                         else if (j2 == 0)
                         {
-                            m_ptrCoeffMatrix->UpdateDiagonalVal(idx1, repulsionConstant);
+                            UpdateDiagonalVal(idx1, repulsionConstant);
                             Vec3f prNew = p02 + repulsionConstant;
                             vecCx[idx1] += repulsionConstant * prNew[0];
                             vecCy[idx1] += repulsionConstant * prNew[1];
@@ -436,7 +438,7 @@ void CMassSpringSyn::CollisionResponse(vector<Flt>& vecCx, vector<Flt>& vecCy, v
                         }
                         else
                         {
-                            m_ptrCoeffMatrix->UpdatePairVals(idx1, idx2, repulsionConstant);
+                            UpdatePairedVals(idx1, idx2, repulsionConstant);
                             vecCx[idx1] += repulsionConstant * repulsionPr[0];
                             vecCy[idx1] += repulsionConstant * repulsionPr[1];
                             vecCz[idx1] += repulsionConstant * repulsionPr[2];
@@ -449,7 +451,8 @@ void CMassSpringSyn::CollisionResponse(vector<Flt>& vecCx, vector<Flt>& vecCy, v
             }     // End-For-i2
         }         // End-For-j1
     }             // End-For-i1
-                  //cout << "Have detected " << repulsionCount << " pairs of collision.\n";
+
+    std::cout << "Have detected " << repulsionCount << " pairs of collision.\n";
 }
 
 void CMassSpringSyn::RenderOutput()
@@ -713,8 +716,6 @@ Flt CMassSpringSyn::NeighborhoodMetricExtended(MassNeighborhoodExtended& neigh1,
     {
         return 1e10;
     }
-    int neighPrNum1 = size11;
-    int neighPrNum2 = size12;
     distSum += VecPrDifference(neigh1.m_vecNeighPr1, neigh2.m_vecNeighPr1) * CMassSpringSynConfig::m_wtPrDiff;
     distSum += VecPrDifference(neigh1.m_vecNeighPr2, neigh2.m_vecNeighPr2) * CMassSpringSynConfig::m_wtPrDiff;
     for (int i = 0; i < int(neigh1.m_vecNeighPr1Prev.size()); i++)
@@ -925,7 +926,7 @@ void CMassSpringSyn::UpdateCoeffMatDiagonalVal(int idx, Flt wt, Vec3f pos, bool 
 {
     if (flagUpdateMat == true)
     {
-        m_ptrCoeffMatrix->UpdateDiagonalVal(idx, wt);
+        UpdateDiagonalVal(idx, wt);
     }
     m_vecCx[idx] += wt * pos[0];
     m_vecCy[idx] += wt * pos[1];
@@ -936,7 +937,7 @@ void CMassSpringSyn::UpdateCoeffMatPairVals(int idxi, int idxj, Flt wt, Vec3f pr
 {
     if (flagUpdateMat == true)
     {
-        m_ptrCoeffMatrix->UpdatePairVals(idxi, idxj, wt);
+        UpdatePairedVals(idxi, idxj, wt);
     }
     m_vecCx[idxi] += wt * pr[0];
     m_vecCy[idxi] += wt * pr[1];
@@ -1083,4 +1084,17 @@ void CMassSpringSyn::SetSequencesVelocity(vector<MassSpringSequence>& vecSequenc
             sample0.SetVel(sample1.GetVel());
         }
     }
+}
+
+void CMassSpringSyn::UpdateDiagonalVal(int idx, float dv)
+{
+    m_coeffMatrix.coeffRef(idx, idx) += dv;
+}
+
+void CMassSpringSyn::UpdatePairedVals(int idx1, int idx2, float dv)
+{
+    m_coeffMatrix.coeffRef(idx1, idx1) += dv;
+    m_coeffMatrix.coeffRef(idx2, idx2) += dv;
+    m_coeffMatrix.coeffRef(idx1, idx2) -= dv;
+    m_coeffMatrix.coeffRef(idx2, idx1) -= dv;
 }
