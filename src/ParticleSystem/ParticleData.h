@@ -39,7 +39,7 @@ public:
     inline void SetFlagFixed(bool flagFixed) { m_flagFixed = flagFixed; }
     inline bool GetFlagFixed() { return m_flagFixed; }
 
-    inline int GetNumOfSamples() { return int(m_vecSamplePos.size()); }
+    inline int GetNumOfSamples() const { return int(m_vecSamplePos.size()); }
 
     void RenderSoftBody(Vec3f trans = Vec3f(0.0f, 0.0f, 0.0f));
 
