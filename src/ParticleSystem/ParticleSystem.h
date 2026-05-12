@@ -20,9 +20,9 @@ public:
 
     bool SaveParticleSystem(const string& fileName);
 
-    inline int GetNumOfSoftBodies() { return int(m_vecParticleData.size()); }
+    inline int GetNumOfSoftBodies() const { return int(m_vecParticleData.size()); }
 
-    inline int GetNumOfSamples()
+    inline int GetNumOfSamples() const
     {
         if (m_vecParticleData.empty() == true)
         {
@@ -40,7 +40,7 @@ public:
 
     inline void ResizeParticleSystem(int sz) { m_vecParticleData.resize(sz); }
 
-    inline void AddParticle(CParticleData& particle) { m_vecParticleData.push_back(particle); }
+    inline void AddParticle(const CParticleData& particle) { m_vecParticleData.push_back(particle); }
 
     void SetNeighboringSamples(Flt neighDist);
 

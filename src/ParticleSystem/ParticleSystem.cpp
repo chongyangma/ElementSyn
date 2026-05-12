@@ -1,5 +1,18 @@
 #include "ParticleSystem.h"
 
+namespace
+{
+string GetFileSuffix(const string& fileName)
+{
+    const size_t dotPos = fileName.find_last_of('.');
+    if (dotPos == string::npos || dotPos + 1 >= fileName.size())
+    {
+        return string();
+    }
+    return fileName.substr(dotPos + 1);
+}
+}
+
 CParticleSystem::CParticleSystem()
 {
 }
@@ -66,10 +79,16 @@ bool CParticleSystem::LoadParticleSystemFromCSV(const string& fileName)
         std::cout << "Failed to load particle system from " << fileName << "!\n";
         return false;
     }
+    ClearParticleSystem();
+
     std::string line_str;
-    //std::getline(fin, line_str); // skip the first line
     while (std::getline(fin, line_str))
     {
+        if (line_str.empty())
+        {
+            continue;
+        }
+
         std::stringstream line_ss(line_str);
         std::string cell_str;
 
@@ -96,6 +115,11 @@ bool CParticleSystem::LoadParticleSystemFromCSV(const string& fileName)
             ss4 >> pos_z;
 
             vertices[i] = Vec3f(pos_x, pos_y, pos_z);
+        }
+
+        if (vertices.empty())
+        {
+            continue;
         }
 
         CParticleData particle;
@@ -135,7 +159,7 @@ bool CParticleSystem::SaveParticleSystemAsCSV(const string& fileName)
 
 bool CParticleSystem::LoadParticleSystem(const string& fileName)
 {
-    string suffix = fileName.substr(fileName.rfind(".") + 1, fileName.size());
+    const string suffix = GetFileSuffix(fileName);
     if (suffix == string("csv"))
     {
         return LoadParticleSystemFromCSV(fileName);
@@ -148,7 +172,7 @@ bool CParticleSystem::LoadParticleSystem(const string& fileName)
 
 bool CParticleSystem::SaveParticleSystem(const string& fileName)
 {
-    string suffix = fileName.substr(fileName.rfind(".") + 1, fileName.size());
+    const string suffix = GetFileSuffix(fileName);
     if (suffix == string("csv"))
     {
         return SaveParticleSystemAsCSV(fileName);
